@@ -280,6 +280,466 @@ function queen_alfalah_placeholder( $variant = 'default' ) {
 }
 
 /**
+ * Return the bundled activity illustration until an editor uploads a photo.
+ *
+ * The companion plugin owns these optional assets. A regular Featured Image
+ * always takes precedence, so school documentation can replace an illustration
+ * without changing code.
+ *
+ * @param int $post_id Extracurricular post ID.
+ * @return string
+ */
+function queen_alfalah_extra_illustration( $post_id = 0 ) {
+	$post = get_post( $post_id ? $post_id : get_the_ID() );
+	if ( ! $post instanceof WP_Post || 'qaf_extra' !== $post->post_type || ! defined( 'QAF_CORE_PATH' ) || ! defined( 'QAF_CORE_URL' ) ) {
+		return '';
+	}
+
+	$allowed = array(
+		'pramuka',
+		'broadcasting',
+		'futsal',
+		'al-banjari',
+		'tenis-meja',
+		'bola-voli',
+		'desain-web',
+		'desain-canva',
+		'tata-rias',
+		'seni-tari',
+		'seni-lukis',
+	);
+	$slug = in_array( $post->post_name, $allowed, true ) ? $post->post_name : '';
+	if ( ! $slug ) {
+		return '';
+	}
+
+	$relative = 'assets/images/extracurricular/' . $slug . '.webp';
+	return is_readable( QAF_CORE_PATH . $relative ) ? QAF_CORE_URL . $relative : '';
+}
+
+/**
+ * Return the supported Gallery sources and their public labels.
+ *
+ * @return array<string,string>
+ */
+function queen_alfalah_gallery_sources() {
+	return array(
+		'local'     => __( 'Foto/Video Sekolah', 'queen-alfalah' ),
+		'instagram' => 'Instagram',
+		'tiktok'    => 'TikTok',
+		'facebook'  => 'Facebook',
+		'youtube'   => 'YouTube',
+	);
+}
+
+/**
+ * Normalize a social hostname for exact comparisons.
+ *
+ * @param string $host Raw hostname.
+ * @return string
+ */
+function queen_alfalah_gallery_normalize_host( $host ) {
+	$host = strtolower( trim( (string) $host, ". \t\n\r\0\x0B" ) );
+	foreach ( array( 'www.', 'm.' ) as $prefix ) {
+		if ( 0 === strpos( $host, $prefix ) ) {
+			return substr( $host, strlen( $prefix ) );
+		}
+	}
+
+	return $host;
+}
+
+/**
+ * Infer a provider from a canonical media URL.
+ *
+ * Used only for entries created before the source selector existed.
+ *
+ * @param string $url Media URL.
+ * @return string
+ */
+function queen_alfalah_gallery_infer_source( $url ) {
+	$url    = esc_url_raw( is_string( $url ) ? $url : '', array( 'https' ) );
+	$host   = queen_alfalah_gallery_normalize_host( wp_parse_url( $url, PHP_URL_HOST ) );
+	$source = array(
+		'instagram.com' => 'instagram',
+		'tiktok.com'    => 'tiktok',
+		'vm.tiktok.com' => 'tiktok',
+		'vt.tiktok.com' => 'tiktok',
+		'facebook.com'  => 'facebook',
+		'fb.watch'      => 'facebook',
+		'youtube.com'   => 'youtube',
+		'youtu.be'      => 'youtube',
+	);
+
+	return isset( $source[ $host ] ) ? $source[ $host ] : '';
+}
+
+/**
+ * Resolve one Gallery entry's source without breaking legacy video URLs.
+ *
+ * @param int $post_id Gallery post ID.
+ * @return string
+ */
+function queen_alfalah_gallery_source( $post_id = 0 ) {
+	$post_id = $post_id ? absint( $post_id ) : get_the_ID();
+	$sources = queen_alfalah_gallery_sources();
+	$stored  = sanitize_key( get_post_meta( $post_id, '_qaf_gallery_source', true ) );
+
+	if ( isset( $sources[ $stored ] ) ) {
+		return $stored;
+	}
+
+	$inferred = queen_alfalah_gallery_infer_source( get_post_meta( $post_id, '_qaf_video_url', true ) );
+	return $inferred ? $inferred : 'local';
+}
+
+/**
+ * Return a source label for cards and detail pages.
+ *
+ * @param int $post_id Gallery post ID.
+ * @return string
+ */
+function queen_alfalah_gallery_source_label( $post_id = 0 ) {
+	$sources = queen_alfalah_gallery_sources();
+	$source  = queen_alfalah_gallery_source( $post_id );
+
+	return isset( $sources[ $source ] ) ? $sources[ $source ] : $sources['local'];
+}
+
+/**
+ * Validate an old direct-video URL against this WordPress installation.
+ *
+ * New Gallery entries use a Media Library attachment ID. This narrow fallback
+ * keeps existing same-origin/upload URLs working without turning the page into
+ * an implicit third-party video request.
+ *
+ * @param string $url Legacy direct-video URL.
+ * @return string
+ */
+function queen_alfalah_gallery_legacy_video_url( $url ) {
+	$url = esc_url_raw( is_string( $url ) ? $url : '', array( 'http', 'https' ) );
+	if ( ! $url ) {
+		return '';
+	}
+
+	$filetype = wp_check_filetype( (string) wp_parse_url( $url, PHP_URL_PATH ) );
+	if ( empty( $filetype['type'] ) || 0 !== strpos( $filetype['type'], 'video/' ) ) {
+		return '';
+	}
+
+	$uploads = wp_get_upload_dir();
+	$bases   = array( home_url( '/' ) );
+	if ( empty( $uploads['error'] ) && ! empty( $uploads['baseurl'] ) ) {
+		$bases[] = $uploads['baseurl'];
+	}
+
+	$url_scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+	$url_host   = strtolower( rtrim( (string) wp_parse_url( $url, PHP_URL_HOST ), '.' ) );
+	$url_port   = (int) wp_parse_url( $url, PHP_URL_PORT );
+	if ( ! $url_scheme || ! $url_host || wp_parse_url( $url, PHP_URL_USER ) || wp_parse_url( $url, PHP_URL_PASS ) ) {
+		return '';
+	}
+
+	foreach ( array_unique( $bases ) as $base ) {
+		$base_scheme = strtolower( (string) wp_parse_url( $base, PHP_URL_SCHEME ) );
+		$base_host   = strtolower( rtrim( (string) wp_parse_url( $base, PHP_URL_HOST ), '.' ) );
+		$base_port   = (int) wp_parse_url( $base, PHP_URL_PORT );
+		if ( $url_scheme === $base_scheme && $url_host === $base_host && $url_port === $base_port ) {
+			return $url;
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Build a provider-controlled embed configuration from an allowlisted URL.
+ *
+ * Raw iframe/script HTML is never accepted. Every embed address is derived
+ * from a validated canonical post or video URL.
+ *
+ * @param string $source Selected provider.
+ * @param string $url    Canonical public content URL.
+ * @return array<string,string>|false
+ */
+function queen_alfalah_gallery_embed_config( $source, $url ) {
+	$url    = esc_url_raw( is_string( $url ) ? $url : '', array( 'https' ) );
+	$scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+	$host   = queen_alfalah_gallery_normalize_host( wp_parse_url( $url, PHP_URL_HOST ) );
+	$path   = (string) wp_parse_url( $url, PHP_URL_PATH );
+
+	if ( 'https' !== $scheme || ! $host ) {
+		return false;
+	}
+
+	if ( 'instagram' === $source ) {
+		if ( 'instagram.com' !== $host || ! preg_match( '#^/(p|reel|tv)/([A-Za-z0-9_-]+)/?$#', $path, $matches ) ) {
+			return false;
+		}
+
+		$canonical = sprintf( 'https://www.instagram.com/%s/%s/', $matches[1], $matches[2] );
+		return array(
+			'kind'      => 'instagram',
+			'provider'  => 'instagram',
+			'label'     => 'Instagram',
+			'canonical' => $canonical,
+			'aspect'    => 'portrait',
+			'allow'     => '',
+		);
+	}
+
+	if ( 'tiktok' === $source ) {
+		if ( 'tiktok.com' !== $host || ! preg_match( '#^/@[^/]+/video/([0-9]{8,24})/?$#', $path, $matches ) ) {
+			return false;
+		}
+
+		$embed_url = add_query_arg(
+			array(
+				'controls'     => '1',
+				'autoplay'     => '0',
+				'rel'          => '0',
+				'music_info'   => '1',
+				'description'  => '1',
+			),
+			'https://www.tiktok.com/player/v1/' . $matches[1]
+		);
+		return array(
+			'kind'      => 'iframe',
+			'provider'  => 'tiktok',
+			'label'     => 'TikTok',
+			'canonical' => $url,
+			'embed_url' => $embed_url,
+			'aspect'    => 'portrait',
+			'allow'     => 'fullscreen',
+		);
+	}
+
+	if ( 'facebook' === $source ) {
+		if ( ! in_array( $host, array( 'facebook.com', 'fb.watch' ), true ) ) {
+			return false;
+		}
+
+		$facebook_query = array();
+		parse_str( (string) wp_parse_url( $url, PHP_URL_QUERY ), $facebook_query );
+		$facebook_path = rtrim( $path, '/' );
+		if ( 'fb.watch' === $host ) {
+			if ( ! preg_match( '#^/[A-Za-z0-9_-]+$#', $facebook_path ) ) {
+				return false;
+			}
+		} else {
+			$is_content_path = (bool) preg_match(
+				'#^/(?:[^/]+/(?:posts|videos|photos|reels?)/.+|reels?/.+|watch|share/(?:p|v|r)/.+)$#',
+				$facebook_path
+			);
+			$is_content_query = (
+				'/photo.php' === $facebook_path && ! empty( $facebook_query['fbid'] )
+			) || (
+				in_array( $facebook_path, array( '/permalink.php', '/story.php' ), true )
+				&& ! empty( $facebook_query['story_fbid'] )
+			);
+			if ( ! $is_content_path && ! $is_content_query ) {
+				return false;
+			}
+		}
+
+		$is_video = 'fb.watch' === $host
+			|| false !== strpos( $path, '/videos/' )
+			|| false !== strpos( $path, '/reel/' )
+			|| false !== strpos( $path, '/reels/' )
+			|| '/watch' === $facebook_path
+			|| (bool) preg_match( '#^/share/(?:v|r)/#', $path );
+		$endpoint = $is_video
+			? 'https://www.facebook.com/plugins/video.php'
+			: 'https://www.facebook.com/plugins/post.php';
+		$embed_url = add_query_arg(
+			array(
+				'href'      => $url,
+				'show_text' => 'true',
+				'width'     => '720',
+			),
+			$endpoint
+		);
+		return array(
+			'kind'      => 'iframe',
+			'provider'  => 'facebook',
+			'label'     => 'Facebook',
+			'canonical' => $url,
+			'embed_url' => $embed_url,
+			'aspect'    => $is_video ? 'wide' : 'portrait',
+			'allow'     => 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share',
+		);
+	}
+
+	if ( 'youtube' === $source ) {
+		if ( ! in_array( $host, array( 'youtube.com', 'youtu.be' ), true ) ) {
+			return false;
+		}
+
+		$video_id  = '';
+		$playlist  = '';
+		$is_shorts = false;
+		$query     = array();
+		parse_str( (string) wp_parse_url( $url, PHP_URL_QUERY ), $query );
+
+		if ( 'youtu.be' === $host ) {
+			$video_id = trim( $path, '/' );
+		} elseif ( '/watch' === rtrim( $path, '/' ) ) {
+			$video_id = isset( $query['v'] ) && is_scalar( $query['v'] ) ? (string) $query['v'] : '';
+		} elseif ( preg_match( '#^/(shorts|live|embed)/([A-Za-z0-9_-]{11})/?$#', $path, $matches ) ) {
+			$is_shorts = 'shorts' === $matches[1];
+			$video_id  = $matches[2];
+		}
+
+		if ( isset( $query['list'] ) && is_scalar( $query['list'] ) ) {
+			$playlist = preg_replace( '/[^A-Za-z0-9_-]/', '', (string) $query['list'] );
+		}
+
+		if ( $video_id && ! preg_match( '/^[A-Za-z0-9_-]{11}$/', $video_id ) ) {
+			$video_id = '';
+		}
+		if ( $playlist && ! preg_match( '/^[A-Za-z0-9_-]{10,64}$/', $playlist ) ) {
+			$playlist = '';
+		}
+		if ( $playlist && ! $video_id && '/playlist' !== rtrim( $path, '/' ) ) {
+			$playlist = '';
+		}
+		if ( ! $video_id && ! $playlist ) {
+			return false;
+		}
+
+		$home_scheme = wp_parse_url( home_url( '/' ), PHP_URL_SCHEME );
+		$home_host   = wp_parse_url( home_url( '/' ), PHP_URL_HOST );
+		$origin      = $home_scheme && $home_host ? $home_scheme . '://' . $home_host : '';
+		$embed_url   = $video_id
+			? 'https://www.youtube-nocookie.com/embed/' . rawurlencode( $video_id )
+			: 'https://www.youtube-nocookie.com/embed';
+		$args        = array(
+			'autoplay'    => '0',
+			'playsinline' => '1',
+		);
+		if ( $playlist ) {
+			$args['listType'] = 'playlist';
+			$args['list']     = $playlist;
+		}
+		if ( $origin ) {
+			$args['origin'] = $origin;
+		}
+
+		return array(
+			'kind'      => 'iframe',
+			'provider'  => 'youtube',
+			'label'     => 'YouTube',
+			'canonical' => $url,
+			'embed_url' => add_query_arg( $args, $embed_url ),
+			'aspect'    => $is_shorts ? 'portrait' : 'wide',
+			'allow'     => 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
+		);
+	}
+
+	return false;
+}
+
+/**
+ * Render local video or a privacy-aware social embed for a Gallery entry.
+ *
+ * @param int $post_id Gallery post ID.
+ * @return string
+ */
+function queen_alfalah_gallery_media( $post_id = 0 ) {
+	$post_id = $post_id ? absint( $post_id ) : get_the_ID();
+	if ( 'qaf_gallery' !== get_post_type( $post_id ) ) {
+		return '';
+	}
+
+	$source = queen_alfalah_gallery_source( $post_id );
+	$url    = get_post_meta( $post_id, '_qaf_video_url', true );
+
+	if ( 'local' === $source ) {
+		$attachment_id = absint( get_post_meta( $post_id, '_qaf_gallery_local_video_id', true ) );
+		$video_url     = '';
+		if ( $attachment_id && 'attachment' === get_post_type( $attachment_id ) && 0 === strpos( (string) get_post_mime_type( $attachment_id ), 'video/' ) ) {
+			$video_url = wp_get_attachment_url( $attachment_id );
+		}
+
+		if ( ! $video_url && is_string( $url ) && $url ) {
+			$video_url = queen_alfalah_gallery_legacy_video_url( $url );
+		}
+
+		if ( ! $video_url ) {
+			return '';
+		}
+
+		return '<section class="gallery-media gallery-media--local" aria-label="' . esc_attr__( 'Video galeri sekolah', 'queen-alfalah' ) . '">'
+			. wp_video_shortcode(
+				array(
+					'src'     => $video_url,
+					'preload' => 'metadata',
+				)
+			)
+			. '</section>';
+	}
+
+	$config = queen_alfalah_gallery_embed_config( $source, $url );
+	if ( ! $config ) {
+		if ( ! $url ) {
+			return '';
+		}
+
+		return '<section class="gallery-media gallery-media--fallback"><p>'
+			. esc_html__( 'Pratinjau sosial belum tersedia untuk alamat ini.', 'queen-alfalah' )
+			. '</p><a class="button button--outline-dark" href="' . esc_url( $url ) . '" target="_blank" rel="external noopener noreferrer">'
+			. esc_html__( 'Buka tautan sumber', 'queen-alfalah' )
+			. queen_alfalah_icon( 'external' )
+			. '</a></section>';
+	}
+
+	$behavior = sanitize_key( get_post_meta( $post_id, '_qaf_gallery_embed_behavior', true ) );
+	$behavior = in_array( $behavior, array( 'click', 'auto', 'link' ), true ) ? $behavior : 'click';
+	$label    = $config['label'];
+	$link     = '<a href="' . esc_url( $config['canonical'] ) . '" target="_blank" rel="external noopener noreferrer">'
+		. esc_html( sprintf( __( 'Buka di %s', 'queen-alfalah' ), $label ) )
+		. queen_alfalah_icon( 'external' )
+		. '</a>';
+
+	if ( 'link' === $behavior ) {
+		return '<section class="gallery-media gallery-media--link"><p>'
+			. esc_html( sprintf( __( 'Konten ini tersedia di %s.', 'queen-alfalah' ), $label ) )
+			. '</p>' . $link . '</section>';
+	}
+
+	$content = '';
+	if ( 'instagram' === $config['kind'] ) {
+		$content = '<blockquote class="instagram-media" data-instgrm-permalink="' . esc_url( $config['canonical'] ) . '" data-instgrm-version="14">'
+			. '<a href="' . esc_url( $config['canonical'] ) . '" target="_blank" rel="external noopener noreferrer">'
+			. esc_html( sprintf( __( 'Lihat konten %s', 'queen-alfalah' ), $label ) )
+			. '</a></blockquote>';
+	} else {
+		$content = '<iframe title="' . esc_attr( sprintf( __( 'Konten galeri dari %s', 'queen-alfalah' ), $label ) ) . '"'
+			. ' data-src="' . esc_url( $config['embed_url'] ) . '" loading="lazy"'
+			. ' referrerpolicy="strict-origin-when-cross-origin" allow="' . esc_attr( $config['allow'] ) . '" allowfullscreen></iframe>';
+	}
+
+	$hidden         = 'click' === $behavior ? ' hidden' : '';
+	$loaded_message = sprintf( __( 'Konten %s mulai dimuat.', 'queen-alfalah' ), $label );
+	$error_message  = sprintf( __( 'Pratinjau %s gagal dimuat. Gunakan tautan sumber yang tersedia.', 'queen-alfalah' ), $label );
+	$button = 'click' === $behavior
+		? '<button class="gallery-embed__consent" type="button" data-gallery-load>'
+			. queen_alfalah_icon( $source )
+			. '<span><strong>' . esc_html( sprintf( __( 'Muat konten %s', 'queen-alfalah' ), $label ) ) . '</strong>'
+			. '<small>' . esc_html__( 'Konten pihak ketiga baru dimuat setelah Anda memilih tombol ini.', 'queen-alfalah' ) . '</small></span></button>'
+		: '';
+
+	return '<section class="gallery-media gallery-media--social gallery-media--' . esc_attr( $source ) . '">'
+		. '<div class="gallery-embed gallery-embed--' . esc_attr( $config['aspect'] ) . '" data-gallery-embed data-provider="' . esc_attr( $source ) . '" data-behavior="' . esc_attr( $behavior ) . '" data-loaded-message="' . esc_attr( $loaded_message ) . '" data-error-message="' . esc_attr( $error_message ) . '">'
+		. $button
+		. '<div class="gallery-embed__content" tabindex="-1"' . $hidden . '>' . $content . '</div>'
+		. '<p class="screen-reader-text" aria-live="polite" data-gallery-status></p>'
+		. '</div>'
+		. '<p class="gallery-media__fallback">' . esc_html__( 'Jika pratinjau tidak dapat dimuat karena konten privat, dihapus, atau dibatasi platform, gunakan tautan berikut: ', 'queen-alfalah' ) . $link . '</p>'
+		. '</section>';
+}
+
+/**
  * Build a safe WhatsApp deep link.
  *
  * @param string $message Prefilled message.

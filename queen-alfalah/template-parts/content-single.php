@@ -45,24 +45,40 @@ $queen_detail_fields = array(
 		array( 'location', __( 'Lokasi', 'queen-alfalah' ), 'text' ),
 	),
 	'qaf_achievement' => array(
-		array( 'level', __( 'Tingkat', 'queen-alfalah' ), 'text' ),
+		array( 'award', __( 'Juara/Penghargaan', 'queen-alfalah' ), 'text' ),
+		array( 'recipient', __( 'Penerima/Delegasi', 'queen-alfalah' ), 'multiline' ),
+		array( 'field', __( 'Bidang', 'queen-alfalah' ), 'text' ),
+		array( 'organizer', __( 'Penyelenggara', 'queen-alfalah' ), 'text' ),
+		array( 'level', __( 'Ruang Lingkup', 'queen-alfalah' ), 'text' ),
 		array( 'achievement_date', __( 'Tanggal Prestasi', 'queen-alfalah' ), 'date' ),
-		array( 'recipient', __( 'Penerima', 'queen-alfalah' ), 'multiline' ),
+		array( 'source_url', __( 'Sumber Unggahan', 'queen-alfalah' ), 'url', __( 'Lihat unggahan sumber', 'queen-alfalah' ) ),
 	),
 	'qaf_extra'       => array(
 		array( 'schedule', __( 'Jadwal Latihan', 'queen-alfalah' ), 'text' ),
 		array( 'coach', __( 'Pembina/Pelatih', 'queen-alfalah' ), 'text' ),
+		array( 'extra_location', __( 'Lokasi Kegiatan', 'queen-alfalah' ), 'text' ),
+		array( 'benefits', __( 'Yang Dipelajari dan Didapat', 'queen-alfalah' ), 'list' ),
+		array( 'career_relevance', __( 'Kegunaan untuk Studi dan Dunia Kerja', 'queen-alfalah' ), 'list' ),
+		array( 'join_info', __( 'Informasi Bergabung', 'queen-alfalah' ), 'multiline' ),
 	),
 	'qaf_service'     => array(
 		array( 'external_url', __( 'Layanan Digital', 'queen-alfalah' ), 'url', __( 'Buka layanan', 'queen-alfalah' ) ),
 	),
 	'qaf_gallery'     => array(
 		array( 'album_date', __( 'Tanggal Dokumentasi', 'queen-alfalah' ), 'date' ),
-		array( 'video_url', __( 'Video Resmi', 'queen-alfalah' ), 'url', __( 'Tonton video', 'queen-alfalah' ) ),
+		array( 'gallery_media_type', __( 'Jenis Media', 'queen-alfalah' ), 'gallery_media_type' ),
+		array( 'video_url', __( 'Tautan Media', 'queen-alfalah' ), 'url', __( 'Buka sumber media', 'queen-alfalah' ) ),
 	),
 	'qaf_partner'     => array(
 		array( 'partner_sector', __( 'Sektor Kerja Sama', 'queen-alfalah' ), 'text' ),
+		array( 'partner_legal_name', __( 'Nama Legal/Bentuk Lembaga', 'queen-alfalah' ), 'text' ),
+		array( 'partner_location', __( 'Lokasi', 'queen-alfalah' ), 'text' ),
+		array( 'partner_programs', __( 'Program Keahlian Terkait', 'queen-alfalah' ), 'list' ),
+		array( 'partner_expertise', __( 'Keahlian/Layanan Mitra', 'queen-alfalah' ), 'list' ),
+		array( 'partner_cooperation', __( 'Penyaluran Kerja Sama ke Sekolah', 'queen-alfalah' ), 'multiline' ),
+		array( 'partner_verification', __( 'Status Informasi', 'queen-alfalah' ), 'partner_verification' ),
 		array( 'partner_url', __( 'Website Mitra', 'queen-alfalah' ), 'url', __( 'Kunjungi website', 'queen-alfalah' ) ),
+		array( 'partner_source_url', __( 'Sumber Profil', 'queen-alfalah' ), 'url', __( 'Lihat sumber profil', 'queen-alfalah' ) ),
 	),
 	'qaf_vacancy'     => array(
 		array( 'company', __( 'Perusahaan/Instansi', 'queen-alfalah' ), 'text' ),
@@ -74,12 +90,32 @@ $queen_detail_fields = array(
 		array( 'current_role', __( 'Aktivitas/Peran Saat Ini', 'queen-alfalah' ), 'text' ),
 	),
 	'qaf_facility'    => array(
+		array( 'facility_location', __( 'Lokasi Sarana', 'queen-alfalah' ), 'text' ),
 		array( 'capacity', __( 'Kapasitas/Jumlah', 'queen-alfalah' ), 'number' ),
 		array( 'facility_status', __( 'Status Sarana', 'queen-alfalah' ), 'facility_status' ),
+		array( 'facility_function', __( 'Fungsi Utama', 'queen-alfalah' ), 'multiline' ),
+		array( 'facility_features', __( 'Fasilitas/Perlengkapan', 'queen-alfalah' ), 'list' ),
+		array( 'facility_access', __( 'Akses dan Aturan Penggunaan', 'queen-alfalah' ), 'multiline' ),
+		array( 'facility_manager', __( 'Penanggung Jawab', 'queen-alfalah' ), 'text' ),
+		array( 'facility_last_check', __( 'Pemeriksaan Terakhir', 'queen-alfalah' ), 'date' ),
 	),
 );
 
 $queen_details = array();
+$queen_extra_illustration = 'qaf_extra' === $queen_post_type ? queen_alfalah_extra_illustration( get_the_ID() ) : '';
+$queen_details_title = 'qaf_achievement' === $queen_post_type
+	? __( 'Detail Prestasi', 'queen-alfalah' )
+	: __( 'Informasi Utama', 'queen-alfalah' );
+
+if ( 'qaf_gallery' === $queen_post_type ) {
+	$queen_details[] = array(
+		'gallery_source',
+		__( 'Sumber Media', 'queen-alfalah' ),
+		'text',
+		'value' => queen_alfalah_gallery_source_label( get_the_ID() ),
+	);
+}
+
 if ( isset( $queen_detail_fields[ $queen_post_type ] ) ) {
 	foreach ( $queen_detail_fields[ $queen_post_type ] as $queen_field ) {
 		$queen_value = queen_alfalah_meta( get_the_ID(), $queen_field[0] );
@@ -89,6 +125,8 @@ if ( isset( $queen_detail_fields[ $queen_post_type ] ) ) {
 		}
 	}
 }
+
+$queen_gallery_media = 'qaf_gallery' === $queen_post_type ? queen_alfalah_gallery_media( get_the_ID() ) : '';
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'single-entry' ); ?>>
@@ -101,6 +139,8 @@ if ( isset( $queen_detail_fields[ $queen_post_type ] ) ) {
 	<figure class="post-thumbnail">
 		<?php if ( has_post_thumbnail() ) : ?>
 			<?php the_post_thumbnail( 'full', array( 'decoding' => 'async' ) ); ?>
+		<?php elseif ( $queen_extra_illustration ) : ?>
+			<img src="<?php echo esc_url( $queen_extra_illustration ); ?>" alt="" width="1200" height="800" decoding="async">
 		<?php else : ?>
 			<img src="<?php echo esc_url( queen_alfalah_placeholder( $queen_placeholder ) ); ?>" alt="" width="1200" height="800" decoding="async">
 		<?php endif; ?>
@@ -108,7 +148,7 @@ if ( isset( $queen_detail_fields[ $queen_post_type ] ) ) {
 
 	<?php if ( $queen_details ) : ?>
 		<section class="entry-details card widget flow" aria-labelledby="entry-details-title">
-			<h2 id="entry-details-title"><?php esc_html_e( 'Informasi Utama', 'queen-alfalah' ); ?></h2>
+			<h2 id="entry-details-title"><?php echo esc_html( $queen_details_title ); ?></h2>
 			<dl>
 				<?php foreach ( $queen_details as $queen_detail ) : ?>
 					<?php
@@ -154,6 +194,24 @@ if ( isset( $queen_detail_fields[ $queen_post_type ] ) ) {
 								$queen_status_labels = array( 'baik' => __( 'Baik/Operasional', 'queen-alfalah' ), 'perlu-perawatan' => __( 'Perlu Perawatan', 'queen-alfalah' ), 'tidak-operasional' => __( 'Tidak Operasional', 'queen-alfalah' ) );
 								echo esc_html( isset( $queen_status_labels[ $queen_value ] ) ? $queen_status_labels[ $queen_value ] : $queen_value );
 								?>
+							<?php elseif ( 'partner_verification' === $queen_format ) : ?>
+								<?php
+								$queen_verification_labels = array(
+									'verified-profile'   => __( 'Profil publik terverifikasi; keterangan kerja sama mengikuti data sekolah', 'queen-alfalah' ),
+									'school-data'        => __( 'Keterangan kerja sama berdasarkan data sekolah', 'queen-alfalah' ),
+									'needs-confirmation' => __( 'Identitas/profil publik masih perlu konfirmasi sekolah', 'queen-alfalah' ),
+								);
+								echo esc_html( isset( $queen_verification_labels[ $queen_value ] ) ? $queen_verification_labels[ $queen_value ] : $queen_value );
+								?>
+							<?php elseif ( 'gallery_media_type' === $queen_format ) : ?>
+								<?php
+								$queen_gallery_type_labels = array(
+									'photo' => __( 'Foto', 'queen-alfalah' ),
+									'video' => __( 'Video', 'queen-alfalah' ),
+									'mixed' => __( 'Foto dan Video', 'queen-alfalah' ),
+								);
+								echo esc_html( isset( $queen_gallery_type_labels[ $queen_value ] ) ? $queen_gallery_type_labels[ $queen_value ] : $queen_value );
+								?>
 							<?php elseif ( 'number' === $queen_format ) : ?>
 								<?php echo esc_html( number_format_i18n( absint( $queen_value ) ) ); ?>
 							<?php else : ?>
@@ -165,6 +223,12 @@ if ( isset( $queen_detail_fields[ $queen_post_type ] ) ) {
 			</dl>
 		</section>
 	<?php endif; ?>
+
+	<?php
+	if ( $queen_gallery_media ) {
+		echo $queen_gallery_media; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from validated provider URLs and escaped attributes.
+	}
+	?>
 
 	<div class="entry-content">
 		<?php

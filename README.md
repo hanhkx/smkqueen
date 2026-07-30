@@ -4,19 +4,26 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 
 ## Komponen
 
-- `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.1.1.
-- `queen-alfalah-core/` — plugin pendamping versi 1.4.0 untuk tipe konten dan pengaturan sekolah.
+- `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.4.0.
+- `queen-alfalah-core/` — plugin pendamping versi 1.7.0 untuk tipe konten dan pengaturan sekolah.
 
 ## Fitur utama
 
 - Landing page responsif dengan background gambar/GIF yang dapat diganti.
 - Identitas, kontak, kepala sekolah, logo, warna, dan konten yang dapat dikelola dari dashboard.
 - Berita, pengumuman, agenda, prestasi, guru/tendik, program keahlian, galeri, BKK, dan PPDB.
+- Galeri terpadu yang dapat memuat foto/video sekolah dari Media Library atau satu konten publik Instagram, TikTok, Facebook, dan YouTube per entri, lengkap dengan penyaring sumber dan opsi privasi klik-untuk-muat.
 - Pusat Aplikasi `/aplikasi/` untuk Ujian Online, E-Rapor, E-Perpustakaan, SPMB, dan Gamifikasi Edu.
-- Pusat Media privat `/pusat-media/` dengan akun WordPress per Waka/Guru/Tendik, folder Drive pribadi otomatis, serta unggah-unduh terotorisasi.
+- Pusat Media privat `/pusat-media/` dengan login WordPress dan satu tautan Google Drive yang dapat diganti untuk tiap divisi Waka/Guru/Tendik.
 - Struktur Organisasi 2026/2027 lengkap dengan tupoksi dan foto yang tersinkron dari Guru & Tendik.
+- Katalog Sarana Prasarana yang mudah dikelola dengan lokasi, fungsi, fitur, akses, pengelola, kapasitas, kondisi, dan tanggal pemeriksaan.
+- Empat belas profil awal PKL & Mitra Industri beserta bidang keahlian, jurusan terkait, bentuk kerja sama, sumber, dan status verifikasi.
+- Arsip Prestasi berisi 17 halaman capaian siswa dari unggahan Instagram resmi tahun 2023–2026; 16 foto sumber yang terverifikasi hanya mengisi slot gambar unggulan yang masih kosong. Satu foto LBB putri menunggu dokumentasi yang tepat agar tidak salah atribusi.
+- Sebelas halaman ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi bawaan sebagai fallback gambar.
 - Struktur ZIP tema dan plugin yang kompatibel dengan pemasang WordPress.
 - Dukungan penggunaan offline melalui WordPress dan Laragon.
+
+Profil mitra merupakan data awal berbasis sumber publik. Status kerja sama formal, periode, kuota, dan penempatan wajib dicocokkan kembali dengan MoU atau arsip sekolah sebelum diumumkan sebagai kerja sama aktif.
 
 ## Persyaratan
 
@@ -26,8 +33,8 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 ## Instalasi
 
 1. Jalankan `powershell -ExecutionPolicy Bypass -File .\build-packages.ps1` dari PowerShell untuk membuat ZIP tema dan plugin yang kompatibel dengan WordPress.
-2. Unggah `dist/queen-alfalah-1.1.1.zip` melalui **Tampilan → Tema → Tambah Tema**.
-3. Unggah `dist/queen-alfalah-core-1.4.0.zip` melalui **Plugin → Tambah Plugin**.
+2. Unggah `dist/queen-alfalah-1.4.0.zip` melalui **Tampilan → Tema → Tambah Tema**.
+3. Unggah `dist/queen-alfalah-core-1.7.0.zip` melalui **Plugin → Tambah Plugin**.
 4. Aktifkan plugin dan tema.
 5. Buka **Sekolah → Pengaturan** untuk melengkapi identitas sekolah.
 6. Buka **Pengaturan → Permalink**, lalu simpan ulang permalink.
@@ -70,34 +77,32 @@ Aktifkan melalui dashboard WordPress. Jangan menyimpan `wp-config.php`, database
 
 ## Pusat Media privat
 
-Plugin membuat peran **Waka Sekolah**, **Guru**, dan **Tenaga Kependidikan**, serta halaman `/pusat-media/`. Password memakai autentikasi WordPress dan selalu disimpan sebagai hash oleh WordPress. Akun portal diarahkan ke Pusat Media dan tidak diberi akses ke dashboard administrasi. Folder pribadi `Nama (@username)` dibuat otomatis di Google Drive ketika akun pertama kali membuka portal.
+Plugin membuat peran **Waka Sekolah**, **Guru**, dan **Tenaga Kependidikan**, serta halaman `/pusat-media/`. Password memakai autentikasi WordPress dan selalu disimpan sebagai hash oleh WordPress. Akun portal diarahkan ke Pusat Media dan tidak diberi akses ke dashboard administrasi.
 
-Folder induk Google Drive sekolah:
+Isi tiga alamat folder di **Sekolah → Pengaturan → Pusat Media**: Folder Google Drive Waka, Guru, dan Tendik. Pengguna portal hanya melihat tautan yang sesuai dengan perannya; administrator dapat melihat semua tautan untuk pemeriksaan. Tautan dapat diganti kapan saja saat folder penuh, dipindahkan, atau mengalami kendala.
 
-[SMK Queen Al-Falah - Pusat Media](https://drive.google.com/drive/folders/1N0w6Y9e2p5IYn_ipLLcR7hG2ApDT2KK9)
-
-Untuk My Drive, koneksi unggah-unduh memakai OAuth akun pemilik folder. Simpan nilai berikut hanya di `wp-config.php`:
-
-```php
-define( 'QAF_GOOGLE_DRIVE_ROOT_FOLDER_ID', '1N0w6Y9e2p5IYn_ipLLcR7hG2ApDT2KK9' );
-define( 'QAF_GOOGLE_DRIVE_OAUTH_CLIENT_ID', 'CLIENT_ID.apps.googleusercontent.com' );
-define( 'QAF_GOOGLE_DRIVE_OAUTH_CLIENT_SECRET', 'CLIENT_SECRET' );
-define( 'QAF_GOOGLE_DRIVE_OAUTH_REFRESH_TOKEN', 'REFRESH_TOKEN' );
-```
-
-Service account tetap didukung untuk Shared Drive melalui `QAF_GOOGLE_DRIVE_CREDENTIALS_PATH`. Jangan commit OAuth secret, refresh token, JSON, private key, username, atau password ke Git. Pengguna hanya dapat menelusuri folder pribadinya beserta subfolder dan file turunannya; unggahan dan unduhan diproksi WordPress setelah pemeriksaan login, capability, nonce, jenis/ukuran file, dan rantai folder.
+WordPress tidak mengunggah, mengunduh, atau memproksi file. Semua pengelolaan dokumen berlangsung langsung di Google Drive, sehingga aturan berbagi Drive merupakan batas keamanan sebenarnya. Gunakan mode berbagi **Dibatasi** dan beri izin hanya kepada akun Google yang berwenang. Jangan mengandalkan kerahasiaan URL folder sebagai pengganti pengaturan izin Drive.
 
 Lihat panduan lengkap di [`queen-alfalah-core/GOOGLE-DRIVE-SETUP.md`](queen-alfalah-core/GOOGLE-DRIVE-SETUP.md).
 
+## Galeri lokal dan sosial media
+
+Buat atau sunting entri melalui **Galeri → Tambah Baru**. Gunakan **Gambar Unggulan** sebagai sampul, lalu pilih salah satu mode berikut:
+
+- **Lokal / Media Library** — unggah foto melalui blok Gambar/Galeri dan pilih video lokal pada panel Detail Terstruktur atau melalui blok Video.
+- **Instagram, TikTok, Facebook, atau YouTube** — tempel URL HTTPS kanonik satu postingan/video publik. Jangan menempel kode iframe.
+
+Pilihan **Klik untuk memuat** menjadi bawaan agar koneksi ke platform pihak ketiga baru dilakukan setelah persetujuan pengunjung. Pilihan **Muat otomatis** dan **Tautan saja** juga tersedia. Integrasi ini tidak membutuhkan token API dan tidak menyinkronkan seluruh feed akun secara otomatis; setiap konten sosial dibuat sebagai satu entri Galeri agar judul, sampul, kredit, dan izin publikasinya tetap dapat dikendalikan sekolah.
+
 ## Sinkronisasi perkembangan project
 
-Perubahan utama tetap dikerjakan pada folder `work/queen-alfalah` dan `work/queen-alfalah-core`. Jalankan perintah berikut dari repository untuk menyalin perubahan, membuat commit, dan push ke GitHub:
+Perubahan dikerjakan langsung pada folder `queen-alfalah` dan `queen-alfalah-core` di repository. Jalankan perintah berikut untuk memvalidasi paket, membuat commit, dan mendorong branch aktif ke `hanhkx/smkqueen`:
 
 ```powershell
 .\sync-project.ps1 -Message "Jelaskan perubahan yang dibuat"
 ```
 
-Skrip memverifikasi sumber dan target sebelum menyelaraskan folder. Database WordPress, `wp-config.php`, unggahan pengguna, arsip ZIP, serta berkas rahasia tidak ikut dikirim.
+Skrip memverifikasi struktur project dan remote GitHub sebelum commit/push. Database WordPress, `wp-config.php`, unggahan pengguna, arsip ZIP, serta berkas rahasia tidak ikut dikirim.
 
 ## Lisensi
 

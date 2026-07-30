@@ -367,7 +367,10 @@ if ( $landing_bg ) {
 					<?php while ( $gallery_query->have_posts() ) : $gallery_query->the_post(); ?>
 						<a href="<?php the_permalink(); ?>">
 							<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'queen-card', array( 'loading' => 'lazy', 'alt' => get_the_title() ) ); else : ?><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="720" height="480" loading="lazy" alt=""><?php endif; ?>
-							<span class="gallery-caption"><?php the_title(); ?></span>
+							<span class="gallery-caption">
+								<span><?php the_title(); ?></span>
+								<small class="gallery-caption__source"><?php echo esc_html( queen_alfalah_gallery_source_label( get_the_ID() ) ); ?></small>
+							</span>
 						</a>
 					<?php endwhile; wp_reset_postdata(); ?>
 				<?php else : ?>

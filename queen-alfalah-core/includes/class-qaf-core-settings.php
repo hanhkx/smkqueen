@@ -61,6 +61,9 @@ final class QAF_Core_Settings {
 			'instagram_url'    => '',
 			'youtube_url'      => '',
 			'tiktok_url'       => '',
+			'media_drive_waka_url'    => '',
+			'media_drive_teacher_url' => '',
+			'media_drive_staff_url'   => '',
 		);
 	}
 
@@ -220,6 +223,24 @@ final class QAF_Core_Settings {
 				'type'        => 'url',
 				'group'       => 'Media Sosial',
 				'description' => 'Kosongkan sampai akun resmi terverifikasi.',
+			),
+			'media_drive_waka_url' => array(
+				'label'       => 'Folder Google Drive Waka',
+				'type'        => 'drive_url',
+				'group'       => 'Pusat Media',
+				'description' => 'Tautan folder Drive khusus Waka. Hanya akun dengan peran Waka yang melihat tautan ini.',
+			),
+			'media_drive_teacher_url' => array(
+				'label'       => 'Folder Google Drive Guru',
+				'type'        => 'drive_url',
+				'group'       => 'Pusat Media',
+				'description' => 'Tautan folder Drive khusus Guru. Ganti kapan saja bila folder penuh atau dipindahkan.',
+			),
+			'media_drive_staff_url' => array(
+				'label'       => 'Folder Google Drive Tendik',
+				'type'        => 'drive_url',
+				'group'       => 'Pusat Media',
+				'description' => 'Tautan folder Drive khusus Tenaga Kependidikan. Pastikan izin Drive dibatasi ke akun yang berwenang.',
 			),
 		);
 	}
@@ -414,6 +435,17 @@ final class QAF_Core_Settings {
 				return sanitize_email( $value );
 			case 'url':
 				return esc_url_raw( $value, array( 'http', 'https' ) );
+			case 'drive_url':
+				$url  = esc_url_raw( $value, array( 'https' ) );
+				$host = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+				if ( '' === $url ) {
+					return '';
+				}
+				if ( ! in_array( $host, array( 'drive.google.com', 'docs.google.com' ), true ) ) {
+					add_settings_error( self::OPTION_NAME, 'invalid_' . $key, 'Tautan Pusat Media harus berasal dari Google Drive.' );
+					return '';
+				}
+				return $url;
 			case 'npsn':
 				return preg_replace( '/[^0-9]/', '', $value );
 			case 'phone':
@@ -480,7 +512,7 @@ final class QAF_Core_Settings {
 			return;
 		}
 
-		$html_type = in_array( $field['type'], array( 'email', 'url', 'date' ), true ) ? $field['type'] : 'text';
+		$html_type = in_array( $field['type'], array( 'email', 'url', 'date' ), true ) ? $field['type'] : ( 'drive_url' === $field['type'] ? 'url' : 'text' );
 		printf(
 			'<input class="regular-text" type="%1$s" id="%2$s" name="%3$s" value="%4$s" autocomplete="off">',
 			esc_attr( $html_type ),

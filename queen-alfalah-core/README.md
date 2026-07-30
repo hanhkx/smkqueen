@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.4.0**
+Versi: **1.7.0**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -18,9 +18,15 @@ Lisensi: **GPL-2.0-or-later**
 - Arsip pengumuman publik menyembunyikan item kedaluwarsa tanpa mengubah daftar admin.
 - Importer demo satu klik yang aman, idempoten, dan tidak menimpa konten pengguna.
 - Portal Pusat Media privat dengan peran Waka Sekolah, Guru, dan Tenaga Kependidikan.
-- Folder Google Drive pribadi yang dibuat otomatis berdasarkan username.
-- Unggah dan unduh terotorisasi pada folder pribadi beserta subfoldernya.
+- Tautan Google Drive terpisah untuk Waka, Guru, dan Tendik yang dapat diganti dari Pengaturan Sekolah.
 - Struktur organisasi tahun pelajaran 2026/2027 dengan tupoksi per jabatan dan foto dari direktori Guru & Tendik.
+- Metadata prestasi lengkap untuk penyelenggara, juara/penghargaan, bidang, tingkat, dan tautan sumber.
+- Importer prestasi berversi yang idempoten serta tidak menimpa suntingan administrator.
+- Tujuh belas halaman prestasi siswa dari unggahan Instagram resmi tahun 2023–2026 beserta 16 foto sumber terverifikasi yang disinkronkan ke slot gambar unggulan kosong. Foto khusus regu LBB putri menunggu dokumentasi sekolah yang tepat.
+- Enam data awal Sarana Prasarana dengan field lokasi, fungsi, fitur, akses, pengelola, kapasitas, kondisi, dan tanggal pemeriksaan.
+- Empat belas profil awal PKL & Mitra Industri dengan sumber dan status verifikasi yang dapat ditinjau administrator.
+- Sebelas data ekstrakurikuler dengan manfaat, relevansi dunia kerja, informasi keikutsertaan, dan ilustrasi fallback.
+- Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan jenis media, pemilih video, perilaku embed, dan filter sumber.
 - Data dipertahankan saat plugin dihapus.
 
 ## Instalasi
@@ -62,16 +68,16 @@ Seluruh key menggunakan awalan privat `_qaf_` dan satu nilai per post:
 - Guru/tendik: `_qaf_role`, `_qaf_subject`, `_qaf_order`.
 - Pengumuman: `_qaf_priority`, `_qaf_expiry`, `_qaf_file_url`.
 - Agenda: `_qaf_start_date`, `_qaf_end_date`, `_qaf_location`.
-- Prestasi: `_qaf_level`, `_qaf_achievement_date`, `_qaf_recipient`.
-- Ekstrakurikuler: `_qaf_schedule`, `_qaf_coach`.
+- Prestasi: `_qaf_level`, `_qaf_achievement_date`, `_qaf_recipient`, `_qaf_organizer`, `_qaf_award`, `_qaf_field`, `_qaf_source_url`, `_qaf_achievement_source_id`.
+- Ekstrakurikuler: `_qaf_schedule`, `_qaf_coach`, `_qaf_extra_location`, `_qaf_benefits`, `_qaf_career_relevance`, `_qaf_join_info`, `_qaf_extra_seed_key`.
 - Layanan: `_qaf_external_url`, `_qaf_icon_name`, `_qaf_open_new`.
-- Galeri: `_qaf_video_url`, `_qaf_album_date`.
-- Mitra: `_qaf_partner_url`, `_qaf_partner_sector`.
+- Galeri: `_qaf_gallery_source`, `_qaf_gallery_media_type`, `_qaf_video_url`, `_qaf_gallery_local_video_id`, `_qaf_gallery_embed_behavior`, `_qaf_album_date`.
+- Mitra: `_qaf_partner_url`, `_qaf_partner_sector`, `_qaf_partner_legal_name`, `_qaf_partner_location`, `_qaf_partner_programs`, `_qaf_partner_expertise`, `_qaf_partner_cooperation`, `_qaf_partner_source_url`, `_qaf_partner_verification`, `_qaf_partner_seed_key`.
 - Lowongan: `_qaf_deadline`, `_qaf_company`, `_qaf_apply_url`.
 - Alumni: `_qaf_graduation_year`, `_qaf_current_role`.
-- Sarana: `_qaf_capacity`, `_qaf_facility_status`.
+- Sarana: `_qaf_capacity`, `_qaf_facility_status`, `_qaf_facility_location`, `_qaf_facility_function`, `_qaf_facility_features`, `_qaf_facility_access`, `_qaf_facility_manager`, `_qaf_facility_last_check`, `_qaf_facility_seed_key`.
 
-Tanggal memakai `YYYY-MM-DD`; waktu lokal memakai `YYYY-MM-DDTHH:MM`. URL dibatasi ke HTTP/HTTPS. Nilai pilihan divalidasi terhadap daftar yang disediakan plugin.
+Tanggal memakai `YYYY-MM-DD`; waktu lokal memakai `YYYY-MM-DDTHH:MM`. URL umum dibatasi ke HTTP/HTTPS, sedangkan URL sosial Galeri wajib HTTPS dan host-nya harus berada dalam allowlist platform. Nilai pilihan divalidasi terhadap daftar yang disediakan plugin.
 
 Contoh penggunaan dari tema:
 
@@ -90,7 +96,8 @@ Semua pengaturan disimpan sebagai satu option `qaf_core_settings`. Default dipas
 - visi dan misi;
 - alamat, telepon, email, koordinat, dan tautan peta;
 - URL pendaftaran;
-- Facebook, Instagram, YouTube, dan TikTok.
+- Facebook, Instagram, YouTube, dan TikTok;
+- tautan folder Google Drive untuk divisi Waka, Guru, dan Tendik.
 
 Tautan atau akun yang belum resmi sebaiknya dikosongkan. Hak akses halaman pengaturan dapat disesuaikan melalui filter `qaf_core_manage_settings_capability`; default-nya `manage_options`.
 
@@ -101,64 +108,96 @@ Importer tersedia di **Sekolah > Penyiapan Demo** dan hanya dapat dijalankan mel
 1. membuat Beranda, Berita, Profil, Sambutan, Visi-Misi, Sejarah, Struktur Organisasi, Kesiswaan, Informasi, PPDB, BKK, dan Kontak;
 2. mengatur Beranda statis dan halaman Berita;
 3. membuat empat program yang namanya telah menjadi data awal tema: TJKT, MPLB, DKV, dan Layanan Kesehatan;
-4. membuat tujuh kerangka ekstrakurikuler sebagai **draf** untuk verifikasi;
+4. memastikan tujuh slug ekstrakurikuler lama tersedia; bila belum ada, importer demo membuat kerangka **draf** yang dapat dilengkapi katalog berversi;
 5. menerbitkan enam entri akses layanan yang hanya mengarah ke halaman/arsip lokal atau URL pendaftaran yang dikonfigurasi;
 6. membuat draf berita, pengumuman, dan agenda dengan label jelas;
 7. membuat empat menu dan hanya mengisi lokasi tema yang masih kosong.
 
 Idempotensi dijaga dengan meta privat `_qaf_demo_key` serta slug stabil. Import ulang memakai kembali item yang ditemukan, termasuk item pengguna dengan slug/objek yang sama. Konten yang sudah ada tidak diperbarui, status item di Sampah tidak dipulihkan, menu yang sudah ditetapkan tidak diganti, dan tidak ada data yang dihapus.
 
-Data operasional, nama personal, jadwal, pembina, mitra, lowongan, statistik, atau klaim prestasi tidak diterbitkan otomatis. Administrator tetap wajib memeriksa nomenklatur, kurikulum, ketentuan peserta, tautan, periode, izin foto, dan semua fakta bertanggal.
+Importer demo tidak menerbitkan data operasional, lowongan, statistik, atau konten contoh bertanggal. Katalog mitra, sarana, ekstrakurikuler, dan prestasi memakai dataset berversi terpisah; administrator tetap wajib memeriksa nomenklatur, status kerja sama, jadwal, pembina, tautan, periode, izin foto, dan semua fakta bertanggal.
+
+## Katalog konten berversi
+
+Saat plugin diaktifkan atau administrator membuka dashboard setelah pembaruan, katalog berversi menambahkan item yang belum ada untuk Sarana Prasarana, PKL & Mitra Industri, dan Ekstrakurikuler. Prosesnya aman untuk dijalankan ulang: item di Sampah tidak dipulihkan, konten manual dengan slug sama tidak diambil alih, dan suntingan administrator tidak diganti.
+
+- **Sarana Prasarana:** enam entri awal yang dapat dilengkapi dengan foto, kapasitas, kondisi, fitur, akses, pengelola, dan tanggal pemeriksaan terakhir.
+- **PKL & Mitra Industri:** 14 profil awal berisi identitas, lokasi, bidang keahlian, program terkait, bentuk dukungan/kerja sama, sumber publik, dan status verifikasi. Profil publik membantu pengisian awal, tetapi tidak membuktikan MoU aktif, periode, kuota, atau penempatan; cocokkan kembali dengan dokumen sekolah.
+- **Ekstrakurikuler:** 11 entri berisi manfaat kegiatan dan relevansinya bagi kompetensi kerja. Field yang sudah berisi data tidak ditimpa. Gambar unggulan buatan administrator selalu diprioritaskan, kemudian ilustrasi bawaan dipakai sebagai fallback.
+
+Importer Prestasi menangani 17 halaman berdasarkan ID sumber Instagram resmi. Enam belas foto lokal yang terverifikasi dimasukkan ke Media Library dan dijadikan gambar unggulan hanya ketika post tersebut belum memiliki gambar unggulan. Unggahan LBB Kecamatan Mojo menyebut prestasi putra dan putri, tetapi poster yang tersedia hanya menampilkan regu putra; karena itu halaman putri sengaja tidak diberi poster putra. Gambar yang sudah dipilih administrator, status post, dan suntingan teks tetap dipertahankan.
+
+## Penggunaan Galeri
+
+Setiap entri `qaf_gallery` dapat memakai media lokal atau satu URL konten sosial. Gambar Utama tetap menjadi sampul kartu/arsip.
+
+### Media lokal
+
+1. Pilih **Sumber Media: Lokal / Media Library**.
+2. Pilih **Jenis Media: Foto, Video, atau Foto dan Video**.
+3. Susun beberapa foto/video dengan blok **Image**, **Gallery**, dan **Video** pada editor konten.
+4. Bila hanya membutuhkan satu video, gunakan field **Video Lokal** untuk memilih attachment video dari Media Library.
+
+Pemilih hanya menerima attachment dengan MIME `video/*`; nilai nol atau pilihan yang tidak valid tidak disimpan. Plugin tidak menambah capability baru: pengguna tetap harus memiliki izin WordPress untuk menyunting post terkait, dan unggahan media mengikuti izin `upload_files`. Pastikan sekolah memiliki hak penggunaan serta persetujuan publikasi untuk setiap foto/video.
+
+### Konten platform
+
+Pilih Instagram, TikTok, Facebook, atau YouTube, kemudian masukkan URL HTTPS kanonik satu postingan/video pada field **URL Konten Sosial / Video**. Host yang diterima dibatasi secara tepat ke domain resmi yang didukung. Gunakan URL halaman konten, bukan:
+
+- kode `<iframe>` atau HTML embed mentah;
+- token API, client secret, cookie, atau kredensial;
+- URL profil, hashtag, playlist, atau feed untuk sinkronisasi otomatis.
+
+Plugin tidak mengambil feed, tidak mengimpor akun sosial, dan tidak menyimpan token platform. Renderer tema juga wajib tetap melakukan escaping/allowlist dan tidak boleh menampilkan HTML dari field secara langsung.
+
+### Perilaku embed
+
+- **Klik untuk memuat** adalah default. Tema Queen Al-Falah 1.4.0 menampilkan pengganti dan baru memuat embed setelah tindakan pengunjung; ini mengurangi permintaan pihak ketiga sebelum interaksi.
+- **Muat otomatis** meminta tema memuat embed ketika halaman dibuka. Gunakan hanya setelah menilai kebijakan cookie/privasi karena platform dapat menerima alamat IP, user-agent, referrer, cookie, atau data teknis pengunjung.
+- **Tautan saja** tidak menyematkan konten dan hanya menyediakan tautan menuju platform. Ini pilihan yang paling konservatif bila embed tidak diperlukan.
+
+Mode klik-untuk-muat mengurangi pemuatan awal pihak ketiga, tetapi bukan pengganti kebijakan privasi atau persetujuan yang diwajibkan oleh yurisdiksi dan kebijakan sekolah.
+
+### Kompatibilitas dan filter
+
+Entri lama tanpa `_qaf_gallery_source` tetap memakai nilai kosong **Otomatis / kompatibilitas lama**. Tema Queen Al-Falah 1.4.0 dapat mengenali URL platform yang didukung dari `_qaf_video_url`; URL legacy yang tidak lolos allowlist tidak terhapus hanya karena post disimpan, tetapi tidak boleh di-embed sebagai HTML. Perbarui URL tersebut menjadi URL HTTPS kanonik atau gunakan **Tautan saja**.
+
+Arsip Galeri menerima parameter allowlist `?sumber=local`, `instagram`, `tiktok`, `facebook`, atau `youtube`. Filter lokal sengaja mencakup entri dengan sumber `local`, kosong, atau belum memiliki metadata agar konten lama tetap dapat ditemukan. Parameter lain diabaikan.
 
 ## Perilaku arsip
 
 - Main query arsip `qaf_agenda` di front-end memakai `_qaf_start_date` urut naik.
 - Main query arsip `qaf_notice` di front-end menampilkan item tanpa tanggal kedaluwarsa, tanggal kosong, atau tanggal kedaluwarsa yang masih hari ini/masa depan.
+- Main query arsip `qaf_gallery` dapat disaring dengan parameter allowlist `?sumber=` tanpa menghapus `meta_query` lain yang sudah aktif.
 - Admin, REST API, singular, pencarian, dan secondary query tidak diubah oleh aturan tersebut.
 
 ## Keamanan dan privasi
 
 - Meta box menyimpan data hanya setelah nonce valid, bukan autosave/revisi, dan pengguna dapat `edit_post`.
 - REST meta memerlukan kemampuan menyunting post terkait.
+- Attachment video Galeri diperiksa sebagai attachment WordPress dan wajib memiliki MIME `video/*`.
+- URL sosial Galeri hanya menerima HTTPS pada host Instagram, TikTok, Facebook, atau YouTube yang didukung; URL look-alike dan port nonstandar ditolak.
+- Plugin tidak menyimpan iframe mentah, token platform, atau hasil sinkronisasi feed sosial.
 - Settings API melakukan sanitasi sesuai tipe data.
 - Importer memerlukan kemampuan pengaturan, nonce, dan request POST.
 - URL dibatasi ke protokol HTTP/HTTPS.
 - Password dikelola oleh autentikasi WordPress; plugin tidak menyimpan password tambahan.
 - Akun khusus portal diarahkan ke Pusat Media dan dibatasi dari halaman administrasi WordPress.
-- Pusat Media memeriksa capability, nonce unggahan/unduhan, MIME, ukuran, dan hubungan folder Drive pada setiap permintaan file.
-- Kredensial OAuth atau service account dibaca dari `wp-config.php`/berkas di luar web root dan tidak disimpan pada database/plugin.
+- Pengguna portal hanya menerima tautan Drive yang sesuai dengan divisi pada peran WordPress-nya; administrator dapat melihat semua tautan untuk pemeriksaan.
+- Pusat Media tidak memproses unggahan, unduhan, atau isi file. Keamanan dokumen ditentukan oleh aturan berbagi Google Drive.
 - Jangan memasukkan NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, atau foto tanpa dasar izin yang sesuai.
 
 ## Konfigurasi Pusat Media dan Google Drive
 
-Folder induk yang telah disiapkan:
+Pusat Media memakai tautan langsung dan tidak memerlukan Google Drive API, OAuth, service account, client secret, refresh token, maupun JSON key.
 
-`https://drive.google.com/drive/folders/1N0w6Y9e2p5IYn_ipLLcR7hG2ApDT2KK9`
+1. Siapkan satu folder Drive untuk Waka, satu untuk Guru, dan satu untuk Tendik.
+2. Di Google Drive, pilih berbagi **Dibatasi** lalu tambahkan hanya akun Google yang berwenang. Tetapkan Viewer, Commenter, atau Editor sesuai kebutuhan.
+3. Buka **Sekolah → Pengaturan → Pusat Media** dan isi ketiga URL folder. Hanya URL HTTPS pada `drive.google.com` atau `docs.google.com` yang diterima.
+4. Buat akun WordPress personel melalui **Pengguna → Tambah Baru**, pilih peran Waka Sekolah, Guru, atau Tenaga Kependidikan, lalu isi Unit/Jabatan.
+5. Uji login melalui `/pusat-media/`. Pengguna non-administrator hanya boleh melihat satu tautan sesuai divisinya.
 
-Untuk My Drive, gunakan OAuth akun pemilik folder agar file hasil unggahan memakai kuota akun sekolah. Tambahkan secret berikut ke `wp-config.php` dan jangan commit nilainya:
-
-```php
-define( 'QAF_GOOGLE_DRIVE_ROOT_FOLDER_ID', '1N0w6Y9e2p5IYn_ipLLcR7hG2ApDT2KK9' );
-define( 'QAF_GOOGLE_DRIVE_OAUTH_CLIENT_ID', 'CLIENT_ID.apps.googleusercontent.com' );
-define( 'QAF_GOOGLE_DRIVE_OAUTH_CLIENT_SECRET', 'CLIENT_SECRET' );
-define( 'QAF_GOOGLE_DRIVE_OAUTH_REFRESH_TOKEN', 'REFRESH_TOKEN' );
-```
-
-Sebagai alternatif untuk Google Workspace Shared Drive, simpan JSON service account di luar web root, tambahkan service account sebagai **Content manager**, lalu gunakan:
-
-```php
-define( 'QAF_GOOGLE_DRIVE_ROOT_FOLDER_ID', 'ID_FOLDER_INDUK' );
-define( 'QAF_GOOGLE_DRIVE_CREDENTIALS_PATH', '/lokasi-privat/service-account.json' );
-```
-
-Setelah konfigurasi:
-
-1. Buat satu akun WordPress untuk setiap personel melalui **Pengguna > Tambah Baru**.
-2. Pilih peran Waka Sekolah, Guru, atau Tenaga Kependidikan.
-3. Isi Unit/Jabatan; biarkan ID Folder Google Drive kosong untuk provisioning otomatis.
-4. Saat pengguna pertama kali membuka `/pusat-media/`, plugin membuat folder `Nama (@username)` di bawah kategori Waka/Guru/Tendik.
-
-Pengguna hanya dapat membuka, mengunggah, dan mengunduh file pada folder pribadinya beserta subfolder turunannya. Dokumen Google diekspor ke PDF/XLSX/PPTX, sedangkan file biasa diunduh melalui proxy WordPress setelah izin diverifikasi. Unggahan default dibatasi hingga nilai terendah antara batas PHP dan 25 MB.
+Tautan dapat diganti kapan saja tanpa memindahkan data WordPress. Pembatasan peran pada portal hanya menentukan tautan yang ditampilkan; siapa yang dapat melihat, mengunggah, menyunting, atau mengunduh dokumen tetap ditentukan oleh izin folder di Google Drive. Jangan memakai opsi “Siapa saja yang memiliki link” untuk dokumen internal.
 
 Panduan lengkap tersedia di [`GOOGLE-DRIVE-SETUP.md`](GOOGLE-DRIVE-SETUP.md).
 
@@ -197,6 +236,14 @@ Periksa field Berlaku Sampai. Item kedaluwarsa tetap tersedia di admin dan URL s
 **Importer tidak menetapkan menu**  
 Aktifkan tema Queen Al-Falah dan jalankan importer lagi. Lokasi yang sudah berisi menu sengaja tidak ditimpa.
 
+**Tautan Pusat Media tidak muncul**
+
+Periksa peran akun, lalu isi URL divisi terkait pada **Sekolah → Pengaturan → Pusat Media**. Pastikan URL memakai HTTPS dan domain `drive.google.com` atau `docs.google.com`.
+
+**Pengguna dapat/tidak dapat membuka file setelah masuk**
+
+Periksa anggota serta level izin pada dialog berbagi folder Google Drive. Login WordPress hanya mengatur tautan yang terlihat dan tidak menggantikan izin Google Drive.
+
 ## Pengembangan
 
 Tidak ada dependency build atau library eksternal. Jalankan pemeriksaan sintaks untuk semua berkas PHP sebelum rilis:
@@ -206,6 +253,32 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 ```
 
 ## Changelog
+
+### 1.7.0 — 2026-07-30
+
+- Menambahkan sumber Galeri Lokal, Instagram, TikTok, Facebook, dan YouTube serta pilihan jenis Foto, Video, atau gabungan.
+- Menambahkan pemilih attachment video Media Library dengan pemeriksaan MIME dan schema REST integer.
+- Membatasi URL sosial ke HTTPS pada allowlist host resmi dan menambahkan validasi ringan pada editor.
+- Menambahkan perilaku **Klik untuk memuat** (default), **Muat otomatis**, dan **Tautan saja** untuk renderer tema Queen Al-Falah 1.4.0.
+- Menambahkan panduan editor, kolom admin Sumber/Jenis Media/Tanggal Album/URL Media, dan filter arsip `?sumber=`.
+- Mempertahankan mode otomatis untuk entri lama, termasuk sumber kosong dan `_qaf_video_url`, tanpa menghapus URL legacy hanya karena post disimpan.
+- Mendokumentasikan batas izin, privasi embed, larangan iframe/token, dan tidak adanya sinkronisasi feed otomatis.
+
+### 1.6.0 — 2026-07-29
+
+- Menambahkan katalog Sarana Prasarana dengan enam entri awal dan field pengelolaan yang lebih lengkap.
+- Menambahkan 14 profil awal PKL & Mitra Industri dengan keahlian, program terkait, bentuk kerja sama, sumber, serta status verifikasi.
+- Menyederhanakan Pusat Media menjadi tautan Google Drive per divisi yang wajib login dan dapat diganti dari Pengaturan Sekolah.
+- Menghapus kebutuhan OAuth/API serta alur unggah-unduh file di dalam WordPress; izin berbagi Drive menjadi batas keamanan dokumen.
+- Menyertakan 16 foto sumber terverifikasi untuk 17 Prestasi dan mengisinya hanya pada slot gambar unggulan yang masih kosong; foto LBB putri menunggu dokumentasi yang tepat.
+- Menambahkan 11 entri ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi fallback.
+
+### 1.5.0 — 2026-07-23
+
+- Menambahkan metadata serta kolom admin prestasi untuk penyelenggara, juara/penghargaan, bidang, tingkat, penerima, dan sumber.
+- Menambahkan berkas data prestasi berversi.
+- Menambahkan importer idempoten yang hanya membuat ID sumber yang belum ada, termasuk pemeriksaan terhadap entri di Sampah.
+- Mempertahankan semua suntingan dan status konten yang sudah ada.
 
 ### 1.4.0 — 2026-07-23
 
@@ -226,6 +299,15 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 - Menambahkan Pusat Media privat berbasis akun WordPress.
 - Menambahkan tiga peran sekolah dan pemetaan folder Drive per pengguna.
 - Menambahkan klien Google Drive read-only berbasis service account dan proxy unduhan terotorisasi.
+
+### 1.1.0 — 2026-07-13
+
+- Menambahkan Pusat Aplikasi satu pintu untuk Ujian, E-Rapor, E-Perpustakaan, SPMB, dan Gamifikasi Edu.
+- Menambahkan status aplikasi dan alamat publik `/aplikasi/`.
+
+### 1.0.1 — 2026-07-13
+
+- Menambahkan pengaturan nama, jabatan, dan pesan kepala sekolah melalui menu Pengaturan Sekolah.
 
 ### 1.0.0 — 2026-07-13
 

@@ -75,14 +75,20 @@ final class QAF_Core_Admin {
 			),
 			'qaf_achievement' => array(
 				'qaf_thumbnail'        => array( 'label' => 'Foto', 'type' => 'thumbnail' ),
+				'qaf_award'            => array( 'label' => 'Juara', 'meta' => '_qaf_award', 'type' => 'text', 'sortable' => true ),
+				'qaf_field'            => array( 'label' => 'Bidang', 'meta' => '_qaf_field', 'type' => 'text', 'sortable' => true ),
 				'qaf_level'            => array( 'label' => 'Tingkat', 'meta' => '_qaf_level', 'type' => 'text', 'sortable' => true ),
 				'qaf_achievement_date' => array( 'label' => 'Tanggal', 'meta' => '_qaf_achievement_date', 'type' => 'date', 'sortable' => true ),
 				'qaf_recipient'        => array( 'label' => 'Penerima', 'meta' => '_qaf_recipient', 'type' => 'excerpt' ),
+				'qaf_organizer'        => array( 'label' => 'Penyelenggara', 'meta' => '_qaf_organizer', 'type' => 'text' ),
+				'qaf_source_url'       => array( 'label' => 'Sumber', 'meta' => '_qaf_source_url', 'type' => 'url' ),
 			),
 			'qaf_extra'       => array(
 				'qaf_thumbnail' => array( 'label' => 'Gambar', 'type' => 'thumbnail' ),
 				'qaf_schedule'  => array( 'label' => 'Jadwal', 'meta' => '_qaf_schedule', 'type' => 'text' ),
 				'qaf_coach'     => array( 'label' => 'Pembina', 'meta' => '_qaf_coach', 'type' => 'text' ),
+				'qaf_extra_location' => array( 'label' => 'Lokasi', 'meta' => '_qaf_extra_location', 'type' => 'text' ),
+				'qaf_benefits'  => array( 'label' => 'Manfaat', 'meta' => '_qaf_benefits', 'type' => 'excerpt' ),
 			),
 			'qaf_service'     => array(
 				'qaf_external_url' => array( 'label' => 'Alamat Layanan', 'meta' => '_qaf_external_url', 'type' => 'url' ),
@@ -90,13 +96,17 @@ final class QAF_Core_Admin {
 				'qaf_open_new'     => array( 'label' => 'Tab Baru', 'meta' => '_qaf_open_new', 'type' => 'boolean' ),
 			),
 			'qaf_gallery'     => array(
-				'qaf_thumbnail'  => array( 'label' => 'Sampul', 'type' => 'thumbnail' ),
-				'qaf_album_date' => array( 'label' => 'Tanggal Album', 'meta' => '_qaf_album_date', 'type' => 'date', 'sortable' => true ),
-				'qaf_video_url'  => array( 'label' => 'Video', 'meta' => '_qaf_video_url', 'type' => 'url' ),
+				'qaf_thumbnail'          => array( 'label' => 'Sampul', 'type' => 'thumbnail' ),
+				'qaf_gallery_source'     => array( 'label' => 'Sumber', 'meta' => '_qaf_gallery_source', 'type' => 'select', 'empty_label' => 'Otomatis / kompatibilitas lama' ),
+				'qaf_gallery_media_type' => array( 'label' => 'Jenis Media', 'meta' => '_qaf_gallery_media_type', 'type' => 'select', 'default' => 'photo' ),
+				'qaf_album_date'         => array( 'label' => 'Tanggal Album', 'meta' => '_qaf_album_date', 'type' => 'date', 'sortable' => true ),
+				'qaf_video_url'          => array( 'label' => 'URL Media', 'meta' => '_qaf_video_url', 'type' => 'url' ),
 			),
 			'qaf_partner'     => array(
 				'qaf_thumbnail'      => array( 'label' => 'Logo', 'type' => 'thumbnail' ),
 				'qaf_partner_sector' => array( 'label' => 'Sektor', 'meta' => '_qaf_partner_sector', 'type' => 'text', 'sortable' => true ),
+				'qaf_partner_programs' => array( 'label' => 'Program', 'meta' => '_qaf_partner_programs', 'type' => 'excerpt' ),
+				'qaf_partner_verification' => array( 'label' => 'Status Data', 'meta' => '_qaf_partner_verification', 'type' => 'select', 'sortable' => true ),
 				'qaf_partner_url'    => array( 'label' => 'Website', 'meta' => '_qaf_partner_url', 'type' => 'url' ),
 			),
 			'qaf_vacancy'     => array(
@@ -111,8 +121,10 @@ final class QAF_Core_Admin {
 			),
 			'qaf_facility'    => array(
 				'qaf_thumbnail'       => array( 'label' => 'Foto', 'type' => 'thumbnail' ),
+				'qaf_facility_location' => array( 'label' => 'Lokasi', 'meta' => '_qaf_facility_location', 'type' => 'text' ),
 				'qaf_capacity'        => array( 'label' => 'Kapasitas', 'meta' => '_qaf_capacity', 'type' => 'integer', 'sortable' => true ),
 				'qaf_facility_status' => array( 'label' => 'Status', 'meta' => '_qaf_facility_status', 'type' => 'select', 'sortable' => true ),
+				'qaf_facility_manager' => array( 'label' => 'Penanggung Jawab', 'meta' => '_qaf_facility_manager', 'type' => 'text' ),
 			),
 		);
 	}
@@ -163,7 +175,14 @@ final class QAF_Core_Admin {
 		}
 
 		$value = get_post_meta( $post_id, $definition['meta'], true );
+		if ( ( '' === $value || null === $value ) && array_key_exists( 'default', $definition ) ) {
+			$value = $definition['default'];
+		}
 		if ( '' === $value || null === $value ) {
+			if ( isset( $definition['empty_label'] ) && '' !== $definition['empty_label'] ) {
+				echo esc_html( $definition['empty_label'] );
+				return;
+			}
 			echo '<span aria-hidden="true">—</span><span class="screen-reader-text">Belum diisi</span>';
 			return;
 		}
@@ -296,4 +315,3 @@ final class QAF_Core_Admin {
 		return $value;
 	}
 }
-

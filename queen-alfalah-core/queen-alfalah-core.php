@@ -3,7 +3,7 @@
  * Plugin Name:       Queen Al-Falah Core
  * Plugin URI:        https://smkqueenalfalah.sch.id/
  * Description:       Model konten, pengaturan sekolah, dan alat penyiapan situs untuk SMK Queen Al-Falah.
- * Version:           1.4.0
+ * Version:           1.7.0
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            SMK Queen Al-Falah
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QAF_CORE_VERSION', '1.4.0' );
+define( 'QAF_CORE_VERSION', '1.7.0' );
 define( 'QAF_CORE_FILE', __FILE__ );
 define( 'QAF_CORE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QAF_CORE_URL', plugin_dir_url( __FILE__ ) );
@@ -32,6 +32,8 @@ require_once QAF_CORE_PATH . 'includes/class-qaf-core-demo.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-applications.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-media-center.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-organization.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-achievements.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-content-catalog.php';
 
 /**
  * Retrieve a school setting with a safe fallback.
@@ -68,6 +70,8 @@ final class QAF_Core {
 		QAF_Core_Applications::init();
 		QAF_Core_Media_Center::init();
 		QAF_Core_Organization::init();
+		QAF_Core_Achievements::init();
+		QAF_Core_Content_Catalog::init();
 	}
 
 	/**
@@ -81,6 +85,8 @@ final class QAF_Core {
 		QAF_Core_Post_Types::register_taxonomies();
 		QAF_Core_Media_Center::activate();
 		QAF_Core_Organization::activate();
+		QAF_Core_Achievements::activate();
+		QAF_Core_Content_Catalog::activate();
 		flush_rewrite_rules();
 	}
 

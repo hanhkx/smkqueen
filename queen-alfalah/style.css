@@ -4,7 +4,7 @@ Theme URI: https://smkqueenalfalah.sch.id/
 Author: SMK Queen Al-Falah
 Author URI: https://smkqueenalfalah.sch.id/
 Description: Tema sekolah modern untuk SMK Queen Al-Falah dengan tampilan emerald, emas, dan krem; responsif, ramah aksesibilitas, serta siap untuk berita, program keahlian, agenda, galeri, dan informasi sekolah.
-Version: 1.1.1
+Version: 1.4.0
 Requires at least: 6.2
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -1200,6 +1200,30 @@ body:not(.has-sticky-header) .site-header {
   margin-bottom: 0.65rem;
   color: var(--qa-muted);
   font-size: 0.77rem;
+}
+
+.achievement-card__meta {
+  align-items: center;
+}
+
+.achievement-card__award {
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--qa-radius-pill);
+  background: var(--qa-gold-100);
+  color: var(--qa-gold-700);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.achievement-card__scope,
+.achievement-card__date {
+  color: var(--qa-muted);
+}
+
+.achievement-card__scope + .achievement-card__date::before {
+  content: "\2022";
+  margin-inline-end: 0.35rem;
+  color: var(--qa-gold-600);
 }
 
 .news-card__title,
@@ -3120,6 +3144,209 @@ body:not(.has-sticky-header) .site-header {
   .btn,
   .wp-block-button__link {
     box-shadow: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Configurable local and social-media Gallery
+   -------------------------------------------------------------------------- */
+
+.gallery-caption__source {
+  display: block;
+  margin-top: 0.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.gallery-source-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+
+.gallery-source-filters a {
+  display: inline-flex;
+  min-height: 2.65rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.gallery-source-filters a:hover,
+.gallery-source-filters a:focus-visible,
+.gallery-source-filters a[aria-current="page"] {
+  border-color: var(--qa-gold-400);
+  background: var(--qa-gold-400);
+  color: var(--qa-emerald-950);
+}
+
+.gallery-media {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto 1.75rem;
+}
+
+.gallery-media--local,
+.gallery-media--fallback,
+.gallery-media--link {
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius-lg);
+  background: #ffffff;
+  box-shadow: var(--qa-shadow-sm);
+}
+
+.gallery-media--local .wp-video,
+.gallery-media--local video {
+  width: 100% !important;
+  max-width: none;
+}
+
+.gallery-media--fallback,
+.gallery-media--link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gallery-media--fallback p,
+.gallery-media--link p {
+  margin: 0;
+}
+
+.gallery-embed {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius-lg);
+  background:
+    radial-gradient(circle at 80% 10%, rgba(210, 155, 44, 0.22), transparent 34%),
+    linear-gradient(145deg, var(--qa-emerald-950), var(--qa-emerald-700));
+  box-shadow: var(--qa-shadow-md);
+}
+
+.gallery-embed--wide {
+  aspect-ratio: 16 / 9;
+}
+
+.gallery-embed--portrait {
+  max-width: 540px;
+  min-height: 620px;
+  margin-inline: auto;
+}
+
+.gallery-embed__content,
+.gallery-embed__content iframe {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+
+.gallery-embed__content iframe {
+  display: block;
+  border: 0;
+}
+
+.gallery-embed__content .instagram-media {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+.gallery-embed__content:focus {
+  outline: 3px solid var(--qa-gold-400);
+  outline-offset: -4px;
+}
+
+.gallery-embed__consent {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.gallery-embed__consent:hover,
+.gallery-embed__consent:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.gallery-embed__consent:focus-visible {
+  outline: 3px solid var(--qa-gold-400);
+  outline-offset: -5px;
+}
+
+.gallery-embed__consent .icon {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  color: var(--qa-gold-400);
+}
+
+.gallery-embed__consent strong,
+.gallery-embed__consent small {
+  display: block;
+}
+
+.gallery-embed__consent strong {
+  font-family: var(--qa-font-heading);
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+}
+
+.gallery-embed__consent small {
+  max-width: 36rem;
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.gallery-media__fallback {
+  margin: 0.8rem 0 0;
+  color: var(--qa-muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.gallery-media__fallback a {
+  font-weight: 750;
+}
+
+@media (max-width: 560px) {
+  .gallery-source-filters {
+    gap: 0.4rem;
+  }
+
+  .gallery-source-filters a {
+    min-height: 2.45rem;
+    padding-inline: 0.72rem;
+    font-size: 0.78rem;
+  }
+
+  .gallery-embed--portrait {
+    min-height: 530px;
   }
 }
 

@@ -44,6 +44,11 @@ final class QAF_Core_Post_Types {
 			return;
 		}
 
+		if ( $query->is_post_type_archive( 'qaf_gallery' ) ) {
+			self::filter_gallery_archive_source( $query );
+			return;
+		}
+
 		if ( ! $query->is_post_type_archive( 'qaf_notice' ) ) {
 			return;
 		}
@@ -81,6 +86,66 @@ final class QAF_Core_Post_Types {
 		}
 
 		$query->set( 'meta_query', $active_notice_query ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+	}
+
+	/**
+	 * Limit the Gallery archive to one explicitly allowed media source.
+	 *
+	 * Existing entries without source metadata are treated as local so older
+	 * content remains discoverable after the structured source field is added.
+	 * Any meta query supplied by WordPress or another extension remains active.
+	 *
+	 * @param WP_Query $query Main Gallery archive query.
+	 * @return void
+	 */
+	private static function filter_gallery_archive_source( $query ) {
+		$raw_source = isset( $_GET['sumber'] ) ? wp_unslash( $_GET['sumber'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$source     = is_scalar( $raw_source ) ? sanitize_key( (string) $raw_source ) : '';
+		$allowed    = array( 'local', 'instagram', 'tiktok', 'facebook', 'youtube' );
+		if ( ! in_array( $source, $allowed, true ) ) {
+			return;
+		}
+
+		if ( 'local' === $source ) {
+			$source_query = array(
+				'relation' => 'OR',
+				array(
+					'key'     => '_qaf_gallery_source',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key'     => '_qaf_gallery_source',
+					'value'   => '',
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_qaf_gallery_source',
+					'value'   => 'local',
+					'compare' => '=',
+				),
+			);
+		} else {
+			$source_query = array(
+				'key'     => '_qaf_gallery_source',
+				'value'   => $source,
+				'compare' => '=',
+			);
+		}
+
+		$existing_meta_query = $query->get( 'meta_query' );
+		if ( is_array( $existing_meta_query ) && ! empty( $existing_meta_query ) ) {
+			$query->set(
+				'meta_query', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				array(
+					'relation' => 'AND',
+					$existing_meta_query,
+					$source_query,
+				)
+			);
+			return;
+		}
+
+		$query->set( 'meta_query', $source_query ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 	}
 
 	/**

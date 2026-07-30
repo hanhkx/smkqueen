@@ -203,6 +203,21 @@ Jelaskan pemilik layanan, sasaran pengguna, fungsi, URL, jam dukungan, serta car
 
 Setiap album perlu judul, tanggal, kegiatan, keterangan, kredit, serta status izin. Pilih foto representatif; tidak perlu mengunggah seluruh foto mentah.
 
+Pilih satu sumber untuk setiap entri:
+
+- **Lokal**: jadikan Gambar Unggulan sebagai sampul, susun foto dengan blok Gallery/Image, dan gunakan blok Video atau pilih satu video dari Media Library pada kolom Galeri.
+- **Instagram, TikTok, Facebook, atau YouTube**: masukkan URL HTTPS kanonik menuju satu postingan/video publik dari platform yang dipilih.
+
+Jangan menempelkan iframe, script, token, kata sandi, atau HTML embed. Tema memvalidasi URL dan membentuk tampilan dari alamat yang didukung; tema tidak mengimpor atau menyinkronkan seluruh feed sosial.
+
+Pilih perilaku pemuatan sesuai kebutuhan:
+
+- **Klik untuk memuat (default)** menunda koneksi ke penyedia sampai pengunjung menekan tombol.
+- **Muat otomatis** menghubungi penyedia saat halaman dibuka dan dapat memproses data atau cookie pihak ketiga; gunakan hanya setelah penilaian privasi dan kebijakan cookie.
+- **Tautan saja** tidak menampilkan embed dan mengarahkan pengunjung ke sumber asli.
+
+Tautan sumber tetap ditampilkan sebagai fallback. Embed tidak dijamin berhasil bila postingan privat, dihapus, dibatasi usia/wilayah, atau penyedia menolak embed. Uji halaman saat login dan logout, lalu periksa tautannya secara berkala.
+
 ### Mitra
 
 Sertakan nama resmi, jenis kerja sama, manfaat, periode aktif, dan tautan resmi. Jangan menampilkan logo atau menyebut “mitra aktif” setelah perjanjian berakhir.
@@ -289,7 +304,13 @@ Gunakan prinsip minimisasi. Foto kelompok dan nama kegiatan sering kali cukup. B
 
 ### Konten dari media sosial
 
-Izin unggah di akun pribadi tidak otomatis berarti izin untuk menyalin ke situs sekolah. Minta izin, simpan kredit, dan hindari embed yang menambahkan pelacakan pihak ketiga tanpa kebutuhan.
+Izin unggah di akun pribadi atau sosial tidak otomatis berarti izin untuk menyalin atau menyematkannya ke situs sekolah. Pastikan izin mencakup kanal situs sekolah, simpan kredit dan bukti persetujuan, serta lindungi nama, wajah, lokasi, dan identitas siswa.
+
+Untuk Galeri sosial, gunakan hanya URL HTTPS kanonik menuju satu postingan/video yang publik dan diizinkan untuk embed. Jangan meminta atau menyimpan token, kata sandi, iframe/script mentah, atau kode embed; fitur ini bukan sinkronisasi feed otomatis.
+
+Gunakan **Klik untuk memuat** sebagai pilihan awal agar koneksi ke penyedia terjadi setelah tindakan pengunjung. **Muat otomatis** dapat mengirim data jaringan dan memicu cookie pihak ketiga saat halaman dibuka sehingga memerlukan dasar, pemberitahuan, dan mekanisme persetujuan yang sesuai kebijakan sekolah. Pilih **Tautan saja** bila situs tidak boleh memuat embed pihak ketiga.
+
+Selalu sediakan dan uji tautan sumber sebagai fallback. Konten yang privat, dihapus, dibatasi, atau tidak lagi mengizinkan embed dapat berhenti tampil meskipun URL sebelumnya benar.
 
 ## Jadwal peninjauan
 
@@ -325,6 +346,9 @@ Daftar tautan yang digunakan untuk menyusun struktur dan nilai awal tersedia di 
 - [ ] Nama, tanggal, angka, dan tautan memiliki sumber.
 - [ ] Status contoh/draf sudah dihapus.
 - [ ] Gambar memiliki hak pakai, izin, kredit, dan alt text.
+- [ ] Sumber dan perilaku Galeri sudah dipilih sesuai kebutuhan privasi/cookie.
+- [ ] URL sosial kanonik dan tautan fallback Galeri sudah diuji.
+- [ ] Foto/video siswa memiliki izin publikasi dan tidak membuka data pribadi.
 - [ ] Tidak ada data pribadi berlebihan.
 - [ ] Dokumen unduhan tidak mengandung metadata atau data tersembunyi.
 - [ ] Informasi kedaluwarsa mempunyai tanggal berakhir.

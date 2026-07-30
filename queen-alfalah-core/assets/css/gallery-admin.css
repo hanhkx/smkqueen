@@ -1,0 +1,35 @@
+.qaf-gallery-editor-guide {
+	margin: 1rem 0 0;
+	padding: 0.9rem 1rem;
+	border-left: 4px solid #2271b1;
+	background: #f0f6fc;
+}
+
+.qaf-gallery-editor-guide ul {
+	margin: 0.55rem 0 0 1.25rem;
+	list-style: disc;
+}
+
+.qaf-attachment-picker {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.65rem;
+}
+
+.qaf-attachment-picker__label {
+	color: #50575e;
+	font-style: italic;
+}
+
+.qaf-gallery-field--invalid {
+	border-color: #d63638 !important;
+	box-shadow: 0 0 0 1px #d63638;
+}
+
+.qaf-gallery-url-warning {
+	display: block;
+	margin-top: 0.4rem;
+	color: #b32d2e;
+	font-weight: 600;
+}
