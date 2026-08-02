@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.7.0**
+Versi: **1.7.1**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -253,6 +253,13 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 ```
 
 ## Changelog
+
+### 1.7.1 — 2026-08-02
+
+- Memperbarui alamat publik BeAD Group ke lokasi yang tercantum pada situs resminya.
+- Mengganti sumber Puskesmas Mojo dengan daftar registrasi resmi Kementerian Kesehatan yang mengonfirmasi alamat dan status rawat inap.
+- Memperjelas profil JTV Kediri agar kompetensi DKV diposisikan sebagai relevansi pembelajaran, bukan klaim layanan komersial.
+- Menambahkan migrasi koreksi exact-match untuk entri mitra bawaan; nilai yang sudah disunting administrator tetap dipertahankan.
 
 ### 1.7.0 — 2026-07-30
 

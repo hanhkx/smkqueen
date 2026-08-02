@@ -13,12 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$qaf_partner_item = static function ( $slug, $title, $sector, $profile, $programs, $expertise, $cooperation, $verification, $website = '', $source = '', $legal_name = '', $location = '', $order = 0 ) {
+$qaf_partner_item = static function ( $slug, $title, $sector, $profile, $programs, $expertise, $cooperation, $verification, $website = '', $source = '', $legal_name = '', $location = '', $order = 0, $legacy = array() ) {
 	$verification_note = 'needs-confirmation' === $verification
 		? 'Identitas atau profil publik mitra masih perlu dikonfirmasi melalui dokumen sekolah.'
 		: 'Keterangan hubungan dengan SMK Queen Al-Falah mengikuti daftar internal yang diberikan sekolah; profil publik tidak otomatis membuktikan MoU masih aktif.';
 
-	return array(
+	$item = array(
 		'seed_key'   => 'partner:' . $slug,
 		'title'      => $title,
 		'slug'       => $slug,
@@ -41,16 +41,26 @@ $qaf_partner_item = static function ( $slug, $title, $sector, $profile, $program
 		),
 		'terms'      => array( 'qaf_partner_sector' => array( $sector ) ),
 	);
+
+	if ( ! empty( $legacy['profile'] ) && is_string( $legacy['profile'] ) ) {
+		$item['legacy_excerpt'] = $legacy['profile'];
+		$item['legacy_content'] = '<h2>Profil Mitra</h2><p>' . esc_html( $legacy['profile'] ) . '</p><h2>Kesesuaian dengan Program Keahlian</h2><p>' . esc_html( $cooperation ) . '</p><p><strong>Catatan verifikasi:</strong> ' . esc_html( $verification_note ) . '</p>';
+	}
+	if ( ! empty( $legacy['meta'] ) && is_array( $legacy['meta'] ) ) {
+		$item['legacy_meta'] = $legacy['meta'];
+	}
+
+	return $item;
 };
 
 return array(
-	'version' => '1.0.0',
+	'version' => '1.1.0',
 	'items'   => array(
 		$qaf_partner_item(
 			'jtv-kediri',
 			'JTV Kediri',
 			'Media dan Industri Kreatif',
-			'JTV Kediri merupakan televisi regional yang melayani produksi dan penayangan program, berita, iklan, film, fotografi, serta konten audiovisual untuk wilayah Kediri dan sekitarnya.',
+			'JTV Kediri merupakan kanal televisi regional yang memproduksi dan menayangkan program berita untuk wilayah Kediri dan sekitarnya. Produksi siaran tersebut relevan dengan kompetensi DKV seperti videografi, fotografi, audio, pencahayaan, editing, grafis siaran, dan komunikasi media.',
 			array( 'Desain Komunikasi Visual (DKV)' ),
 			array(
 				'Produksi video dan program televisi',
@@ -64,7 +74,10 @@ return array(
 			'https://web.komdigi.go.id/resource/ZHJ1cGFsL3VzZXJzLzQ3NjEvMS4gTGFtcGlyYW5fTGVtYmFnYV9QZW55aWFyYW4ucGRm',
 			'PT Jaya Kediri Televisi',
 			'Kabupaten Kediri, Jawa Timur',
-			1
+			1,
+			array(
+				'profile' => 'JTV Kediri merupakan televisi regional yang melayani produksi dan penayangan program, berita, iklan, film, fotografi, serta konten audiovisual untuk wilayah Kediri dan sekitarnya.',
+			),
 		),
 		$qaf_partner_item(
 			'fa-cinema',
@@ -162,8 +175,13 @@ return array(
 			'https://beadgrup.com/',
 			'https://www.smkbhaktimuliapare.sch.id/bulan-rekrutmen-kabupaten-kediri-fbkk-smk-kab-kediri/',
 			'CV Besar Anugrah Djaya',
-			'Kayenlor, Plemahan, Kabupaten Kediri',
-			6
+			'Jl. Butolocoyo No. 175, Menang, Kecamatan Pagu, Kabupaten Kediri',
+			6,
+			array(
+				'meta' => array(
+					'_qaf_partner_location' => 'Kayenlor, Plemahan, Kabupaten Kediri',
+				),
+			),
 		),
 		$qaf_partner_item(
 			'candradimuka-digital',
@@ -297,10 +315,15 @@ return array(
 			'Berdasarkan data sekolah, Puskesmas Mojo menjadi mitra Layanan Kesehatan. Kegiatan diarahkan pada observasi dan praktik terbimbing dalam pelayanan primer, komunikasi, promosi kesehatan, dokumentasi, pencegahan infeksi, serta administrasi sesuai kewenangan dan kebijakan puskesmas.',
 			'verified-profile',
 			'https://puskesmasmojo.kedirikab.go.id/',
-			'https://puskesmasmojo.kedirikab.go.id/',
+			'https://regpus.kemkes.go.id/media/dokumen/publikasi/2025-07-10/KMK_No._HK.01.07-MENKES-717-2025_Semester_II_Th_2024_Com.pdf',
 			'UPTD Puskesmas Mojo — Dinas Kesehatan Kabupaten Kediri',
 			'Jl. Raya Mojo No. 201, Kecamatan Mojo, Kabupaten Kediri',
-			13
+			13,
+			array(
+				'meta' => array(
+					'_qaf_partner_source_url' => 'https://puskesmasmojo.kedirikab.go.id/',
+				),
+			),
 		),
 		$qaf_partner_item(
 			'rsu-arga-husada',

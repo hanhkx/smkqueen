@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -99,6 +99,12 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 
 == Changelog ==
 
+= 1.7.1 - 2026-08-02 =
+
+* Memperbarui alamat publik BeAD Group dan sumber resmi Kementerian Kesehatan untuk Puskesmas Mojo.
+* Memperjelas kompetensi DKV yang relevan pada profil JTV Kediri tanpa menyatakan bidang tersebut sebagai layanan komersial yang belum terverifikasi.
+* Menambahkan migrasi exact-match untuk koreksi data mitra agar nilai bawaan lama diperbarui tanpa menimpa suntingan administrator.
+
 = 1.7.0 - 2026-07-30 =
 
 * Menambahkan sumber Galeri Lokal, Instagram, TikTok, Facebook, dan YouTube beserta jenis media Foto, Video, atau gabungan.
@@ -158,6 +164,10 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 * Menambahkan kebijakan uninstall non-destruktif.
 
 == Upgrade Notice ==
+
+= 1.7.1 =
+
+Koreksi profil mitra bawaan diterapkan hanya ketika nilai lama masih utuh. Suntingan administrator tidak ditimpa.
 
 = 1.7.0 =
 

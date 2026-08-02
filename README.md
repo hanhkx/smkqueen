@@ -5,7 +5,7 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 ## Komponen
 
 - `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.4.0.
-- `queen-alfalah-core/` — plugin pendamping versi 1.7.0 untuk tipe konten dan pengaturan sekolah.
+- `queen-alfalah-core/` — plugin pendamping versi 1.7.1 untuk tipe konten dan pengaturan sekolah.
 
 ## Fitur utama
 
@@ -34,7 +34,7 @@ Profil mitra merupakan data awal berbasis sumber publik. Status kerja sama forma
 
 1. Jalankan `powershell -ExecutionPolicy Bypass -File .\build-packages.ps1` dari PowerShell untuk membuat ZIP tema dan plugin yang kompatibel dengan WordPress.
 2. Unggah `dist/queen-alfalah-1.4.0.zip` melalui **Tampilan → Tema → Tambah Tema**.
-3. Unggah `dist/queen-alfalah-core-1.7.0.zip` melalui **Plugin → Tambah Plugin**.
+3. Unggah `dist/queen-alfalah-core-1.7.1.zip` melalui **Plugin → Tambah Plugin**.
 4. Aktifkan plugin dan tema.
 5. Buka **Sekolah → Pengaturan** untuk melengkapi identitas sekolah.
 6. Buka **Pengaturan → Permalink**, lalu simpan ulang permalink.

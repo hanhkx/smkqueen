@@ -124,6 +124,13 @@ final class QAF_Core_Content_Catalog {
 					continue;
 				}
 
+				if ( 'seed' === $match['type'] ) {
+					$migration_error = self::migrate_seed_corrections( $match['post_id'], $item, $post_type );
+					if ( $migration_error ) {
+						$errors[] = $migration_error;
+					}
+				}
+
 				if ( $enrich_existing && in_array( $match['type'], array( 'seed', 'demo' ), true ) ) {
 					$enrich_error = self::enrich_extracurricular( $match['post_id'], $item, $seed_meta, $seed_key, $match['type'] );
 					if ( $enrich_error ) {
@@ -153,6 +160,69 @@ final class QAF_Core_Content_Catalog {
 		}
 
 		return $errors;
+	}
+
+	/**
+	 * Apply bundled factual corrections only while a seeded value is untouched.
+	 *
+	 * Dataset rows may provide legacy_excerpt, legacy_content, and legacy_meta.
+	 * Exact matching protects every administrator edit made after import.
+	 *
+	 * @param int                 $post_id   Existing seeded post.
+	 * @param array<string,mixed> $item      Dataset item.
+	 * @param string              $post_type Destination post type.
+	 * @return string Empty on success, error text otherwise.
+	 */
+	private static function migrate_seed_corrections( $post_id, $item, $post_type ) {
+		$post = get_post( $post_id );
+		if ( ! $post instanceof WP_Post ) {
+			return '';
+		}
+
+		$updates = array( 'ID' => $post_id );
+		if ( isset( $item['legacy_excerpt'], $item['excerpt'] ) ) {
+			$legacy_excerpt = sanitize_textarea_field( $item['legacy_excerpt'] );
+			$new_excerpt    = sanitize_textarea_field( $item['excerpt'] );
+			if ( trim( $post->post_excerpt ) === trim( $legacy_excerpt ) && trim( $post->post_excerpt ) !== trim( $new_excerpt ) ) {
+				$updates['post_excerpt'] = $new_excerpt;
+			}
+		}
+
+		if ( isset( $item['legacy_content'], $item['content'] ) ) {
+			$legacy_content = wp_kses_post( $item['legacy_content'] );
+			$new_content    = wp_kses_post( $item['content'] );
+			if ( trim( $post->post_content ) === trim( $legacy_content ) && trim( $post->post_content ) !== trim( $new_content ) ) {
+				$updates['post_content'] = $new_content;
+			}
+		}
+
+		if ( count( $updates ) > 1 ) {
+			$result = wp_update_post( wp_slash( $updates ), true );
+			if ( is_wp_error( $result ) ) {
+				return sprintf( '%s: %s', get_the_title( $post_id ), $result->get_error_message() );
+			}
+		}
+
+		$legacy_meta = isset( $item['legacy_meta'] ) && is_array( $item['legacy_meta'] ) ? $item['legacy_meta'] : array();
+		$new_meta    = self::sanitize_meta( $post_type, isset( $item['meta'] ) ? $item['meta'] : array() );
+		$all_fields  = QAF_Core_Meta::get_fields();
+		$fields      = isset( $all_fields[ $post_type ] ) ? $all_fields[ $post_type ] : array();
+		foreach ( $legacy_meta as $meta_key => $legacy_value ) {
+			if ( ! isset( $fields[ $meta_key ], $new_meta[ $meta_key ] ) ) {
+				continue;
+			}
+
+			$legacy_value = QAF_Core_Meta::sanitize_value( $legacy_value, $fields[ $meta_key ] );
+			$current      = get_post_meta( $post_id, $meta_key, true );
+			if ( (string) $current === (string) $legacy_value && (string) $current !== (string) $new_meta[ $meta_key ] ) {
+				$updated = update_post_meta( $post_id, $meta_key, $new_meta[ $meta_key ] );
+				if ( false === $updated ) {
+					return sprintf( '%s: koreksi field %s gagal disimpan.', get_the_title( $post_id ), $meta_key );
+				}
+			}
+		}
+
+		return '';
 	}
 
 	/**
