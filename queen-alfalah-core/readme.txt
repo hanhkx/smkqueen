@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.7.1
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -28,6 +28,9 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Katalog berversi untuk enam Sarana Prasarana dan 14 profil awal PKL & Mitra Industri.
 * Sebelas Ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi fallback.
 * Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan URL kanonik, pemilih Media Library, serta kontrol klik/otomatis/tautan.
+* Delapan sampul berita Agustus 2026 dari Instagram resmi yang disalin ke Media Library dan hanya mengisi gambar unggulan yang masih kosong.
+* Caption, alt text, kredit foto, dan URL Instagram sumber yang tetap dapat disunting oleh administrator.
+* Pengaturan opsional Google Analytics 4 dan verifikasi Search Console; keduanya nonaktif sampai ID resmi diisi.
 * Retensi seluruh data saat plugin dihapus.
 
 Tema Queen Al-Falah direkomendasikan, tetapi konten tetap disimpan menggunakan API WordPress standar.
@@ -61,6 +64,14 @@ Tidak. Berita, pengumuman, agenda, dan placeholder demo yang belum diverifikasi 
 
 Katalog berversi menambahkan item yang belum ada dan tidak memulihkan item di Sampah. Field Ekstrakurikuler hanya dilengkapi bila masih kosong. Foto Prestasi hanya dipasang bila post belum memiliki gambar unggulan. Profil Mitra adalah data awal berbasis sumber publik; status kerja sama formal, periode, dan kuota tetap harus diverifikasi dengan dokumen sekolah.
 
+= Bagaimana gambar dan caption berita Instagram diperbarui? =
+
+Paket berita menggunakan salinan lokal slide pertama dari delapan unggahan Instagram resmi Agustus 2026. Gambar dimasukkan ke Media Library dan dijadikan gambar unggulan hanya ketika berita tujuan belum memiliki pilihan administrator. Alt text, caption, kredit, dan URL sumber dapat disunting melalui Media Library serta kotak Detail Terstruktur pada editor Berita.
+
+= Bagaimana mengaktifkan Analytics dan Search Console? =
+
+Buka Sekolah > Pengaturan > Analitik dan Verifikasi. Isi Measurement ID GA4 berformat `G-XXXXXXXXXX` dan token `google-site-verification` dari properti resmi sekolah. Field kosong tidak memuat script atau meta tag apa pun. Jangan isi Measurement ID bila Analytics sudah dipasang oleh plugin lain agar kunjungan tidak tercatat ganda.
+
 = Apakah WordPress mengunggah file Pusat Media ke Google Drive? =
 
 Tidak. Setelah login, pengguna hanya melihat tautan folder sesuai perannya. Semua operasi file berlangsung di Google Drive. Atur tiga URL di Sekolah > Pengaturan > Pusat Media, gunakan berbagi Drive Dibatasi, dan beri akses hanya kepada akun Google yang berwenang.
@@ -71,7 +82,7 @@ Untuk berkas milik sekolah, pilih sumber Lokal, pakai Gambar Utama sebagai sampu
 
 = Apa perbedaan Klik untuk memuat, Muat otomatis, dan Tautan saja? =
 
-Klik untuk memuat adalah default dan dirender oleh tema Queen Al-Falah 1.4.0 setelah pengunjung menekan tombol. Muat otomatis dapat menghubungi platform pihak ketiga segera ketika halaman dibuka. Tautan saja tidak membuat embed dan hanya membuka sumber resmi. Gunakan mode Lokal atau Tautan saja untuk kebutuhan privasi paling ketat.
+Klik untuk memuat adalah default dan dirender oleh tema Queen Al-Falah 1.5.0 setelah pengunjung menekan tombol. Muat otomatis dapat menghubungi platform pihak ketiga segera ketika halaman dibuka. Tautan saja tidak membuat embed dan hanya membuka sumber resmi. Gunakan mode Lokal atau Tautan saja untuk kebutuhan privasi paling ketat.
 
 = Izin apa yang diperlukan dan bagaimana privasi pengunjung dijaga? =
 
@@ -98,6 +109,13 @@ Tidak. Plugin hanya menyimpan dan menampilkan informasi atau tautan. Sistem pend
 Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif, serta foto tanpa dasar izin yang sesuai.
 
 == Changelog ==
+
+= 1.8.0 - 2026-08-27 =
+
+* Menambahkan delapan sampul berita Agustus 2026 dari unggahan Instagram resmi sebagai aset lokal, tanpa hotlink CDN sementara.
+* Menambahkan importer media berita non-destruktif untuk featured image, alt text, caption, kredit, dan URL sumber.
+* Menambahkan field sumber Instagram dan kredit gambar pada editor Berita.
+* Menambahkan pengaturan opsional Google Analytics 4 dan token verifikasi Search Console dengan validasi ketat.
 
 = 1.7.1 - 2026-08-02 =
 
@@ -165,13 +183,17 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 
 == Upgrade Notice ==
 
+= 1.8.0 =
+
+Masuk ke dashboard satu kali untuk menjalankan sinkronisasi gambar berita, lalu isi GA4/Search Console di Sekolah > Pengaturan hanya setelah ID resmi tersedia. Gunakan tema Queen Al-Falah 1.5.0 agar caption dan kredit tampil di halaman detail.
+
 = 1.7.1 =
 
 Koreksi profil mitra bawaan diterapkan hanya ketika nilai lama masih utuh. Suntingan administrator tidak ditimpa.
 
 = 1.7.0 =
 
-Periksa entri Galeri lama, pilih sumber dan jenis media bila diperlukan, lalu gunakan tema Queen Al-Falah 1.4.0 untuk tampilan klik-untuk-muat. URL lama tetap dipertahankan, tetapi hanya URL HTTPS kanonik pada platform yang didukung yang dapat disematkan.
+Periksa entri Galeri lama, pilih sumber dan jenis media bila diperlukan, lalu gunakan tema Queen Al-Falah 1.5.0 untuk tampilan klik-untuk-muat. URL lama tetap dipertahankan, tetapi hanya URL HTTPS kanonik pada platform yang didukung yang dapat disematkan.
 
 = 1.6.0 =
 

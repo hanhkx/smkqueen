@@ -4,7 +4,7 @@ Theme URI: https://smkqueenalfalah.sch.id/
 Author: SMK Queen Al-Falah
 Author URI: https://smkqueenalfalah.sch.id/
 Description: Tema sekolah modern untuk SMK Queen Al-Falah dengan tampilan emerald, emas, dan krem; responsif, ramah aksesibilitas, serta siap untuk berita, program keahlian, agenda, galeri, dan informasi sekolah.
-Version: 1.4.0
+Version: 1.5.0
 Requires at least: 6.2
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -72,10 +72,14 @@ Tags: education, blog, news, custom-logo, custom-menu, featured-images, threaded
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--qa-header-height) + 1.25rem);
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--qa-cream-50);
   color: var(--qa-ink);
   font-family: var(--qa-font-body);
@@ -1777,6 +1781,23 @@ body:not(.has-sticky-header) .site-header {
 
 .post-thumbnail img {
   width: 100%;
+}
+
+.post-thumbnail__caption {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.8rem 1rem 0.9rem;
+  background: var(--qa-surface);
+  color: var(--qa-muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.post-thumbnail__caption a,
+.post-thumbnail__caption small {
+  width: fit-content;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .entry-footer {

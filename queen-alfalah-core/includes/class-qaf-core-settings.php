@@ -61,6 +61,8 @@ final class QAF_Core_Settings {
 			'instagram_url'    => '',
 			'youtube_url'      => '',
 			'tiktok_url'       => '',
+			'google_analytics_id'      => '',
+			'google_site_verification' => '',
 			'media_drive_waka_url'    => '',
 			'media_drive_teacher_url' => '',
 			'media_drive_staff_url'   => '',
@@ -224,6 +226,18 @@ final class QAF_Core_Settings {
 				'group'       => 'Media Sosial',
 				'description' => 'Kosongkan sampai akun resmi terverifikasi.',
 			),
+			'google_analytics_id' => array(
+				'label'       => 'Google Analytics 4 Measurement ID',
+				'type'        => 'ga_measurement_id',
+				'group'       => 'Analitik dan Verifikasi',
+				'description' => 'Format G-XXXXXXXXXX. Kosongkan bila Analytics belum disetujui atau dikelola oleh plugin lain.',
+			),
+			'google_site_verification' => array(
+				'label'       => 'Token Verifikasi Search Console',
+				'type'        => 'google_verification',
+				'group'       => 'Analitik dan Verifikasi',
+				'description' => 'Masukkan hanya nilai content dari meta tag google-site-verification, bukan seluruh tag HTML.',
+			),
 			'media_drive_waka_url' => array(
 				'label'       => 'Folder Google Drive Waka',
 				'type'        => 'drive_url',
@@ -352,9 +366,27 @@ final class QAF_Core_Settings {
 		}
 
 		$sanitized = array();
+		$previous  = get_option( self::OPTION_NAME, array() );
+		$previous  = is_array( $previous ) ? $previous : array();
 		foreach ( self::get_fields() as $key => $field ) {
-			$value             = isset( $input[ $key ] ) ? wp_unslash( $input[ $key ] ) : '';
-			$sanitized[ $key ] = self::sanitize_field( $value, $field['type'], $key );
+			$value     = isset( $input[ $key ] ) ? wp_unslash( $input[ $key ] ) : '';
+			$clean     = self::sanitize_field( $value, $field['type'], $key );
+			$submitted = is_scalar( $value ) ? trim( (string) $value ) : '';
+
+			// A paste error must not silently disable an existing valid integration.
+			if ( '' === $clean && '' !== $submitted && isset( $previous[ $key ] ) ) {
+				$old_value = is_scalar( $previous[ $key ] ) ? trim( (string) $previous[ $key ] ) : '';
+				if ( 'ga_measurement_id' === $field['type'] ) {
+					$old_value = strtoupper( $old_value );
+					if ( preg_match( '/^G-[A-Z0-9]{6,20}$/', $old_value ) ) {
+						$clean = $old_value;
+					}
+				} elseif ( 'google_verification' === $field['type'] && preg_match( '/^[A-Za-z0-9_-]{10,200}$/', $old_value ) ) {
+					$clean = $old_value;
+				}
+			}
+
+			$sanitized[ $key ] = $clean;
 		}
 
 		return $sanitized;
@@ -446,6 +478,26 @@ final class QAF_Core_Settings {
 					return '';
 				}
 				return $url;
+			case 'ga_measurement_id':
+				$value = strtoupper( trim( $value ) );
+				if ( '' === $value ) {
+					return '';
+				}
+				if ( ! preg_match( '/^G-[A-Z0-9]{6,20}$/', $value ) ) {
+					add_settings_error( self::OPTION_NAME, 'invalid_' . $key, 'Measurement ID Google Analytics harus menggunakan format G-XXXXXXXXXX.' );
+					return '';
+				}
+				return $value;
+			case 'google_verification':
+				$value = trim( $value );
+				if ( '' === $value ) {
+					return '';
+				}
+				if ( ! preg_match( '/^[A-Za-z0-9_-]{10,200}$/', $value ) ) {
+					add_settings_error( self::OPTION_NAME, 'invalid_' . $key, 'Token verifikasi Search Console tidak valid. Salin hanya nilai content dari meta tag Google.' );
+					return '';
+				}
+				return $value;
 			case 'npsn':
 				return preg_replace( '/[^0-9]/', '', $value );
 			case 'phone':

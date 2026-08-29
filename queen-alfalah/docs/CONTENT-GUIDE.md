@@ -242,6 +242,9 @@ Tampilkan nama ruang/fasilitas, fungsi, foto terkini, kapasitas yang telah diver
 - Gunakan **Halaman** untuk informasi permanen.
 - Jangan menyalin konten yang sama ke semua jenis.
 - Gunakan satu gambar unggulan yang kuat dan ringkasan 20–35 kata.
+- Untuk gambar dari akun sosial sekolah, simpan salinan di Media Library; jangan memakai hotlink CDN yang dapat kedaluwarsa.
+- Isi alt text secara deskriptif, Caption Media dengan konteks singkat, Kredit Gambar, dan URL unggahan sumber.
+- Jangan menambahkan nama pemenang, hasil lomba, atau penyelenggara yang tidak tampak pada materi resmi atau dokumen sekolah.
 - Cantumkan penulis/redaktur organisasi, bukan akun pribadi yang sulit dilacak.
 
 ## Bahasa dan gaya

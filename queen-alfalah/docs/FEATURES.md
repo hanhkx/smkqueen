@@ -215,14 +215,14 @@ Media sosial pada perilaku Galeri default baru menghubungi penyedia setelah peng
 
 - sanitasi pengaturan dan escaping keluaran menjadi bagian dari pola implementasi tema;
 - tidak menyimpan kata sandi layanan eksternal;
-- tidak menyediakan pelacakan atau analitik bawaan;
+- tema tidak melacak pengunjung secara bawaan; plugin pendamping menyediakan GA4 opsional yang tetap nonaktif sampai Measurement ID resmi diisi;
 - tidak mengirim data ke CDN atau API pihak ketiga sebagai syarat tema;
 - tidak menerima iframe/script mentah, token, atau kata sandi untuk Galeri sosial;
 - tidak menyinkronkan feed media sosial otomatis;
 - menyediakan perilaku klik-untuk-muat sebagai default, tautan saja sebagai opsi tanpa embed, dan fallback menuju sumber asli;
 - mendukung prinsip minimisasi data melalui struktur konten yang ringkas.
 
-Administrator wajib mengamankan WordPress, memilih plugin tepercaya, membatasi akun, memperbarui perangkat lunak, membuat cadangan, dan menerapkan kebijakan privasi. Mode Galeri **Muat otomatis** dapat menghubungi penyedia serta memicu pemrosesan data/cookie pihak ketiga sebelum tindakan pengunjung; aktifkan hanya setelah penilaian dan pemberitahuan yang sesuai. Izin publikasi, hak cipta, kredit, serta perlindungan foto dan identitas siswa tetap menjadi tanggung jawab pengelola.
+Administrator wajib mengamankan WordPress, memilih plugin tepercaya, membatasi akun, memperbarui perangkat lunak, membuat cadangan, dan menerapkan kebijakan privasi. Mode Galeri **Muat otomatis** dan Google Analytics 4 dapat menghubungi penyedia serta memicu pemrosesan data/cookie pihak ketiga; aktifkan hanya setelah penilaian dan pemberitahuan yang sesuai. Izin publikasi, hak cipta, kredit, serta perlindungan foto dan identitas siswa tetap menjadi tanggung jawab pengelola.
 
 ## Dependensi paket
 

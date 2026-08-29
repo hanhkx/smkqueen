@@ -127,6 +127,10 @@ if ( isset( $queen_detail_fields[ $queen_post_type ] ) ) {
 }
 
 $queen_gallery_media = 'qaf_gallery' === $queen_post_type ? queen_alfalah_gallery_media( get_the_ID() ) : '';
+$queen_thumbnail_id = has_post_thumbnail() ? (int) get_post_thumbnail_id() : 0;
+$queen_thumbnail_caption = $queen_thumbnail_id ? (string) wp_get_attachment_caption( $queen_thumbnail_id ) : '';
+$queen_instagram_source = 'post' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_instagram_source_url', true ) : '';
+$queen_image_credit = 'post' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_image_credit', true ) : '';
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'single-entry' ); ?>>
@@ -143,6 +147,20 @@ $queen_gallery_media = 'qaf_gallery' === $queen_post_type ? queen_alfalah_galler
 			<img src="<?php echo esc_url( $queen_extra_illustration ); ?>" alt="" width="1200" height="800" decoding="async">
 		<?php else : ?>
 			<img src="<?php echo esc_url( queen_alfalah_placeholder( $queen_placeholder ) ); ?>" alt="" width="1200" height="800" decoding="async">
+		<?php endif; ?>
+		<?php if ( $queen_thumbnail_id && ( $queen_thumbnail_caption || $queen_image_credit || $queen_instagram_source ) ) : ?>
+			<figcaption class="post-thumbnail__caption">
+				<?php if ( $queen_thumbnail_caption ) : ?>
+					<span><?php echo esc_html( $queen_thumbnail_caption ); ?></span>
+				<?php endif; ?>
+				<?php if ( $queen_instagram_source ) : ?>
+					<a href="<?php echo esc_url( $queen_instagram_source ); ?>" rel="external noopener">
+						<?php echo esc_html( $queen_image_credit ? $queen_image_credit : __( 'Sumber: Instagram sekolah', 'queen-alfalah' ) ); ?>
+					</a>
+				<?php elseif ( $queen_image_credit ) : ?>
+					<small><?php echo esc_html( $queen_image_credit ); ?></small>
+				<?php endif; ?>
+			</figcaption>
 		<?php endif; ?>
 	</figure>
 

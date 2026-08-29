@@ -2,6 +2,15 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.5.0 — 2026-08-27
+
+### Ditambahkan
+
+- Caption gambar unggulan berita yang diambil dari field Caption Media Library.
+- Kredit foto dan tautan ke unggahan Instagram sumber saat metadata tersedia.
+- Gaya caption responsif yang menyatu dengan kartu gambar pada halaman detail.
+- Pencegahan halaman melebar akibat panel navigasi seluler yang sedang tertutup.
+
 ## 1.4.0 — 2026-07-30
 
 ### Ditambahkan

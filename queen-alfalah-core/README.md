@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.7.1**
+Versi: **1.8.0**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -27,6 +27,9 @@ Lisensi: **GPL-2.0-or-later**
 - Empat belas profil awal PKL & Mitra Industri dengan sumber dan status verifikasi yang dapat ditinjau administrator.
 - Sebelas data ekstrakurikuler dengan manfaat, relevansi dunia kerja, informasi keikutsertaan, dan ilustrasi fallback.
 - Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan jenis media, pemilih video, perilaku embed, dan filter sumber.
+- Delapan sampul berita Agustus 2026 dari akun Instagram resmi yang disalin ke Media Library tanpa hotlink CDN sementara.
+- Caption, alt text, kredit gambar, dan URL sumber yang dapat dikelola pada Berita dan Media Library.
+- Integrasi opsional Google Analytics 4 dan verifikasi Search Console yang nonaktif sampai ID resmi disimpan.
 - Data dipertahankan saat plugin dihapus.
 
 ## Instalasi
@@ -64,6 +67,7 @@ Semua CPT mendukung judul, editor, ringkasan, gambar unggulan, urutan halaman, r
 
 Seluruh key menggunakan awalan privat `_qaf_` dan satu nilai per post:
 
+- Berita: `_qaf_instagram_source_url`, `_qaf_image_credit`, `_qaf_news_source_id`.
 - Program: `_qaf_program_code`, `_qaf_program_head`, `_qaf_program_gender`, `_qaf_competencies`, `_qaf_careers`.
 - Guru/tendik: `_qaf_role`, `_qaf_subject`, `_qaf_order`.
 - Pengumuman: `_qaf_priority`, `_qaf_expiry`, `_qaf_file_url`.
@@ -97,9 +101,12 @@ Semua pengaturan disimpan sebagai satu option `qaf_core_settings`. Default dipas
 - alamat, telepon, email, koordinat, dan tautan peta;
 - URL pendaftaran;
 - Facebook, Instagram, YouTube, dan TikTok;
+- Measurement ID Google Analytics 4 dan token verifikasi Search Console (opsional);
 - tautan folder Google Drive untuk divisi Waka, Guru, dan Tendik.
 
 Tautan atau akun yang belum resmi sebaiknya dikosongkan. Hak akses halaman pengaturan dapat disesuaikan melalui filter `qaf_core_manage_settings_capability`; default-nya `manage_options`.
+
+Analytics dan Search Console tidak aktif secara bawaan. Isi Measurement ID berformat `G-XXXXXXXXXX` dan hanya nilai `content` dari meta tag `google-site-verification`. Jangan isi Measurement ID apabila pelacakan yang sama sudah dipasang oleh plugin lain. Sebelum mengaktifkan Analytics, sesuaikan pemberitahuan privasi dan tata kelola data pengunjung dengan kebijakan sekolah.
 
 ## Importer demo
 
@@ -127,6 +134,8 @@ Saat plugin diaktifkan atau administrator membuka dashboard setelah pembaruan, k
 
 Importer Prestasi menangani 17 halaman berdasarkan ID sumber Instagram resmi. Enam belas foto lokal yang terverifikasi dimasukkan ke Media Library dan dijadikan gambar unggulan hanya ketika post tersebut belum memiliki gambar unggulan. Unggahan LBB Kecamatan Mojo menyebut prestasi putra dan putri, tetapi poster yang tersedia hanya menampilkan regu putra; karena itu halaman putri sengaja tidak diberi poster putra. Gambar yang sudah dipilih administrator, status post, dan suntingan teks tetap dipertahankan.
 
+Importer Media Berita menangani delapan artikel Agustus 2026 berdasarkan slug ekspor dan ID unggahan Instagram resmi. Slide pertama disimpan sebagai aset lokal, lalu dimasukkan ke Media Library bersama caption, alt text, kredit, serta URL sumber. Importer hanya mengisi slot gambar unggulan kosong; gambar dan metadata yang sudah disunting administrator tidak diganti. Gunakan tema Queen Al-Falah 1.5.0 agar caption dan kredit tampil di halaman detail.
+
 ## Penggunaan Galeri
 
 Setiap entri `qaf_gallery` dapat memakai media lokal atau satu URL konten sosial. Gambar Utama tetap menjadi sampul kartu/arsip.
@@ -152,7 +161,7 @@ Plugin tidak mengambil feed, tidak mengimpor akun sosial, dan tidak menyimpan to
 
 ### Perilaku embed
 
-- **Klik untuk memuat** adalah default. Tema Queen Al-Falah 1.4.0 menampilkan pengganti dan baru memuat embed setelah tindakan pengunjung; ini mengurangi permintaan pihak ketiga sebelum interaksi.
+- **Klik untuk memuat** adalah default. Tema Queen Al-Falah 1.5.0 menampilkan pengganti dan baru memuat embed setelah tindakan pengunjung; ini mengurangi permintaan pihak ketiga sebelum interaksi.
 - **Muat otomatis** meminta tema memuat embed ketika halaman dibuka. Gunakan hanya setelah menilai kebijakan cookie/privasi karena platform dapat menerima alamat IP, user-agent, referrer, cookie, atau data teknis pengunjung.
 - **Tautan saja** tidak menyematkan konten dan hanya menyediakan tautan menuju platform. Ini pilihan yang paling konservatif bila embed tidak diperlukan.
 
@@ -160,7 +169,7 @@ Mode klik-untuk-muat mengurangi pemuatan awal pihak ketiga, tetapi bukan penggan
 
 ### Kompatibilitas dan filter
 
-Entri lama tanpa `_qaf_gallery_source` tetap memakai nilai kosong **Otomatis / kompatibilitas lama**. Tema Queen Al-Falah 1.4.0 dapat mengenali URL platform yang didukung dari `_qaf_video_url`; URL legacy yang tidak lolos allowlist tidak terhapus hanya karena post disimpan, tetapi tidak boleh di-embed sebagai HTML. Perbarui URL tersebut menjadi URL HTTPS kanonik atau gunakan **Tautan saja**.
+Entri lama tanpa `_qaf_gallery_source` tetap memakai nilai kosong **Otomatis / kompatibilitas lama**. Tema Queen Al-Falah 1.5.0 dapat mengenali URL platform yang didukung dari `_qaf_video_url`; URL legacy yang tidak lolos allowlist tidak terhapus hanya karena post disimpan, tetapi tidak boleh di-embed sebagai HTML. Perbarui URL tersebut menjadi URL HTTPS kanonik atau gunakan **Tautan saja**.
 
 Arsip Galeri menerima parameter allowlist `?sumber=local`, `instagram`, `tiktok`, `facebook`, atau `youtube`. Filter lokal sengaja mencakup entri dengan sumber `local`, kosong, atau belum memiliki metadata agar konten lama tetap dapat ditemukan. Parameter lain diabaikan.
 
@@ -253,6 +262,13 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 ```
 
 ## Changelog
+
+### 1.8.0 — 2026-08-27
+
+- Menambahkan delapan sampul berita Agustus 2026 sebagai aset lokal dari Instagram resmi sekolah.
+- Menambahkan importer media berita non-destruktif untuk featured image, alt text, caption, kredit, dan URL sumber.
+- Menambahkan meta terstruktur sumber Instagram dan kredit gambar pada editor Berita.
+- Menambahkan pengaturan opsional Google Analytics 4 dan Search Console dengan validasi format.
 
 ### 1.7.1 — 2026-08-02
 

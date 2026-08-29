@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, blog, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready, block-styles, wide-blocks
@@ -25,6 +25,7 @@ Fitur utama:
 * Menampilkan detail terstruktur Sarana Prasarana, PKL & Mitra Industri, serta Ekstrakurikuler.
 * Memakai ilustrasi lokal sebagai fallback Ekstrakurikuler, sementara gambar unggulan administrator selalu diprioritaskan.
 * Galeri terpadu untuk media lokal dan URL kanonik Instagram, TikTok, Facebook, atau YouTube, dengan klik-untuk-muat sebagai perilaku bawaan.
+* Menampilkan caption dan kredit gambar unggulan berita beserta tautan ke unggahan Instagram sumber.
 
 Data awal sekolah yang disertakan:
 
@@ -89,6 +90,12 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 
 == Changelog ==
 
+= 1.5.0 - 2026-08-27 =
+
+* Menampilkan caption, kredit, dan tautan Instagram sumber di bawah gambar unggulan berita.
+* Menambahkan gaya caption responsif yang tetap terbaca pada desktop maupun ponsel.
+* Mencegah panel navigasi tertutup memunculkan gulir horizontal pada ponsel.
+
 = 1.4.0 - 2026-07-30 =
 
 * Menambahkan arsip Galeri yang dapat disaring berdasarkan media sekolah, Instagram, TikTok, Facebook, dan YouTube.
@@ -124,6 +131,10 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 * Menambahkan tata letak responsif, aksesibel, dan bebas dependensi pihak ketiga.
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+
+Menampilkan caption dan kredit foto berita yang dikelola melalui Media Library dan Queen Al-Falah Core 1.8.0.
 
 = 1.4.0 =
 

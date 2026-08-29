@@ -75,6 +75,24 @@ final class QAF_Core_Meta {
 	 */
 	public static function get_fields() {
 		return array(
+			'post'            => array(
+				'_qaf_instagram_source_url' => array(
+					'label'       => 'Sumber Instagram',
+					'type'        => 'social_url',
+					'description' => 'URL HTTPS kanonik unggahan Instagram yang menjadi sumber berita dan foto.',
+				),
+				'_qaf_image_credit' => array(
+					'label'       => 'Kredit Gambar',
+					'type'        => 'text',
+					'description' => 'Contoh: Foto: Instagram @smkqueenalfalah_official. Caption gambar dapat disunting melalui Media Library.',
+				),
+				'_qaf_news_source_id' => array(
+					'label'       => 'ID Sinkronisasi Berita',
+					'type'        => 'text',
+					'description' => 'Penanda stabil agar paket media tidak membuat duplikasi. Jangan diubah.',
+					'readonly'    => true,
+				),
+			),
 			'qaf_program'     => array(
 				'_qaf_program_code'   => array(
 					'label'       => 'Kode/Singkatan Program',
