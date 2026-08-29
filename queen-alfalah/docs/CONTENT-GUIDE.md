@@ -208,7 +208,7 @@ Pilih satu sumber untuk setiap entri:
 - **Lokal**: jadikan Gambar Unggulan sebagai sampul, susun foto dengan blok Gallery/Image, dan gunakan blok Video atau pilih satu video dari Media Library pada kolom Galeri.
 - **Instagram, TikTok, Facebook, atau YouTube**: masukkan URL HTTPS kanonik menuju satu postingan/video publik dari platform yang dipilih.
 
-Jangan menempelkan iframe, script, token, kata sandi, atau HTML embed. Tema memvalidasi URL dan membentuk tampilan dari alamat yang didukung; tema tidak mengimpor atau menyinkronkan seluruh feed sosial.
+Jangan menempelkan iframe, script, token, kata sandi, atau HTML embed ke entri Galeri. Tema memvalidasi URL dan membentuk tampilan dari alamat yang didukung. Queen Al-Falah Core 1.9.0 dapat membuat entri Reel/video Instagram melalui koneksi server terpisah di **Sekolah → Instagram Galeri**.
 
 Pilih perilaku pemuatan sesuai kebutuhan:
 
@@ -309,7 +309,7 @@ Gunakan prinsip minimisasi. Foto kelompok dan nama kegiatan sering kali cukup. B
 
 Izin unggah di akun pribadi atau sosial tidak otomatis berarti izin untuk menyalin atau menyematkannya ke situs sekolah. Pastikan izin mencakup kanal situs sekolah, simpan kredit dan bukti persetujuan, serta lindungi nama, wajah, lokasi, dan identitas siswa.
 
-Untuk Galeri sosial, gunakan hanya URL HTTPS kanonik menuju satu postingan/video yang publik dan diizinkan untuk embed. Jangan meminta atau menyimpan token, kata sandi, iframe/script mentah, atau kode embed; fitur ini bukan sinkronisasi feed otomatis.
+Untuk Galeri sosial, gunakan hanya URL HTTPS kanonik menuju satu postingan/video yang publik dan diizinkan untuk embed. Jangan meminta atau menyimpan kata sandi, iframe/script mentah, kode embed, atau token pada isi/meta konten. Jika sinkronisasi Reel/video Instagram diaktifkan, token hanya boleh dimasukkan melalui **Sekolah → Instagram Galeri**, disimpan privat di server, dan dikelola oleh administrator berwenang.
 
 Gunakan **Klik untuk memuat** sebagai pilihan awal agar koneksi ke penyedia terjadi setelah tindakan pengunjung. **Muat otomatis** dapat mengirim data jaringan dan memicu cookie pihak ketiga saat halaman dibuka sehingga memerlukan dasar, pemberitahuan, dan mekanisme persetujuan yang sesuai kebijakan sekolah. Pilih **Tautan saja** bila situs tidak boleh memuat embed pihak ketiga.
 

@@ -319,6 +319,12 @@ final class QAF_Core_Meta {
 					'type'        => 'social_url',
 					'description' => 'Gunakan URL HTTPS kanonik satu postingan Instagram, TikTok, Facebook, atau YouTube. Jangan tempel iframe atau kode embed.',
 				),
+				'_qaf_instagram_media_id' => array(
+					'label'       => 'ID Sinkronisasi Instagram',
+					'type'        => 'text',
+					'description' => 'Penanda stabil dari Instagram API untuk mencegah duplikasi. Diisi otomatis dan tidak perlu diubah.',
+					'readonly'    => true,
+				),
 				'_qaf_gallery_local_video_id' => array(
 					'label'       => 'Video Lokal',
 					'type'        => 'attachment',
@@ -562,7 +568,8 @@ final class QAF_Core_Meta {
 				<ul>
 					<li><?php esc_html_e( 'Gunakan Gambar Utama sebagai sampul kartu dan halaman Galeri.', 'queen-alfalah-core' ); ?></li>
 					<li><?php esc_html_e( 'Untuk media lokal, susun foto atau video memakai blok Gallery, Image, dan Video pada editor konten.', 'queen-alfalah-core' ); ?></li>
-					<li><?php esc_html_e( 'Untuk media sosial, masukkan URL kanonik satu postingan. Jangan tempel iframe, token API, atau alamat feed otomatis.', 'queen-alfalah-core' ); ?></li>
+					<li><?php esc_html_e( 'Untuk entri manual, masukkan URL kanonik satu postingan. Jangan tempel iframe, token API, atau alamat profil pada field konten.', 'queen-alfalah-core' ); ?></li>
+					<li><?php esc_html_e( 'Untuk mengambil Reel/video baru dari akun resmi, gunakan Sekolah → Instagram Galeri. Token hanya disimpan melalui halaman koneksi tersebut.', 'queen-alfalah-core' ); ?></li>
 				</ul>
 			</div>
 		<?php endif; ?>

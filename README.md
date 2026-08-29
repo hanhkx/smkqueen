@@ -5,14 +5,15 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 ## Komponen
 
 - `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.5.0.
-- `queen-alfalah-core/` — plugin pendamping versi 1.8.0 untuk tipe konten, media berita, analitik opsional, dan pengaturan sekolah.
+- `queen-alfalah-core/` — plugin pendamping versi 1.9.0 untuk tipe konten, sinkronisasi Galeri Instagram, media berita, analitik opsional, dan pengaturan sekolah.
 
 ## Fitur utama
 
 - Landing page responsif dengan background gambar/GIF yang dapat diganti.
 - Identitas, kontak, kepala sekolah, logo, warna, dan konten yang dapat dikelola dari dashboard.
 - Berita, pengumuman, agenda, prestasi, guru/tendik, program keahlian, galeri, BKK, dan PPDB.
-- Galeri terpadu yang dapat memuat foto/video sekolah dari Media Library atau satu konten publik Instagram, TikTok, Facebook, dan YouTube per entri, lengkap dengan penyaring sumber dan opsi privasi klik-untuk-muat.
+- Galeri terpadu yang dapat memuat foto/video sekolah dari Media Library atau konten publik Instagram, TikTok, Facebook, dan YouTube, lengkap dengan penyaring sumber dan opsi privasi klik-untuk-muat.
+- Sinkronisasi resmi Reel/video akun Instagram Profesional ke Galeri, dengan jadwal harian opsional, pencegahan duplikasi, status draf/terbit, poster lokal, dan pembaruan long-lived token.
 - Pusat Aplikasi `/aplikasi/` untuk Ujian Online, E-Rapor, E-Perpustakaan, SPMB, dan Gamifikasi Edu.
 - Pusat Media privat `/pusat-media/` dengan login WordPress dan satu tautan Google Drive yang dapat diganti untuk tiap divisi Waka/Guru/Tendik.
 - Struktur Organisasi 2026/2027 lengkap dengan tupoksi dan foto yang tersinkron dari Guru & Tendik.
@@ -36,7 +37,7 @@ Profil mitra merupakan data awal berbasis sumber publik. Status kerja sama forma
 
 1. Jalankan `powershell -ExecutionPolicy Bypass -File .\build-packages.ps1` dari PowerShell untuk membuat ZIP tema dan plugin yang kompatibel dengan WordPress.
 2. Unggah `dist/queen-alfalah-1.5.0.zip` melalui **Tampilan → Tema → Tambah Tema**.
-3. Unggah `dist/queen-alfalah-core-1.8.0.zip` melalui **Plugin → Tambah Plugin**.
+3. Unggah `dist/queen-alfalah-core-1.9.0.zip` melalui **Plugin → Tambah Plugin**.
 4. Aktifkan plugin dan tema.
 5. Buka **Sekolah → Pengaturan** untuk melengkapi identitas sekolah.
 6. Buka **Pengaturan → Permalink**, lalu simpan ulang permalink.
@@ -94,7 +95,9 @@ Buat atau sunting entri melalui **Galeri → Tambah Baru**. Gunakan **Gambar Ung
 - **Lokal / Media Library** — unggah foto melalui blok Gambar/Galeri dan pilih video lokal pada panel Detail Terstruktur atau melalui blok Video.
 - **Instagram, TikTok, Facebook, atau YouTube** — tempel URL HTTPS kanonik satu postingan/video publik. Jangan menempel kode iframe.
 
-Pilihan **Klik untuk memuat** menjadi bawaan agar koneksi ke platform pihak ketiga baru dilakukan setelah persetujuan pengunjung. Pilihan **Muat otomatis** dan **Tautan saja** juga tersedia. Integrasi ini tidak membutuhkan token API dan tidak menyinkronkan seluruh feed akun secara otomatis; setiap konten sosial dibuat sebagai satu entri Galeri agar judul, sampul, kredit, dan izin publikasinya tetap dapat dikendalikan sekolah.
+Pilihan **Klik untuk memuat** menjadi bawaan agar koneksi ke platform pihak ketiga baru dilakukan setelah tindakan pengunjung. Pilihan **Muat otomatis** dan **Tautan saja** juga tersedia.
+
+Untuk Instagram, Queen Al-Falah Core 1.9.0 menambahkan sinkronisasi resmi khusus Reel/video dari akun Profesional. Buka **Sekolah → Instagram Galeri**, masukkan Instagram User ID dan long-lived access token dari aplikasi Meta resmi sekolah, pilih **Draf** atau **Terbit otomatis**, lalu jalankan sinkronisasi manual atau harian. Token hanya disimpan pada option privat server dan tidak ikut GitHub/ZIP. Lihat [`queen-alfalah-core/INSTAGRAM-GALLERY-SETUP.md`](queen-alfalah-core/INSTAGRAM-GALLERY-SETUP.md).
 
 ## Sinkronisasi perkembangan project
 

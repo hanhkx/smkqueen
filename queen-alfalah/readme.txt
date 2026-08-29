@@ -76,7 +76,7 @@ Tema menyediakan area informasi dan tautan/CTA. Pemrosesan formulir, pembayaran,
 
 = Bagaimana Galeri lokal dan sosial bekerja? =
 
-Untuk media lokal, gunakan Gambar Utama sebagai sampul, blok Gallery/Image/Video pada konten, atau pilih video dari Media Library. Untuk media sosial, pilih platform lalu masukkan URL HTTPS kanonik satu postingan Instagram, TikTok, Facebook, atau YouTube. Tema tidak menerima iframe mentah, tidak memerlukan token, dan tidak menyinkronkan feed otomatis.
+Untuk media lokal, gunakan Gambar Utama sebagai sampul, blok Gallery/Image/Video pada konten, atau pilih video dari Media Library. Untuk media sosial, pilih platform lalu masukkan URL HTTPS kanonik satu postingan Instagram, TikTok, Facebook, atau YouTube. Tema tidak menerima iframe mentah atau token. Queen Al-Falah Core 1.9.0 dapat menyinkronkan Reel/video Instagram melalui koneksi server terpisah di Sekolah > Instagram Galeri.
 
 Pilihan Klik untuk memuat adalah bawaan dan baru menghubungi platform setelah pengunjung menekan tombol. Muat otomatis menghubungi platform ketika halaman dibuka, sedangkan Tautan saja tidak membuat embed. Tautan sumber tetap disediakan sebagai fallback bila konten privat, dihapus, dibatasi platform, atau gagal dimuat.
 
@@ -134,7 +134,7 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 
 = 1.5.0 =
 
-Menampilkan caption dan kredit foto berita yang dikelola melalui Media Library dan Queen Al-Falah Core 1.8.0.
+Menampilkan caption dan kredit foto berita yang dikelola melalui Media Library serta kompatibel dengan sinkronisasi Galeri pada Queen Al-Falah Core 1.9.0.
 
 = 1.4.0 =
 

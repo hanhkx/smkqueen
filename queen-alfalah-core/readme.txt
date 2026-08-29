@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -28,6 +28,7 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Katalog berversi untuk enam Sarana Prasarana dan 14 profil awal PKL & Mitra Industri.
 * Sebelas Ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi fallback.
 * Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan URL kanonik, pemilih Media Library, serta kontrol klik/otomatis/tautan.
+* Sinkronisasi Reel/video akun Instagram Profesional melalui API resmi dengan jadwal harian opsional, deduplikasi, status draf/terbit, poster lokal, dan pembaruan long-lived token.
 * Delapan sampul berita Agustus 2026 dari Instagram resmi yang disalin ke Media Library dan hanya mengisi gambar unggulan yang masih kosong.
 * Caption, alt text, kredit foto, dan URL Instagram sumber yang tetap dapat disunting oleh administrator.
 * Pengaturan opsional Google Analytics 4 dan verifikasi Search Console; keduanya nonaktif sampai ID resmi diisi.
@@ -78,7 +79,11 @@ Tidak. Setelah login, pengguna hanya melihat tautan folder sesuai perannya. Semu
 
 = Bagaimana menambahkan foto atau video ke Galeri? =
 
-Untuk berkas milik sekolah, pilih sumber Lokal, pakai Gambar Utama sebagai sampul, lalu susun foto/video dengan blok Image, Gallery, atau Video. Satu video lokal juga dapat dipilih dari Media Library. Untuk konten sosial, pilih Instagram, TikTok, Facebook, atau YouTube lalu tempel URL HTTPS kanonik satu postingan. Jangan memasukkan iframe mentah, token API, atau URL feed/profil.
+Untuk berkas milik sekolah, pilih sumber Lokal, pakai Gambar Utama sebagai sampul, lalu susun foto/video dengan blok Image, Gallery, atau Video. Satu video lokal juga dapat dipilih dari Media Library. Untuk konten sosial manual, pilih platform lalu tempel URL HTTPS kanonik satu postingan. Jangan memasukkan iframe mentah, token API, atau URL feed/profil ke field konten.
+
+= Bagaimana menyinkronkan Reel/video akun Instagram? =
+
+Gunakan akun Instagram Profesional dan Instagram API with Instagram Login. Buka Sekolah > Instagram Galeri, isi Instagram User ID serta long-lived access token dari aplikasi Meta resmi, pilih Draf atau Terbit otomatis, lalu jalankan sinkronisasi. Token disimpan privat di server dan tidak pernah dicetak kembali. Panduan lengkap tersedia di INSTAGRAM-GALLERY-SETUP.md.
 
 = Apa perbedaan Klik untuk memuat, Muat otomatis, dan Tautan saja? =
 
@@ -98,7 +103,7 @@ Arsip publik menyembunyikan pengumuman yang field Berlaku Sampai-nya telah lewat
 
 = Apa yang terjadi ketika plugin dihapus? =
 
-Post, meta, term, menu, dan pengaturan tetap disimpan. Plugin tidak melakukan penghapusan destruktif saat uninstall.
+Post, meta, term, menu, media, dan pengaturan sekolah non-rahasia tetap disimpan. Token/status Instagram serta jadwal sinkronisasi dihapus agar plugin yang sudah tidak ada tidak meninggalkan akses eksternal aktif.
 
 = Apakah plugin memproses pendaftaran atau lamaran? =
 
@@ -109,6 +114,15 @@ Tidak. Plugin hanya menyimpan dan menampilkan informasi atau tautan. Sistem pend
 Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif, serta foto tanpa dasar izin yang sesuai.
 
 == Changelog ==
+
+= 1.9.0 - 2026-08-29 =
+
+* Menambahkan koneksi Instagram API resmi pada Sekolah > Instagram Galeri tanpa meminta atau menyimpan kata sandi.
+* Menambahkan sinkronisasi manual/harian khusus Reel dan video, deduplikasi ID media/permalink, status hasil, serta pembaruan long-lived token.
+* Menjaga konten lama, item di Sampah, dan suntingan administrator tetap utuh; item baru dapat dibuat sebagai Draf atau Terbit.
+* Menyalin thumbnail yang valid ke Media Library pada slot gambar kosong dengan batas ukuran, MIME, dan host CDN yang ketat.
+* Menambahkan ID sinkronisasi readonly, panduan konfigurasi, dan pemeriksaan kontrak URL/video.
+* Menghapus kredensial Instagram saat uninstall tanpa menghapus konten Galeri atau data sekolah lain.
 
 = 1.8.0 - 2026-08-27 =
 
@@ -182,6 +196,10 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 * Menambahkan kebijakan uninstall non-destruktif.
 
 == Upgrade Notice ==
+
+= 1.9.0 =
+
+Buka Sekolah > Instagram Galeri untuk menghubungkan akun Instagram Profesional melalui API resmi. Gunakan status Draf pada uji pertama dan jangan menyimpan token di field konten, ekspor, atau repository.
 
 = 1.8.0 =
 

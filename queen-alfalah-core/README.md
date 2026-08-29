@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.8.0**
+Versi: **1.9.0**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -27,6 +27,7 @@ Lisensi: **GPL-2.0-or-later**
 - Empat belas profil awal PKL & Mitra Industri dengan sumber dan status verifikasi yang dapat ditinjau administrator.
 - Sebelas data ekstrakurikuler dengan manfaat, relevansi dunia kerja, informasi keikutsertaan, dan ilustrasi fallback.
 - Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan jenis media, pemilih video, perilaku embed, dan filter sumber.
+- Sinkronisasi Reel/video akun Instagram Profesional melalui API resmi, dengan jadwal harian opsional, deduplikasi ID media, status draf/terbit, poster lokal, status koneksi, dan pembaruan long-lived token.
 - Delapan sampul berita Agustus 2026 dari akun Instagram resmi yang disalin ke Media Library tanpa hotlink CDN sementara.
 - Caption, alt text, kredit gambar, dan URL sumber yang dapat dikelola pada Berita dan Media Library.
 - Integrasi opsional Google Analytics 4 dan verifikasi Search Console yang nonaktif sampai ID resmi disimpan.
@@ -157,7 +158,19 @@ Pilih Instagram, TikTok, Facebook, atau YouTube, kemudian masukkan URL HTTPS kan
 - token API, client secret, cookie, atau kredensial;
 - URL profil, hashtag, playlist, atau feed untuk sinkronisasi otomatis.
 
-Plugin tidak mengambil feed, tidak mengimpor akun sosial, dan tidak menyimpan token platform. Renderer tema juga wajib tetap melakukan escaping/allowlist dan tidak boleh menampilkan HTML dari field secara langsung.
+Entri manual tidak mengambil feed dan tidak menerima token pada field konten. Sinkronisasi Instagram otomatis dikonfigurasi terpisah melalui **Sekolah → Instagram Galeri**; tokennya disimpan sebagai option privat/non-autoload di server, tidak dicetak kembali, dan tidak dikirim ke renderer tema atau browser pengunjung. Renderer tetap wajib melakukan escaping/allowlist dan tidak boleh menampilkan HTML dari field secara langsung.
+
+### Sinkronisasi Reel/video Instagram
+
+Queen Al-Falah Core dapat membaca media akun Instagram Profesional melalui **Instagram API with Instagram Login**. Akun memerlukan aplikasi Meta bertipe Business, izin `instagram_business_basic`, Instagram User ID numerik, dan long-lived access token.
+
+1. Buka **Sekolah → Instagram Galeri**.
+2. Isi User ID dan long-lived token dari aplikasi Meta resmi sekolah.
+3. Pilih status **Draf** (disarankan) atau **Terbit otomatis**.
+4. Tentukan jumlah postingan terbaru yang diperiksa dan apakah thumbnail disalin ke Media Library.
+5. Simpan, tekan **Sinkronkan Sekarang**, lalu aktifkan pemeriksaan harian setelah hasil uji benar.
+
+Hanya media `VIDEO`, termasuk Reel, yang dibuat. ID media mencegah duplikasi; item di Sampah tidak dipulihkan; konten yang sudah ada tidak dihapus; judul, isi, status, perilaku embed, dan gambar pilihan administrator dipertahankan. Poster disalin secara terbatas dari host CDN Meta/Instagram ke Media Library agar kartu arsip tidak bergantung pada URL sementara. Panduan lengkap tersedia di [`INSTAGRAM-GALLERY-SETUP.md`](INSTAGRAM-GALLERY-SETUP.md).
 
 ### Perilaku embed
 
@@ -186,7 +199,9 @@ Arsip Galeri menerima parameter allowlist `?sumber=local`, `instagram`, `tiktok`
 - REST meta memerlukan kemampuan menyunting post terkait.
 - Attachment video Galeri diperiksa sebagai attachment WordPress dan wajib memiliki MIME `video/*`.
 - URL sosial Galeri hanya menerima HTTPS pada host Instagram, TikTok, Facebook, atau YouTube yang didukung; URL look-alike dan port nonstandar ditolak.
-- Plugin tidak menyimpan iframe mentah, token platform, atau hasil sinkronisasi feed sosial.
+- Plugin tidak menyimpan iframe mentah. Token Instagram disimpan hanya pada option privat/non-autoload, tidak ditampilkan kembali, tidak dimasukkan ke REST settings, JavaScript, HTML publik, ZIP, atau repository.
+- Request sinkronisasi admin memerlukan kemampuan pengaturan, metode POST, serta nonce; proses terjadwal memakai kunci sementara agar tidak berjalan tumpang tindih.
+- API dibatasi ke `graph.instagram.com`, URL konten ke host Instagram yang tepat, dan thumbnail ke host CDN Meta/Instagram melalui pemeriksaan URL aman, MIME, serta batas 8 MB.
 - Settings API melakukan sanitasi sesuai tipe data.
 - Importer memerlukan kemampuan pengaturan, nonce, dan request POST.
 - URL dibatasi ke protokol HTTP/HTTPS.
@@ -226,7 +241,7 @@ Tidak ada akun atau password contoh yang dibuat otomatis. Administrator harus me
 
 ## Penghapusan plugin
 
-`uninstall.php` sengaja tidak menghapus post, term, menu, option, maupun meta. Data sekolah adalah catatan institusional dan harus tetap tersedia setelah plugin dinonaktifkan atau dihapus. Untuk penghapusan permanen, ekspor cadangan lebih dahulu lalu hapus data secara eksplisit melalui alat administrasi WordPress.
+`uninstall.php` sengaja tidak menghapus post, term, menu, media, meta, atau pengaturan sekolah non-rahasia. Data institusional tetap tersedia setelah plugin dihapus. Khusus kredensial sinkronisasi Instagram, option token/status serta jadwalnya dihapus agar plugin yang sudah tidak ada tidak meninggalkan akses eksternal aktif. Jika plugin dipasang kembali, hubungkan ulang akun Instagram. Untuk menghapus konten permanen, ekspor cadangan lebih dahulu lalu hapus secara eksplisit melalui alat administrasi WordPress.
 
 ## Pemecahan masalah
 
@@ -262,6 +277,16 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 ```
 
 ## Changelog
+
+### 1.9.0 — 2026-08-29
+
+- Menambahkan halaman **Sekolah → Instagram Galeri** untuk koneksi API resmi tanpa menyimpan kata sandi Instagram.
+- Menambahkan sinkronisasi manual dan harian khusus Reel/video dengan batas jumlah postingan, pagination berbasis cursor, status hasil, dan pesan kesalahan teredaksi.
+- Menyimpan access token pada option privat/non-autoload, tidak pernah mencetak kembali token, serta mencoba memperbarui long-lived token yang masih valid secara berkala.
+- Menghapus token/status Instagram dan jadwal sinkronisasi saat plugin dihapus, tanpa menghapus entri Galeri atau data institusional lain.
+- Membuat entri Galeri secara idempoten berdasarkan ID media/permalink tanpa menimpa judul, isi, status, perilaku embed, gambar, atau item di Sampah.
+- Menyalin thumbnail JPEG/PNG/WebP sampai 8 MB ke Media Library pada slot gambar kosong, dengan allowlist host CDN Meta/Instagram dan fallback placeholder/tautan.
+- Menambahkan ID sinkronisasi readonly, panduan koneksi, dan pemeriksaan kontrak URL/video yang dapat dijalankan tanpa dependency eksternal.
 
 ### 1.8.0 — 2026-08-27
 
