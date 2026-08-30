@@ -4,7 +4,7 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 
 ## Komponen
 
-- `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.6.2.
+- `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.6.3.
 - `queen-alfalah-core/` — plugin pendamping versi 1.10.0 untuk tipe konten, sinkronisasi Galeri Instagram, media berita, katalog gambar Mitra DUDI, analitik opsional, dan pengaturan sekolah.
 
 ## Fitur utama
@@ -22,6 +22,7 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 - Empat belas profil awal PKL & Mitra Industri beserta bidang keahlian, jurusan terkait, bentuk kerja sama, sumber, dan status verifikasi.
 - Lima belas kartu logo/foto Mitra DUDI lokal yang tidak di-hotlink dan tidak menimpa gambar unggulan pilihan administrator; lima identitas yang belum terverifikasi diberi penanda sementara.
 - Arsip Prestasi berisi 29 halaman capaian dan partisipasi tahun 2023–2026 tanpa menimpa 17 entri lama. Dua puluh empat halaman menerima gambar sumber lokal pada slot yang masih kosong; lima halaman memakai fallback berlabel ilustrasi agar tidak salah atribusi.
+- Beranda menampilkan tiga Prestasi/Partisipasi terbaru dari sumber kegiatan yang berbeda dan menyediakan tombol menuju arsip Prestasi lengkap.
 - Delapan berita terbaru Agustus 2026 dilengkapi sampul lokal dari unggahan Instagram resmi, caption, alt text, kredit, dan tautan sumber tanpa hotlink CDN sementara.
 - Google Analytics 4 dan verifikasi Search Console dapat diaktifkan dari Pengaturan Sekolah setelah ID resmi tersedia; field kosong tidak memuat integrasi pihak ketiga.
 - Sebelas halaman ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi bawaan sebagai fallback gambar.
@@ -40,7 +41,7 @@ Profil mitra merupakan data awal berbasis sumber publik. Status kerja sama forma
 ## Instalasi
 
 1. Jalankan `powershell -ExecutionPolicy Bypass -File .\build-packages.ps1` dari PowerShell untuk membuat ZIP tema dan plugin yang kompatibel dengan WordPress.
-2. Unggah `dist/queen-alfalah-1.6.2.zip` melalui **Tampilan → Tema → Tambah Tema**.
+2. Unggah `dist/queen-alfalah-1.6.3.zip` melalui **Tampilan → Tema → Tambah Tema**.
 3. Unggah `dist/queen-alfalah-core-1.10.0.zip` melalui **Plugin → Tambah Plugin**.
 4. Aktifkan plugin dan tema.
 5. Buka **Sekolah → Pengaturan** untuk melengkapi identitas sekolah.

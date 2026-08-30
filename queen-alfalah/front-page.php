@@ -298,6 +298,55 @@ if ( $landing_bg ) {
 		</div>
 	</section>
 
+	<section class="section section--cream" aria-labelledby="achievement-heading">
+		<div class="container">
+			<?php queen_alfalah_section_heading( __( 'Kebanggaan Queen', 'queen-alfalah' ), __( 'Prestasi SMK Queen Al-Falah', 'queen-alfalah' ), __( 'Capaian dan partisipasi siswa dalam bidang akademik, keterampilan, seni, olahraga, serta pengembangan karakter.', 'queen-alfalah' ), 'left', 'achievement-heading' ); ?>
+			<div class="card-grid card-grid--3">
+				<?php
+				$achievement_query = post_type_exists( 'qaf_achievement' ) ? new WP_Query(
+					array(
+						'post_type'      => 'qaf_achievement',
+						'posts_per_page' => 12,
+						'post_status'    => 'publish',
+						'meta_key'       => '_qaf_achievement_date',
+						'orderby'        => array(
+							'meta_value' => 'DESC',
+							'date'       => 'DESC',
+							'ID'         => 'ASC',
+						),
+						'no_found_rows'  => true,
+					)
+				) : null;
+
+				$achievement_sources = array();
+				$achievement_count   = 0;
+				if ( $achievement_query && $achievement_query->have_posts() ) :
+					while ( $achievement_query->have_posts() && $achievement_count < 3 ) :
+						$achievement_query->the_post();
+						$achievement_source = queen_alfalah_meta( get_the_ID(), 'source_url' );
+						$achievement_key    = $achievement_source
+							? strtolower( untrailingslashit( $achievement_source ) )
+							: 'post:' . get_the_ID();
+
+						// Keep the homepage varied when one competition has several individual winners.
+						if ( isset( $achievement_sources[ $achievement_key ] ) ) {
+							continue;
+						}
+
+						$achievement_sources[ $achievement_key ] = true;
+						$achievement_count++;
+						get_template_part( 'template-parts/content', 'card' );
+					endwhile;
+					wp_reset_postdata();
+				else :
+					?>
+					<div class="empty-state card-grid__full"><h3><?php esc_html_e( 'Prestasi akan segera ditampilkan', 'queen-alfalah' ); ?></h3><p><?php esc_html_e( 'Prestasi yang telah diterbitkan melalui dashboard WordPress akan muncul otomatis di bagian ini.', 'queen-alfalah' ); ?></p></div>
+				<?php endif; ?>
+			</div>
+			<div class="section-actions"><a class="button button--outline-dark" href="<?php echo esc_url( queen_alfalah_archive_url( 'qaf_achievement', 'prestasi' ) ); ?>"><?php esc_html_e( 'Lihat semua prestasi', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'arrow-right' ); ?></a></div>
+		</div>
+	</section>
+
 	<section class="section section--emerald" aria-labelledby="stats-heading">
 		<div class="container stats-section">
 			<div class="stats-section__intro">

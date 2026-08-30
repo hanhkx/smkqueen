@@ -2,6 +2,14 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.6.3 — 2026-08-30
+
+### Ditambahkan
+
+- Bagian **Prestasi SMK Queen Al-Falah** pada beranda yang otomatis menampilkan tiga capaian/partisipasi terbaru dan tombol menuju arsip lengkap.
+- Pemilihan kartu berdasarkan tanggal Prestasi terstruktur serta penyaring sumber agar beberapa pemenang dari satu lomba tidak memenuhi seluruh beranda.
+- Empty state yang jujur ketika plugin pendamping belum aktif atau belum ada Prestasi yang diterbitkan.
+
 ## 1.6.2 — 2026-08-30
 
 ### Diubah

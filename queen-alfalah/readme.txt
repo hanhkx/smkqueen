@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, blog, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready, block-styles, wide-blocks
@@ -90,6 +90,12 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 
 == Changelog ==
 
+= 1.6.3 - 2026-08-30 =
+
+* Menambahkan bagian Prestasi SMK Queen Al-Falah pada beranda dengan tiga kartu terbaru dan tautan arsip lengkap.
+* Menyaring sumber kegiatan yang sama agar satu lomba dengan beberapa pemenang tidak memenuhi seluruh bagian beranda.
+* Menampilkan empty state yang aman ketika plugin belum aktif atau belum ada Prestasi terbit.
+
 = 1.6.2 - 2026-08-30 =
 
 * Menampilkan poster Prestasi secara utuh di dalam kartu 1:1 memakai ukuran gambar tanpa crop dan mode contain.
@@ -150,6 +156,10 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 * Menambahkan tata letak responsif, aksesibel, dan bebas dependensi pihak ketiga.
 
 == Upgrade Notice ==
+
+= 1.6.3 =
+
+Menambahkan tiga Prestasi/Partisipasi terbaru pada beranda tanpa mengubah konten Prestasi yang sudah ada.
 
 = 1.6.2 =
 
