@@ -59,7 +59,15 @@ Untuk akses ke E-Learning, E-Rapor, perpustakaan, PPDB, pengaduan, atau layanan 
 
 ### 8. Galeri
 
-Untuk album foto dan video kegiatan yang aman dipublikasikan.
+Untuk album foto/video lokal dan posting sosial terpilih yang aman dipublikasikan.
+
+- Sumber **Lokal** memakai Gambar Unggulan sebagai sampul, blok Gallery/Image untuk foto, serta blok Video atau satu video pilihan dari Media Library.
+- Sumber **Instagram, TikTok, Facebook, dan YouTube** memakai URL HTTPS kanonik menuju satu postingan/video publik.
+- Arsip dapat difilter berdasarkan sumber Galeri.
+- Perilaku **Klik untuk memuat** menjadi default agar permintaan ke penyedia baru dilakukan setelah tindakan pengunjung.
+- Perilaku **Muat otomatis** tersedia untuk situs yang telah menilai dampak privasi/cookie, sedangkan **Tautan saja** meniadakan embed pihak ketiga.
+- Tema tidak menerima iframe, script, token, atau kata sandi dari administrator dan tidak menyinkronkan feed sosial otomatis.
+- Tautan ke sumber asli menjadi fallback bila konten privat, dihapus, dibatasi, atau gagal dimuat.
 
 ### 9. Mitra
 
@@ -125,7 +133,7 @@ Statistik harus diisi dengan data yang disahkan. Tema tidak menghitung hasil tra
 - X atau kanal lain yang disediakan;
 - tautan sosial resmi sekolah.
 
-URL kosong tidak perlu ditampilkan. Tema tidak meminta token atau kata sandi media sosial.
+Pengaturan Customizer di atas ditujukan untuk tautan akun resmi sekolah. URL pada entri Galeri ditujukan untuk satu postingan/video publik dari Instagram, TikTok, Facebook, atau YouTube. Tema tidak meminta token atau kata sandi. Sinkronisasi Reel/video Instagram merupakan fitur server-side Queen Al-Falah Core 1.9.0 dan dikonfigurasi terpisah melalui **Sekolah → Instagram Galeri**; URL kosong tidak perlu ditampilkan.
 
 ## Komponen beranda
 
@@ -201,17 +209,20 @@ Aksesibilitas tetap bergantung pada konten administrator. Poster tanpa teks alte
 - kompatibel dengan kompresi dan lazy loading WordPress;
 - struktur ringan yang dapat dipadukan dengan cache server atau plugin pilihan pengelola.
 
-Kecepatan aktual dipengaruhi ukuran media, hosting, plugin tambahan, embed, dan layanan pihak ketiga.
+Media sosial pada perilaku Galeri default baru menghubungi penyedia setelah pengunjung memilih untuk memuatnya. Perilaku otomatis dapat memuat aset pihak ketiga saat halaman dibuka. Kecepatan aktual dipengaruhi ukuran media, hosting, plugin tambahan, embed, dan layanan pihak ketiga.
 
 ## Keamanan dan privasi
 
 - sanitasi pengaturan dan escaping keluaran menjadi bagian dari pola implementasi tema;
 - tidak menyimpan kata sandi layanan eksternal;
-- tidak menyediakan pelacakan atau analitik bawaan;
+- tema tidak melacak pengunjung secara bawaan; plugin pendamping menyediakan GA4 opsional yang tetap nonaktif sampai Measurement ID resmi diisi;
 - tidak mengirim data ke CDN atau API pihak ketiga sebagai syarat tema;
+- tidak menerima iframe/script mentah, token, atau kata sandi untuk Galeri sosial;
+- tidak menyinkronkan feed media sosial otomatis;
+- menyediakan perilaku klik-untuk-muat sebagai default, tautan saja sebagai opsi tanpa embed, dan fallback menuju sumber asli;
 - mendukung prinsip minimisasi data melalui struktur konten yang ringkas.
 
-Administrator wajib mengamankan WordPress, memilih plugin tepercaya, membatasi akun, memperbarui perangkat lunak, membuat cadangan, dan menerapkan kebijakan privasi.
+Administrator wajib mengamankan WordPress, memilih plugin tepercaya, membatasi akun, memperbarui perangkat lunak, membuat cadangan, dan menerapkan kebijakan privasi. Mode Galeri **Muat otomatis** dan Google Analytics 4 dapat menghubungi penyedia serta memicu pemrosesan data/cookie pihak ketiga; aktifkan hanya setelah penilaian dan pemberitahuan yang sesuai. Izin publikasi, hak cipta, kredit, serta perlindungan foto dan identitas siswa tetap menjadi tanggung jawab pengelola.
 
 ## Dependensi paket
 

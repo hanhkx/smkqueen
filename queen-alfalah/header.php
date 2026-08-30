@@ -115,6 +115,10 @@ if ( post_type_exists( 'qaf_notice' ) ) {
 			<div class="nav-wrap">
 				<div class="container">
 					<nav id="site-navigation" class="site-nav" aria-label="<?php esc_attr_e( 'Navigasi utama', 'queen-alfalah' ); ?>">
+						<div class="site-nav__header">
+							<span><?php esc_html_e( 'Navigasi', 'queen-alfalah' ); ?></span>
+							<strong><?php esc_html_e( 'Menu Utama', 'queen-alfalah' ); ?></strong>
+						</div>
 						<?php
 						wp_nav_menu(
 							array(

@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.5.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, blog, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready, block-styles, wide-blocks
@@ -22,6 +22,10 @@ Fitur utama:
 * Tata letak responsif dan aksesibel untuk desktop, tablet, dan ponsel.
 * Tidak memerlukan page builder, framework, font eksternal, atau plugin pihak ketiga.
 * Mendukung logo situs, menu WordPress, gambar unggulan, komentar bertingkat, serta blok lebar.
+* Menampilkan detail terstruktur Sarana Prasarana, PKL & Mitra Industri, serta Ekstrakurikuler.
+* Memakai ilustrasi lokal sebagai fallback Ekstrakurikuler, sementara gambar unggulan administrator selalu diprioritaskan.
+* Galeri terpadu untuk media lokal dan URL kanonik Instagram, TikTok, Facebook, atau YouTube, dengan klik-untuk-muat sebagai perilaku bawaan.
+* Menampilkan caption dan kredit gambar unggulan berita beserta tautan ke unggahan Instagram sumber.
 
 Data awal sekolah yang disertakan:
 
@@ -70,6 +74,12 @@ Tidak. Data contoh berfungsi sebagai kerangka. Administrator harus memeriksa fak
 
 Tema menyediakan area informasi dan tautan/CTA. Pemrosesan formulir, pembayaran, LMS, E-Rapor, atau integrasi layanan eksternal memerlukan sistem yang dipilih sekolah dan harus dikonfigurasi terpisah.
 
+= Bagaimana Galeri lokal dan sosial bekerja? =
+
+Untuk media lokal, gunakan Gambar Utama sebagai sampul, blok Gallery/Image/Video pada konten, atau pilih video dari Media Library. Untuk media sosial, pilih platform lalu masukkan URL HTTPS kanonik satu postingan Instagram, TikTok, Facebook, atau YouTube. Tema tidak menerima iframe mentah atau token. Queen Al-Falah Core 1.9.0 dapat menyinkronkan Reel/video Instagram melalui koneksi server terpisah di Sekolah > Instagram Galeri.
+
+Pilihan Klik untuk memuat adalah bawaan dan baru menghubungi platform setelah pengunjung menekan tombol. Muat otomatis menghubungi platform ketika halaman dibuka, sedangkan Tautan saja tidak membuat embed. Tautan sumber tetap disediakan sebagai fallback bila konten privat, dihapus, dibatasi platform, atau gagal dimuat.
+
 = Bagaimana menjaga privasi siswa? =
 
 Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, nomor telepon pribadi, data kesehatan, atau dokumen siswa. Baca docs/CONTENT-GUIDE.md sebelum mengunggah konten.
@@ -79,6 +89,31 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 1. Beranda sekolah dengan hero, akses cepat, program keahlian, informasi, dan statistik.
 
 == Changelog ==
+
+= 1.5.0 - 2026-08-27 =
+
+* Menampilkan caption, kredit, dan tautan Instagram sumber di bawah gambar unggulan berita.
+* Menambahkan gaya caption responsif yang tetap terbaca pada desktop maupun ponsel.
+* Mencegah panel navigasi tertutup memunculkan gulir horizontal pada ponsel.
+
+= 1.4.0 - 2026-07-30 =
+
+* Menambahkan arsip Galeri yang dapat disaring berdasarkan media sekolah, Instagram, TikTok, Facebook, dan YouTube.
+* Menampilkan video lokal dari Media Library serta konten sosial dari URL kanonik tanpa menerima iframe mentah, token, atau sinkronisasi feed otomatis.
+* Menambahkan pilihan Klik untuk memuat sebagai bawaan ramah privasi, Muat otomatis, dan Tautan saja.
+* Menyediakan tautan sumber sebagai fallback ketika pratinjau pihak ketiga tidak tersedia.
+
+= 1.3.0 - 2026-07-29 =
+
+* Menambahkan arsip khusus PKL & Mitra Industri dengan penjelasan status verifikasi.
+* Menampilkan field lokasi, fungsi, akses, pengelola, keahlian, program terkait, kerja sama, manfaat, dan relevansi dunia kerja pada halaman terkait.
+* Menambahkan ilustrasi fallback untuk 11 Ekstrakurikuler tanpa mengganti gambar unggulan yang dipilih administrator.
+* Menampilkan foto sumber Prestasi yang disinkronkan plugin ke slot gambar unggulan kosong.
+
+= 1.2.0 - 2026-07-23 =
+
+* Menampilkan detail prestasi terstruktur: juara/penghargaan, penerima, bidang, penyelenggara, ruang lingkup, tanggal, dan sumber unggahan.
+* Menonjolkan juara/penghargaan, ruang lingkup, dan tanggal pada kartu arsip Prestasi tanpa mengubah kartu konten sekolah lain.
 
 = 1.0.1 - 2026-07-13 =
 
@@ -96,6 +131,22 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 * Menambahkan tata letak responsif, aksesibel, dan bebas dependensi pihak ketiga.
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+
+Menampilkan caption dan kredit foto berita yang dikelola melalui Media Library serta kompatibel dengan sinkronisasi Galeri pada Queen Al-Falah Core 1.9.0.
+
+= 1.4.0 =
+
+Menambahkan Galeri lokal dan sosial dengan filter sumber, kontrol pemuatan embed, serta fallback tautan yang aman.
+
+= 1.3.0 =
+
+Menambahkan tampilan katalog Sarana, Mitra, dan Ekstrakurikuler serta dukungan foto sumber Prestasi.
+
+= 1.2.0 =
+
+Menambahkan tampilan terstruktur dan ringkasan arsip yang lebih informatif untuk konten Prestasi.
 
 = 1.0.1 =
 

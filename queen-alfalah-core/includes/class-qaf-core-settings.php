@@ -61,6 +61,11 @@ final class QAF_Core_Settings {
 			'instagram_url'    => '',
 			'youtube_url'      => '',
 			'tiktok_url'       => '',
+			'google_analytics_id'      => '',
+			'google_site_verification' => '',
+			'media_drive_waka_url'    => '',
+			'media_drive_teacher_url' => '',
+			'media_drive_staff_url'   => '',
 		);
 	}
 
@@ -221,6 +226,36 @@ final class QAF_Core_Settings {
 				'group'       => 'Media Sosial',
 				'description' => 'Kosongkan sampai akun resmi terverifikasi.',
 			),
+			'google_analytics_id' => array(
+				'label'       => 'Google Analytics 4 Measurement ID',
+				'type'        => 'ga_measurement_id',
+				'group'       => 'Analitik dan Verifikasi',
+				'description' => 'Format G-XXXXXXXXXX. Kosongkan bila Analytics belum disetujui atau dikelola oleh plugin lain.',
+			),
+			'google_site_verification' => array(
+				'label'       => 'Token Verifikasi Search Console',
+				'type'        => 'google_verification',
+				'group'       => 'Analitik dan Verifikasi',
+				'description' => 'Masukkan hanya nilai content dari meta tag google-site-verification, bukan seluruh tag HTML.',
+			),
+			'media_drive_waka_url' => array(
+				'label'       => 'Folder Google Drive Waka',
+				'type'        => 'drive_url',
+				'group'       => 'Pusat Media',
+				'description' => 'Tautan folder Drive khusus Waka. Hanya akun dengan peran Waka yang melihat tautan ini.',
+			),
+			'media_drive_teacher_url' => array(
+				'label'       => 'Folder Google Drive Guru',
+				'type'        => 'drive_url',
+				'group'       => 'Pusat Media',
+				'description' => 'Tautan folder Drive khusus Guru. Ganti kapan saja bila folder penuh atau dipindahkan.',
+			),
+			'media_drive_staff_url' => array(
+				'label'       => 'Folder Google Drive Tendik',
+				'type'        => 'drive_url',
+				'group'       => 'Pusat Media',
+				'description' => 'Tautan folder Drive khusus Tenaga Kependidikan. Pastikan izin Drive dibatasi ke akun yang berwenang.',
+			),
 		);
 	}
 
@@ -331,9 +366,27 @@ final class QAF_Core_Settings {
 		}
 
 		$sanitized = array();
+		$previous  = get_option( self::OPTION_NAME, array() );
+		$previous  = is_array( $previous ) ? $previous : array();
 		foreach ( self::get_fields() as $key => $field ) {
-			$value             = isset( $input[ $key ] ) ? wp_unslash( $input[ $key ] ) : '';
-			$sanitized[ $key ] = self::sanitize_field( $value, $field['type'], $key );
+			$value     = isset( $input[ $key ] ) ? wp_unslash( $input[ $key ] ) : '';
+			$clean     = self::sanitize_field( $value, $field['type'], $key );
+			$submitted = is_scalar( $value ) ? trim( (string) $value ) : '';
+
+			// A paste error must not silently disable an existing valid integration.
+			if ( '' === $clean && '' !== $submitted && isset( $previous[ $key ] ) ) {
+				$old_value = is_scalar( $previous[ $key ] ) ? trim( (string) $previous[ $key ] ) : '';
+				if ( 'ga_measurement_id' === $field['type'] ) {
+					$old_value = strtoupper( $old_value );
+					if ( preg_match( '/^G-[A-Z0-9]{6,20}$/', $old_value ) ) {
+						$clean = $old_value;
+					}
+				} elseif ( 'google_verification' === $field['type'] && preg_match( '/^[A-Za-z0-9_-]{10,200}$/', $old_value ) ) {
+					$clean = $old_value;
+				}
+			}
+
+			$sanitized[ $key ] = $clean;
 		}
 
 		return $sanitized;
@@ -414,6 +467,37 @@ final class QAF_Core_Settings {
 				return sanitize_email( $value );
 			case 'url':
 				return esc_url_raw( $value, array( 'http', 'https' ) );
+			case 'drive_url':
+				$url  = esc_url_raw( $value, array( 'https' ) );
+				$host = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+				if ( '' === $url ) {
+					return '';
+				}
+				if ( ! in_array( $host, array( 'drive.google.com', 'docs.google.com' ), true ) ) {
+					add_settings_error( self::OPTION_NAME, 'invalid_' . $key, 'Tautan Pusat Media harus berasal dari Google Drive.' );
+					return '';
+				}
+				return $url;
+			case 'ga_measurement_id':
+				$value = strtoupper( trim( $value ) );
+				if ( '' === $value ) {
+					return '';
+				}
+				if ( ! preg_match( '/^G-[A-Z0-9]{6,20}$/', $value ) ) {
+					add_settings_error( self::OPTION_NAME, 'invalid_' . $key, 'Measurement ID Google Analytics harus menggunakan format G-XXXXXXXXXX.' );
+					return '';
+				}
+				return $value;
+			case 'google_verification':
+				$value = trim( $value );
+				if ( '' === $value ) {
+					return '';
+				}
+				if ( ! preg_match( '/^[A-Za-z0-9_-]{10,200}$/', $value ) ) {
+					add_settings_error( self::OPTION_NAME, 'invalid_' . $key, 'Token verifikasi Search Console tidak valid. Salin hanya nilai content dari meta tag Google.' );
+					return '';
+				}
+				return $value;
 			case 'npsn':
 				return preg_replace( '/[^0-9]/', '', $value );
 			case 'phone':
@@ -480,7 +564,7 @@ final class QAF_Core_Settings {
 			return;
 		}
 
-		$html_type = in_array( $field['type'], array( 'email', 'url', 'date' ), true ) ? $field['type'] : 'text';
+		$html_type = in_array( $field['type'], array( 'email', 'url', 'date' ), true ) ? $field['type'] : ( 'drive_url' === $field['type'] ? 'url' : 'text' );
 		printf(
 			'<input class="regular-text" type="%1$s" id="%2$s" name="%3$s" value="%4$s" autocomplete="off">',
 			esc_attr( $html_type ),

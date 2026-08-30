@@ -33,9 +33,9 @@ Lakukan uji staging sebelum pembaruan WordPress besar, PHP, plugin, tema, atau s
 
 1. Masuk ke Dasbor WordPress.
 2. Buka **Tampilan > Tema > Tambah Tema > Unggah Tema**.
-3. Pilih berkas **UPLOAD-TO-WORDPRESS-queen-alfalah-theme-1.0.1.zip**.
+3. Pilih berkas **queen-alfalah-1.5.0.zip**.
 4. Klik **Pasang Sekarang**, lalu **Aktifkan**.
-5. Buka **Plugin > Tambah Plugin > Unggah Plugin**, unggah **queen-alfalah-core-1.0.0.zip**, lalu aktifkan.
+5. Buka **Plugin > Tambah Plugin > Unggah Plugin**, unggah **queen-alfalah-core-1.9.0.zip**, lalu aktifkan.
 6. Lanjutkan ke penyiapan awal di bawah.
 
 ## Instalasi melalui folder
@@ -142,13 +142,30 @@ Plugin pendamping menyediakan:
 5. **Prestasi** — capaian siswa, guru, atau sekolah.
 6. **Ekstrakurikuler** — profil, jadwal, pembina, program, dan prestasi.
 7. **Layanan** — tautan menuju layanan sekolah seperti E-Learning, E-Rapor, perpustakaan, atau pengaduan.
-8. **Galeri** — dokumentasi foto atau video yang sudah mendapat izin.
+8. **Galeri** — dokumentasi foto/video lokal atau posting sosial terpilih yang sudah mendapat izin.
 9. **Mitra** — perguruan tinggi, dunia usaha, dunia industri, dan lembaga pendukung.
 10. **Lowongan** — peluang kerja yang sudah diverifikasi BKK.
 11. **Alumni** — kisah alumni dan hasil tracer yang aman dipublikasikan.
 12. **Sarana Prasarana** — profil fasilitas, kapasitas, status, foto, dan informasi penggunaan.
 
-Isikan gambar unggulan, ringkasan, dan data penting pada setiap entri. Gunakan judul yang deskriptif; jangan memasukkan tanggal ke judul bila tanggal sudah memiliki kolom tersendiri.
+Isikan gambar unggulan, ringkasan, dan data penting pada setiap entri. Caption gambar unggulan dapat disunting dari Media Library dan akan tampil bersama kredit/sumber berita bila plugin pendamping menyediakannya. Gunakan judul yang deskriptif; jangan memasukkan tanggal ke judul bila tanggal sudah memiliki kolom tersendiri.
+
+## Galeri lokal dan sosial
+
+Setiap entri Galeri dapat memakai salah satu sumber berikut:
+
+- **Lokal**: gunakan Gambar Unggulan sebagai sampul kartu/detail, susun foto melalui blok Gallery/Image, lalu tambahkan video melalui blok Video atau pilih satu berkas video dari Media Library pada kolom Galeri.
+- **Instagram, TikTok, Facebook, atau YouTube**: pilih platform dan masukkan URL HTTPS kanonik menuju satu postingan/video publik. Jangan menempelkan kode iframe, script, token, kata sandi, atau HTML embed.
+
+Untuk sumber sosial tersedia tiga perilaku:
+
+- **Klik untuk memuat (default)**: permintaan ke penyedia baru dilakukan setelah pengunjung menekan tombol.
+- **Muat otomatis**: embed dimuat saat halaman dibuka dan dapat membuat koneksi atau cookie pihak ketiga; gunakan hanya setelah penilaian privasi dan kebijakan cookie.
+- **Tautan saja**: tidak memuat embed pihak ketiga dan hanya membuka sumber asli.
+
+Tema tidak menyinkronkan feed sosial secara otomatis. Konten sosial harus tetap publik dan mengizinkan embed; postingan privat, dihapus, dibatasi wilayah/usia, atau diblokir penyedia mungkin tidak dapat tampil. Tautan ke sumber asli tetap disediakan sebagai fallback.
+
+Sebelum menerbitkan, pastikan sekolah memiliki izin publikasi dan hak pakai, cantumkan kredit/keterangan yang diperlukan, isi alt text untuk media lokal, hapus metadata lokasi yang tidak dibutuhkan, dan lindungi identitas siswa sesuai kebijakan sekolah.
 
 ## Program keahlian awal
 

@@ -216,7 +216,22 @@
     });
 
     document.addEventListener('click', (event) => {
-      if (!desktopNavigation.matches || navigation.contains(event.target)) {
+      if (!desktopNavigation.matches) {
+        const clickedToggle = toggle && toggle.contains(event.target);
+
+        if (
+          toggle &&
+          toggle.getAttribute('aria-expanded') === 'true' &&
+          !navigation.contains(event.target) &&
+          !clickedToggle
+        ) {
+          setMenuState(false);
+        }
+
+        return;
+      }
+
+      if (navigation.contains(event.target)) {
         return;
       }
 

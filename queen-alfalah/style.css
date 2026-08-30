@@ -4,7 +4,7 @@ Theme URI: https://smkqueenalfalah.sch.id/
 Author: SMK Queen Al-Falah
 Author URI: https://smkqueenalfalah.sch.id/
 Description: Tema sekolah modern untuk SMK Queen Al-Falah dengan tampilan emerald, emas, dan krem; responsif, ramah aksesibilitas, serta siap untuk berita, program keahlian, agenda, galeri, dan informasi sekolah.
-Version: 1.1.1
+Version: 1.5.0
 Requires at least: 6.2
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -72,10 +72,14 @@ Tags: education, blog, news, custom-logo, custom-menu, featured-images, threaded
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--qa-header-height) + 1.25rem);
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--qa-cream-50);
   color: var(--qa-ink);
   font-family: var(--qa-font-body);
@@ -621,6 +625,10 @@ body:not(.has-sticky-header) .site-header {
   padding: 1rem;
   background: var(--qa-cream-50);
   box-shadow: inset 0 1px var(--qa-border);
+}
+
+.site-nav__header {
+  display: none;
 }
 
 .js-enabled .site-nav {
@@ -1198,6 +1206,30 @@ body:not(.has-sticky-header) .site-header {
   font-size: 0.77rem;
 }
 
+.achievement-card__meta {
+  align-items: center;
+}
+
+.achievement-card__award {
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--qa-radius-pill);
+  background: var(--qa-gold-100);
+  color: var(--qa-gold-700);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.achievement-card__scope,
+.achievement-card__date {
+  color: var(--qa-muted);
+}
+
+.achievement-card__scope + .achievement-card__date::before {
+  content: "\2022";
+  margin-inline-end: 0.35rem;
+  color: var(--qa-gold-600);
+}
+
 .news-card__title,
 .program-card__title {
   margin-bottom: 0.55rem;
@@ -1749,6 +1781,23 @@ body:not(.has-sticky-header) .site-header {
 
 .post-thumbnail img {
   width: 100%;
+}
+
+.post-thumbnail__caption {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.8rem 1rem 0.9rem;
+  background: var(--qa-surface);
+  color: var(--qa-muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.post-thumbnail__caption a,
+.post-thumbnail__caption small {
+  width: fit-content;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .entry-footer {
@@ -2375,6 +2424,167 @@ body:not(.has-sticky-header) .site-header {
   }
 }
 
+/* Present mobile navigation as a spacious, scrollable off-canvas drawer. */
+@media (max-width: 47.99rem) {
+  body.nav-open .nav-wrap::before {
+    position: fixed;
+    z-index: 69;
+    inset: 0;
+    background: rgba(5, 46, 38, 0.58);
+    content: "";
+    opacity: 1;
+    backdrop-filter: blur(3px);
+  }
+
+  body:not(.has-sticky-header) .site-header {
+    position: sticky;
+  }
+
+  .header-main {
+    min-height: max(var(--qa-header-height), 4.75rem);
+    padding-block: 0.5rem;
+  }
+
+  .menu-toggle {
+    position: relative;
+    z-index: 1;
+  }
+
+  body.nav-open .menu-toggle {
+    position: fixed;
+    z-index: 72;
+    top: calc(var(--wp-admin--admin-bar--height, 0px) + max(1rem, env(safe-area-inset-top)));
+    right: max(1rem, env(safe-area-inset-right));
+    border-color: rgba(255, 255, 255, 0.24);
+    background: var(--qa-emerald-900);
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(5, 46, 38, 0.28);
+  }
+
+  .js-enabled .site-nav {
+    z-index: 70;
+    inset: 0 0 0 auto;
+    width: min(92vw, 26rem);
+    height: 100vh;
+    height: 100dvh;
+    padding: calc(var(--wp-admin--admin-bar--height, 0px) + max(1rem, env(safe-area-inset-top))) max(1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+    border-radius: 1.25rem 0 0 1.25rem;
+    background: linear-gradient(160deg, #ffffff 0%, var(--qa-cream-50) 52%, var(--qa-emerald-50) 100%);
+    box-shadow: -18px 0 55px rgba(5, 46, 38, 0.22);
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .js-enabled .site-nav[aria-hidden="true"] {
+    pointer-events: none;
+  }
+
+  .js-enabled .site-nav.is-open,
+  .js-enabled .site-nav[aria-hidden="false"] {
+    transform: translateX(0);
+  }
+
+  .site-nav__header {
+    display: grid;
+    gap: 0.05rem;
+    min-height: 4rem;
+    align-content: center;
+    margin: -0.2rem 3.75rem 1rem 0;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--qa-border);
+  }
+
+  .site-nav__header span {
+    color: var(--qa-gold-700);
+    font-size: 0.7rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .site-nav__header strong {
+    color: var(--qa-emerald-950);
+    font-family: var(--qa-font-heading);
+    font-size: 1.55rem;
+    line-height: 1.2;
+  }
+
+  .site-nav > ul,
+  .site-nav > .menu,
+  .site-nav .menu-primary-container > ul {
+    gap: 0.45rem;
+  }
+
+  .site-nav li > a {
+    min-height: 3.25rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.72);
+    font-size: 0.96rem;
+    box-shadow: 0 3px 12px rgba(5, 46, 38, 0.045);
+  }
+
+  .site-nav li > a:hover,
+  .site-nav li > a:focus-visible,
+  .site-nav .current-menu-item > a,
+  .site-nav .current-menu-ancestor > a,
+  .site-nav .current_page_item > a {
+    border-color: rgba(8, 114, 90, 0.18);
+  }
+
+  .site-nav .menu-item-has-children > a {
+    padding-inline-end: 3.5rem;
+  }
+
+  .submenu-toggle,
+  .dropdown-toggle {
+    top: 0.25rem;
+    right: 0.3rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid transparent;
+  }
+
+  .submenu-toggle:hover,
+  .submenu-toggle:focus-visible,
+  .dropdown-toggle:hover,
+  .dropdown-toggle:focus-visible {
+    border-color: var(--qa-gold-200);
+  }
+
+  .site-nav .sub-menu {
+    margin: 0.4rem 0 0.35rem 0.8rem;
+    padding-inline-start: 0.75rem;
+  }
+
+  .site-nav .sub-menu a {
+    min-height: 2.85rem;
+    background: rgba(240, 250, 246, 0.86);
+    box-shadow: none;
+  }
+
+  .site-nav .site-nav__contact {
+    margin-top: 1.25rem;
+    border: 1px solid rgba(8, 114, 90, 0.14);
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  body.nav-open .floating-whatsapp,
+  body.nav-open .back-to-top {
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .js-enabled .site-nav {
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Queen portal composition additions
    -------------------------------------------------------------------------- */
@@ -2955,6 +3165,209 @@ body:not(.has-sticky-header) .site-header {
   .btn,
   .wp-block-button__link {
     box-shadow: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Configurable local and social-media Gallery
+   -------------------------------------------------------------------------- */
+
+.gallery-caption__source {
+  display: block;
+  margin-top: 0.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.gallery-source-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+
+.gallery-source-filters a {
+  display: inline-flex;
+  min-height: 2.65rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.gallery-source-filters a:hover,
+.gallery-source-filters a:focus-visible,
+.gallery-source-filters a[aria-current="page"] {
+  border-color: var(--qa-gold-400);
+  background: var(--qa-gold-400);
+  color: var(--qa-emerald-950);
+}
+
+.gallery-media {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto 1.75rem;
+}
+
+.gallery-media--local,
+.gallery-media--fallback,
+.gallery-media--link {
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius-lg);
+  background: #ffffff;
+  box-shadow: var(--qa-shadow-sm);
+}
+
+.gallery-media--local .wp-video,
+.gallery-media--local video {
+  width: 100% !important;
+  max-width: none;
+}
+
+.gallery-media--fallback,
+.gallery-media--link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gallery-media--fallback p,
+.gallery-media--link p {
+  margin: 0;
+}
+
+.gallery-embed {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius-lg);
+  background:
+    radial-gradient(circle at 80% 10%, rgba(210, 155, 44, 0.22), transparent 34%),
+    linear-gradient(145deg, var(--qa-emerald-950), var(--qa-emerald-700));
+  box-shadow: var(--qa-shadow-md);
+}
+
+.gallery-embed--wide {
+  aspect-ratio: 16 / 9;
+}
+
+.gallery-embed--portrait {
+  max-width: 540px;
+  min-height: 620px;
+  margin-inline: auto;
+}
+
+.gallery-embed__content,
+.gallery-embed__content iframe {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+
+.gallery-embed__content iframe {
+  display: block;
+  border: 0;
+}
+
+.gallery-embed__content .instagram-media {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+.gallery-embed__content:focus {
+  outline: 3px solid var(--qa-gold-400);
+  outline-offset: -4px;
+}
+
+.gallery-embed__consent {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.gallery-embed__consent:hover,
+.gallery-embed__consent:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.gallery-embed__consent:focus-visible {
+  outline: 3px solid var(--qa-gold-400);
+  outline-offset: -5px;
+}
+
+.gallery-embed__consent .icon {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  color: var(--qa-gold-400);
+}
+
+.gallery-embed__consent strong,
+.gallery-embed__consent small {
+  display: block;
+}
+
+.gallery-embed__consent strong {
+  font-family: var(--qa-font-heading);
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+}
+
+.gallery-embed__consent small {
+  max-width: 36rem;
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.gallery-media__fallback {
+  margin: 0.8rem 0 0;
+  color: var(--qa-muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.gallery-media__fallback a {
+  font-weight: 750;
+}
+
+@media (max-width: 560px) {
+  .gallery-source-filters {
+    gap: 0.4rem;
+  }
+
+  .gallery-source-filters a {
+    min-height: 2.45rem;
+    padding-inline: 0.72rem;
+    font-size: 0.78rem;
+  }
+
+  .gallery-embed--portrait {
+    min-height: 530px;
   }
 }
 

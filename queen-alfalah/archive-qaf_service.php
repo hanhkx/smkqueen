@@ -43,6 +43,7 @@ $applications = new WP_Query(
 						$app_url     = (string) queen_alfalah_meta( $app_id, 'external_url' );
 						$app_icon    = sanitize_key( queen_alfalah_meta( $app_id, 'icon_name', 'monitor' ) );
 						$app_status  = sanitize_key( queen_alfalah_meta( $app_id, 'service_status', 'active' ) );
+						$app_new_tab = (bool) queen_alfalah_meta( $app_id, 'open_new', true );
 						$app_active  = $app_url && 'active' === $app_status;
 						$app_excerpt = has_excerpt() ? get_the_excerpt() : wp_trim_words( wp_strip_all_tags( get_the_content() ), 22 );
 						$status_text = 'maintenance' === $app_status ? __( 'Pemeliharaan', 'queen-alfalah' ) : ( $app_active ? __( 'Aktif', 'queen-alfalah' ) : __( 'Belum tersedia', 'queen-alfalah' ) );
@@ -55,7 +56,7 @@ $applications = new WP_Query(
 							<h2><?php the_title(); ?></h2>
 							<p><?php echo esc_html( $app_excerpt ); ?></p>
 							<?php if ( $app_active ) : ?>
-								<a class="button application-card__button" href="<?php echo esc_url( $app_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Masuk Aplikasi', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'external' ); ?><span class="screen-reader-text"> <?php esc_html_e( '(tab baru)', 'queen-alfalah' ); ?></span></a>
+								<a class="button application-card__button" href="<?php echo esc_url( $app_url ); ?>"<?php echo $app_new_tab ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>><?php esc_html_e( 'Masuk Aplikasi', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( $app_new_tab ? 'external' : 'arrow-right' ); ?><?php if ( $app_new_tab ) : ?><span class="screen-reader-text"> <?php esc_html_e( '(tab baru)', 'queen-alfalah' ); ?></span><?php endif; ?></a>
 							<?php else : ?>
 								<span class="button application-card__button application-card__button--disabled" aria-disabled="true"><?php echo esc_html( $status_text ); ?></span>
 							<?php endif; ?>
@@ -78,4 +79,3 @@ $applications = new WP_Query(
 </main>
 
 <?php get_footer(); ?>
-

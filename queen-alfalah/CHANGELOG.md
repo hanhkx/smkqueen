@@ -2,6 +2,47 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.5.0 — 2026-08-27
+
+### Ditambahkan
+
+- Caption gambar unggulan berita yang diambil dari field Caption Media Library.
+- Kredit foto dan tautan ke unggahan Instagram sumber saat metadata tersedia.
+- Gaya caption responsif yang menyatu dengan kartu gambar pada halaman detail.
+- Pencegahan halaman melebar akibat panel navigasi seluler yang sedang tertutup.
+
+## 1.4.0 — 2026-07-30
+
+### Ditambahkan
+
+- Filter sumber Galeri untuk media lokal, Instagram, TikTok, Facebook, dan YouTube.
+- Tampilan media lokal dari Gambar Unggulan, blok konten, dan video Media Library.
+- Tampilan posting sosial dari URL HTTPS kanonik tanpa menerima iframe, script, token, atau kata sandi.
+- Pilihan **Klik untuk memuat** sebagai default yang lebih ramah privasi, **Muat otomatis**, dan **Tautan saja**.
+- Tautan sumber sebagai fallback bila konten sosial privat, dihapus, dibatasi, atau gagal dimuat.
+
+### Privasi dan integrasi
+
+- Tidak ada sinkronisasi feed sosial otomatis.
+- Permintaan ke penyedia sosial pada mode default baru dilakukan setelah tindakan pengunjung.
+- Mode otomatis tetap memerlukan penilaian privasi, cookie, izin publikasi, hak cipta, dan perlindungan data siswa oleh pengelola.
+
+## 1.3.0 — 2026-07-29
+
+### Ditambahkan
+
+- Arsip khusus PKL & Mitra Industri dengan penjelasan status verifikasi.
+- Tampilan field terstruktur untuk Sarana Prasarana, Mitra, Ekstrakurikuler, dan Prestasi.
+- Ilustrasi lokal untuk sebelas Ekstrakurikuler sebagai fallback gambar.
+- Dukungan foto sumber Prestasi yang disinkronkan plugin ke slot gambar unggulan kosong.
+
+## 1.2.0 — 2026-07-23
+
+### Ditambahkan
+
+- Detail Prestasi: penerima, penyelenggara, juara/penghargaan, bidang, ruang lingkup, tanggal, dan tautan sumber.
+- Ringkasan Prestasi yang lebih informatif pada kartu arsip.
+
 ## 1.0.1 — 2026-07-13
 
 ### Ditambahkan
