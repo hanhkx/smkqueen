@@ -165,9 +165,10 @@ if ( $landing_bg ) {
 						<article <?php post_class( 'program-card' ); ?>>
 							<a class="program-card__media" href="<?php the_permalink(); ?>">
 								<?php if ( has_post_thumbnail() ) : ?>
-									<?php the_post_thumbnail( 'queen-program', array( 'loading' => 'lazy' ) ); ?>
+									<?php the_post_thumbnail( 'queen-card-contain', array( 'loading' => 'lazy' ) ); ?>
 								<?php else : ?>
 									<img src="<?php echo esc_url( queen_alfalah_placeholder( 'program' ) ); ?>" width="900" height="620" loading="lazy" alt="">
+									<span class="visual-disclosure"><?php esc_html_e( 'Ilustrasi', 'queen-alfalah' ); ?></span>
 								<?php endif; ?>
 								<?php if ( $gender ) : ?><span class="program-card__label"><?php echo esc_html( $gender ); ?></span><?php endif; ?>
 							</a>
@@ -366,7 +367,7 @@ if ( $landing_bg ) {
 				<?php if ( $gallery_query && $gallery_query->have_posts() ) : ?>
 					<?php while ( $gallery_query->have_posts() ) : $gallery_query->the_post(); ?>
 						<a href="<?php the_permalink(); ?>">
-							<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'queen-card', array( 'loading' => 'lazy', 'alt' => get_the_title() ) ); else : ?><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="720" height="480" loading="lazy" alt=""><?php endif; ?>
+							<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'queen-card-square', array( 'loading' => 'lazy', 'alt' => get_the_title() ) ); else : ?><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="1200" height="800" loading="lazy" alt=""><span class="visual-disclosure"><?php esc_html_e( 'Ilustrasi', 'queen-alfalah' ); ?></span><?php endif; ?>
 							<span class="gallery-caption">
 								<span><?php the_title(); ?></span>
 								<small class="gallery-caption__source"><?php echo esc_html( queen_alfalah_gallery_source_label( get_the_ID() ) ); ?></small>
@@ -374,7 +375,7 @@ if ( $landing_bg ) {
 						</a>
 					<?php endwhile; wp_reset_postdata(); ?>
 				<?php else : ?>
-					<a class="gallery-placeholder" href="<?php echo esc_url( queen_alfalah_archive_url( 'qaf_gallery', 'galeri' ) ); ?>"><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="720" height="480" loading="lazy" alt=""><span class="gallery-caption"><?php esc_html_e( 'Galeri sekolah akan tampil di sini', 'queen-alfalah' ); ?></span></a>
+					<a class="gallery-placeholder" href="<?php echo esc_url( queen_alfalah_archive_url( 'qaf_gallery', 'galeri' ) ); ?>"><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="1200" height="800" loading="lazy" alt=""><span class="visual-disclosure"><?php esc_html_e( 'Ilustrasi', 'queen-alfalah' ); ?></span><span class="gallery-caption"><?php esc_html_e( 'Galeri sekolah akan tampil di sini', 'queen-alfalah' ); ?></span></a>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -402,11 +403,7 @@ if ( $landing_bg ) {
 				</ul>
 				<a class="button" href="<?php echo esc_url( queen_alfalah_page_url( 'kontak' ) ); ?>"><?php esc_html_e( 'Buka halaman kontak', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'arrow-right' ); ?></a>
 			</div>
-			<a class="map-card" href="<?php echo esc_url( queen_alfalah_school_info( 'maps_url' ) ); ?>" target="_blank" rel="noopener noreferrer">
-				<span class="map-card__pin"><?php echo queen_alfalah_icon( 'map-pin' ); ?></span>
-				<strong><?php esc_html_e( 'Ploso, Mojo, Kabupaten Kediri', 'queen-alfalah' ); ?></strong>
-				<small><?php esc_html_e( 'Buka lokasi di peta', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'external' ); ?></small>
-			</a>
+			<?php queen_alfalah_school_map( 'home' ); ?>
 		</div>
 	</section>
 </main>

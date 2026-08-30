@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUEEN_ALFALAH_VERSION', '1.5.0' );
+define( 'QUEEN_ALFALAH_VERSION', '1.6.1' );
 define( 'QUEEN_ALFALAH_DIR', get_template_directory() );
 define( 'QUEEN_ALFALAH_URI', get_template_directory_uri() );
 
@@ -56,8 +56,8 @@ function queen_alfalah_setup() {
 	);
 
 	add_editor_style( array( 'style.css', 'assets/css/editor-style.css' ) );
-	add_image_size( 'queen-card', 720, 480, true );
-	add_image_size( 'queen-program', 900, 620, true );
+	add_image_size( 'queen-card-square', 720, 720, true );
+	add_image_size( 'queen-card-contain', 900, 900, false );
 	add_image_size( 'queen-person', 640, 760, true );
 
 	register_nav_menus(

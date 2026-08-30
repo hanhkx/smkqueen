@@ -12,16 +12,9 @@ $queen_is_achievement = 'qaf_achievement' === $queen_post_type;
 $queen_is_gallery     = 'qaf_gallery' === $queen_post_type;
 $queen_card_class     = $queen_is_program ? 'program-card' : 'news-card';
 $queen_article_class  = $queen_card_class . ( $queen_is_achievement ? ' achievement-card' : '' );
-$queen_image_size     = $queen_is_program ? 'queen-program' : 'queen-card';
-$queen_placeholder    = 'default';
-
-if ( in_array( $queen_post_type, array( 'qaf_teacher', 'qaf_alumni' ), true ) ) {
-	$queen_placeholder = 'person';
-} elseif ( 'qaf_program' === $queen_post_type ) {
-	$queen_placeholder = 'program';
-} elseif ( 'qaf_gallery' === $queen_post_type ) {
-	$queen_placeholder = 'gallery';
-}
+$queen_uses_contain   = in_array( $queen_post_type, array( 'qaf_program', 'qaf_teacher', 'qaf_partner' ), true );
+$queen_image_size     = $queen_uses_contain ? 'queen-card-contain' : 'queen-card-square';
+$queen_fallback_visual = has_post_thumbnail() ? array() : queen_alfalah_fallback_visual( get_the_ID() );
 
 $queen_card_label = $queen_type_object ? $queen_type_object->labels->singular_name : __( 'Informasi', 'queen-alfalah' );
 
@@ -63,7 +56,6 @@ $queen_compact_meta = array(
 $queen_meta_value = '';
 $queen_meta_label = '';
 $queen_achievement_summary = array();
-$queen_extra_illustration = 'qaf_extra' === $queen_post_type ? queen_alfalah_extra_illustration( get_the_ID() ) : '';
 
 if ( $queen_is_achievement ) {
 	$queen_achievement_award = queen_alfalah_meta( get_the_ID(), 'award' );
@@ -117,10 +109,9 @@ if ( $queen_is_achievement ) {
 	<a class="<?php echo esc_attr( $queen_card_class . '__media' ); ?>" href="<?php echo esc_url( get_permalink() ); ?>" tabindex="-1" aria-hidden="true">
 		<?php if ( has_post_thumbnail() ) : ?>
 			<?php the_post_thumbnail( $queen_image_size, array( 'loading' => 'lazy', 'decoding' => 'async' ) ); ?>
-		<?php elseif ( $queen_extra_illustration ) : ?>
-			<img src="<?php echo esc_url( $queen_extra_illustration ); ?>" alt="" width="1200" height="800" loading="lazy" decoding="async">
-		<?php else : ?>
-			<img src="<?php echo esc_url( queen_alfalah_placeholder( $queen_placeholder ) ); ?>" alt="" width="720" height="480" loading="lazy" decoding="async">
+		<?php elseif ( $queen_fallback_visual ) : ?>
+			<img src="<?php echo esc_url( $queen_fallback_visual['url'] ); ?>" alt="" width="<?php echo esc_attr( $queen_fallback_visual['width'] ); ?>" height="<?php echo esc_attr( $queen_fallback_visual['height'] ); ?>" loading="lazy" decoding="async">
+			<span class="visual-disclosure"><?php echo esc_html( $queen_fallback_visual['label'] ); ?></span>
 		<?php endif; ?>
 		<span class="<?php echo esc_attr( $queen_card_class . ( $queen_is_program ? '__label' : '__category' ) ); ?>"><?php echo esc_html( $queen_card_label ); ?></span>
 	</a>

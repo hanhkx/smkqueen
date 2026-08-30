@@ -74,6 +74,12 @@ $queen_socials    = queen_alfalah_social_links();
 					<?php endif; ?>
 				</address>
 
+				<section class="contact-map" aria-labelledby="contact-map-title">
+					<h2 id="contact-map-title"><?php esc_html_e( 'Temui Kami di Peta', 'queen-alfalah' ); ?></h2>
+					<p><?php esc_html_e( 'Gunakan peta interaktif untuk melihat lokasi sekolah dan merencanakan rute kunjungan.', 'queen-alfalah' ); ?></p>
+					<?php queen_alfalah_school_map( 'contact' ); ?>
+				</section>
+
 				<div class="notice">
 					<p><strong><?php esc_html_e( 'Keamanan komunikasi:', 'queen-alfalah' ); ?></strong> <?php esc_html_e( 'Tema tidak mengirim atau menyimpan pesan formulir. Jangan mengirim NIK, NISN, kata sandi, data kesehatan, atau dokumen pribadi melalui kanal publik. Gunakan layanan resmi yang diarahkan petugas sekolah.', 'queen-alfalah' ); ?></p>
 				</div>

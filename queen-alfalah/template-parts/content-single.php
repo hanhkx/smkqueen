@@ -8,15 +8,6 @@
 $queen_post_type   = get_post_type();
 $queen_type_object = get_post_type_object( $queen_post_type );
 $queen_type_label  = $queen_type_object ? $queen_type_object->labels->singular_name : __( 'Informasi Sekolah', 'queen-alfalah' );
-$queen_placeholder = 'default';
-
-if ( in_array( $queen_post_type, array( 'qaf_teacher', 'qaf_alumni' ), true ) ) {
-	$queen_placeholder = 'person';
-} elseif ( 'qaf_program' === $queen_post_type ) {
-	$queen_placeholder = 'program';
-} elseif ( 'qaf_gallery' === $queen_post_type ) {
-	$queen_placeholder = 'gallery';
-}
 
 /*
  * Field definitions stay in the presentation layer so the theme remains
@@ -102,7 +93,6 @@ $queen_detail_fields = array(
 );
 
 $queen_details = array();
-$queen_extra_illustration = 'qaf_extra' === $queen_post_type ? queen_alfalah_extra_illustration( get_the_ID() ) : '';
 $queen_details_title = 'qaf_achievement' === $queen_post_type
 	? __( 'Detail Prestasi', 'queen-alfalah' )
 	: __( 'Informasi Utama', 'queen-alfalah' );
@@ -131,6 +121,7 @@ $queen_thumbnail_id = has_post_thumbnail() ? (int) get_post_thumbnail_id() : 0;
 $queen_thumbnail_caption = $queen_thumbnail_id ? (string) wp_get_attachment_caption( $queen_thumbnail_id ) : '';
 $queen_instagram_source = 'post' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_instagram_source_url', true ) : '';
 $queen_image_credit = 'post' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_image_credit', true ) : '';
+$queen_fallback_visual = $queen_thumbnail_id ? array() : queen_alfalah_fallback_visual( get_the_ID() );
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'single-entry' ); ?>>
@@ -143,10 +134,8 @@ $queen_image_credit = 'post' === $queen_post_type ? (string) get_post_meta( get_
 	<figure class="post-thumbnail">
 		<?php if ( has_post_thumbnail() ) : ?>
 			<?php the_post_thumbnail( 'full', array( 'decoding' => 'async' ) ); ?>
-		<?php elseif ( $queen_extra_illustration ) : ?>
-			<img src="<?php echo esc_url( $queen_extra_illustration ); ?>" alt="" width="1200" height="800" decoding="async">
-		<?php else : ?>
-			<img src="<?php echo esc_url( queen_alfalah_placeholder( $queen_placeholder ) ); ?>" alt="" width="1200" height="800" decoding="async">
+		<?php elseif ( $queen_fallback_visual ) : ?>
+			<img src="<?php echo esc_url( $queen_fallback_visual['url'] ); ?>" alt="" width="<?php echo esc_attr( $queen_fallback_visual['width'] ); ?>" height="<?php echo esc_attr( $queen_fallback_visual['height'] ); ?>" decoding="async">
 		<?php endif; ?>
 		<?php if ( $queen_thumbnail_id && ( $queen_thumbnail_caption || $queen_image_credit || $queen_instagram_source ) ) : ?>
 			<figcaption class="post-thumbnail__caption">
@@ -160,6 +149,11 @@ $queen_image_credit = 'post' === $queen_post_type ? (string) get_post_meta( get_
 				<?php elseif ( $queen_image_credit ) : ?>
 					<small><?php echo esc_html( $queen_image_credit ); ?></small>
 				<?php endif; ?>
+			</figcaption>
+		<?php elseif ( $queen_fallback_visual ) : ?>
+			<figcaption class="post-thumbnail__caption post-thumbnail__caption--illustration">
+				<strong><?php echo esc_html( $queen_fallback_visual['label'] ); ?>.</strong>
+				<span><?php echo esc_html( $queen_fallback_visual['caption'] ); ?></span>
 			</figcaption>
 		<?php endif; ?>
 	</figure>

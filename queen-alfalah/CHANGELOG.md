@@ -2,6 +2,32 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.6.1 — 2026-08-30
+
+### Diubah
+
+- Seluruh thumbnail kartu Berita, Program Keahlian, Guru/Tendik, Prestasi, Galeri, Mitra, Sarana Prasarana, dan arsip konten lain memakai rasio 1:1.
+- Foto Guru/Tendik serta logo Program Keahlian dan Mitra memakai mode `contain` agar visual tampil utuh di dalam kotak.
+- Foto berita, galeri, prestasi, dan konten fotografis tetap memenuhi kotak dengan mode `cover`; foto orang dan Prestasi diposisikan dari bagian atas untuk menjaga wajah tetap terlihat.
+- Ukuran gambar WordPress baru memisahkan thumbnail persegi dan visual tanpa crop; media lama tetap memiliki fallback ke berkas sumber sampai thumbnail diregenerasi.
+
+## 1.6.0 — 2026-08-30
+
+### Ditambahkan
+
+- Embed Google Maps berbasis latitude/longitude tervalidasi pada beranda dan halaman Kontak.
+- Tautan **Buka di Google Maps** dan kartu tautan lama sebagai fallback bila koordinat tidak valid.
+- Sebelas ilustrasi kategori WebP untuk sekolah, orang, Galeri, Prestasi, layanan, karier, serta lima kelompok Sarana Prasarana.
+- Resolver visual terpusat yang memprioritaskan Gambar Unggulan administrator dan ilustrasi khusus entri.
+- Label serta caption **Ilustrasi** agar visual sintetis tidak dianggap sebagai dokumentasi asli.
+- Panduan visual fallback dan roadmap pengelolaan website September 2026–Agustus 2027.
+
+### Keamanan dan privasi
+
+- Sumber iframe peta hanya dibentuk dari koordinat numerik pada host Google yang tetap; URL peta bebas tidak pernah dipakai sebagai iframe.
+- Peta memakai lazy loading dan memerlukan penjelasan koneksi pihak ketiga pada kebijakan privasi sekolah.
+- Fallback visual tidak membuat attachment, mengubah database, atau menimpa media administrator.
+
 ## 1.5.0 — 2026-08-27
 
 ### Ditambahkan

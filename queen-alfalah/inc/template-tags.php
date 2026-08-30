@@ -34,6 +34,8 @@ function queen_alfalah_default_school_settings() {
 		'vision'            => 'Mencetak siswa yang cerdas, profesional, berdaya saing nasional maupun internasional, dan berakhlaqul karimah.',
 		'ppdb_label'        => 'Pendaftaran Santri Baru',
 		'ppdb_url'          => 'https://psb.queenalfalah.id/',
+		'latitude'          => '-7.9199',
+		'longitude'         => '111.9604',
 		'maps_url'          => 'https://www.google.com/maps/search/?api=1&query=SMK+Queen+Al+Falah+Mojo+Kediri',
 		'instagram'         => '',
 		'facebook'          => '',
@@ -77,12 +79,115 @@ function queen_alfalah_school_info( $key, $default = '' ) {
 		if ( '' !== $value && null !== $value ) {
 			return $value;
 		}
-		if ( in_array( $key, array( 'whatsapp', 'facebook', 'instagram', 'youtube', 'tiktok' ), true ) ) {
+		if ( in_array( $key, array( 'whatsapp', 'facebook', 'instagram', 'youtube', 'tiktok', 'latitude', 'longitude' ), true ) ) {
 			return '';
 		}
 	}
 
 	return get_theme_mod( 'queen_' . $key, $fallback );
+}
+
+/**
+ * Normalize one decimal map coordinate.
+ *
+ * Scientific notation and non-scalar values are rejected so an iframe URL is
+ * always assembled from a small, predictable character set.
+ *
+ * @param mixed $value Coordinate value.
+ * @param float $min   Inclusive lower bound.
+ * @param float $max   Inclusive upper bound.
+ * @return string
+ */
+function queen_alfalah_normalize_coordinate( $value, $min, $max ) {
+	if ( ! is_scalar( $value ) ) {
+		return '';
+	}
+
+	$value = trim( (string) $value );
+	if ( '' === $value || ! preg_match( '/^-?(?:\d+(?:\.\d+)?|\.\d+)$/', $value ) ) {
+		return '';
+	}
+
+	$coordinate = (float) $value;
+	if ( ! is_finite( $coordinate ) || $coordinate < $min || $coordinate > $max ) {
+		return '';
+	}
+	if ( 0.0 === $coordinate ) {
+		$coordinate = 0.0;
+	}
+
+	return rtrim( rtrim( number_format( $coordinate, 7, '.', '' ), '0' ), '.' );
+}
+
+/**
+ * Build a fixed-host Google Maps embed URL from validated school coordinates.
+ *
+ * The editable external map URL is deliberately not used as an iframe source.
+ * This keeps arbitrary hosts out of the page while allowing administrators to
+ * replace the regular "open map" link independently.
+ *
+ * @return string
+ */
+function queen_alfalah_map_embed_url() {
+	$latitude  = queen_alfalah_normalize_coordinate( queen_alfalah_school_info( 'latitude' ), -90, 90 );
+	$longitude = queen_alfalah_normalize_coordinate( queen_alfalah_school_info( 'longitude' ), -180, 180 );
+
+	if ( '' === $latitude || '' === $longitude ) {
+		return '';
+	}
+
+	return 'https://www.google.com/maps?q=' . rawurlencode( $latitude . ',' . $longitude ) . '&z=17&output=embed';
+}
+
+/**
+ * Render the school map with an accessible external-link fallback.
+ *
+ * @param string $context Optional presentation context: home or contact.
+ */
+function queen_alfalah_school_map( $context = '' ) {
+	$allowed_contexts = array( 'home', 'contact' );
+	$context          = in_array( $context, $allowed_contexts, true ) ? $context : '';
+	$embed_url        = queen_alfalah_map_embed_url();
+	$maps_url         = (string) queen_alfalah_school_info( 'maps_url' );
+	$location_label   = __( 'Ploso, Mojo, Kabupaten Kediri', 'queen-alfalah' );
+	$class_name       = 'school-map' . ( $context ? ' school-map--' . $context : '' );
+
+	if ( $embed_url ) :
+		?>
+		<div class="<?php echo esc_attr( $class_name ); ?>">
+			<div class="school-map__frame">
+				<iframe
+					title="<?php esc_attr_e( 'Peta lokasi SMK Queen Al-Falah', 'queen-alfalah' ); ?>"
+					src="<?php echo esc_url( $embed_url ); ?>"
+					loading="lazy"
+					referrerpolicy="strict-origin-when-cross-origin"
+					allowfullscreen
+				></iframe>
+			</div>
+			<div class="school-map__footer">
+				<span><?php echo queen_alfalah_icon( 'map-pin' ); ?><?php echo esc_html( $location_label ); ?></span>
+				<?php if ( $maps_url ) : ?>
+					<a href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php esc_html_e( 'Buka di Google Maps', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'external' ); ?>
+						<span class="screen-reader-text"> <?php esc_html_e( '(tab baru)', 'queen-alfalah' ); ?></span>
+					</a>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php
+		return;
+	endif;
+
+	if ( $maps_url ) :
+		?>
+		<a class="map-card" href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener noreferrer">
+			<span class="map-card__pin"><?php echo queen_alfalah_icon( 'map-pin' ); ?></span>
+			<strong><?php echo esc_html( $location_label ); ?></strong>
+			<small><?php esc_html_e( 'Buka lokasi di peta', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'external' ); ?></small>
+			<span class="screen-reader-text"> <?php esc_html_e( '(tab baru)', 'queen-alfalah' ); ?></span>
+		</a>
+		<?php
+	endif;
 }
 
 /**
@@ -270,13 +375,190 @@ function queen_alfalah_breadcrumbs() {
 /**
  * Use a local illustration when a post has no thumbnail.
  *
+ * Generated category visuals are clearly disclosed by the calling template.
+ * Legacy SVGs remain available for the principal and program placeholders.
+ *
  * @param string $variant Optional placeholder type.
  * @return string
  */
 function queen_alfalah_placeholder( $variant = 'default' ) {
-	$allowed = array( 'default', 'program', 'person', 'gallery' );
-	$variant = in_array( $variant, $allowed, true ) ? $variant : 'default';
+	$generated = array(
+		'school'            => 'fallback-school.webp',
+		'people'            => 'fallback-people.webp',
+		'gallery'           => 'fallback-gallery.webp',
+		'achievement'       => 'fallback-achievement.webp',
+		'service'           => 'fallback-service.webp',
+		'career'            => 'fallback-career.webp',
+		'facility'          => 'fallback-facility.webp',
+		'facility-digital'  => 'fallback-facility-digital.webp',
+		'facility-health'   => 'fallback-facility-health.webp',
+		'facility-office'   => 'fallback-facility-office.webp',
+		'facility-campus'   => 'fallback-facility-campus.webp',
+	);
+
+	if ( isset( $generated[ $variant ] ) ) {
+		$relative = '/assets/images/fallback/' . $generated[ $variant ];
+		if ( is_readable( QUEEN_ALFALAH_DIR . $relative ) ) {
+			return QUEEN_ALFALAH_URI . $relative;
+		}
+	}
+
+	$legacy  = array( 'default', 'program', 'person', 'gallery' );
+	$variant = in_array( $variant, $legacy, true ) ? $variant : 'default';
 	return QUEEN_ALFALAH_URI . '/assets/images/placeholder-' . $variant . '.svg';
+}
+
+/**
+ * Check a portable slug for one of several category hints.
+ *
+ * @param string        $slug    Post, page, category, or term slug.
+ * @param array<string> $needles Category hints.
+ * @return bool
+ */
+function queen_alfalah_slug_matches( $slug, $needles ) {
+	$slug = strtolower( (string) $slug );
+	foreach ( $needles as $needle ) {
+		$needle = strtolower( (string) $needle );
+		$match  = strlen( $needle ) <= 3
+			? (bool) preg_match( '/(?:^|-)' . preg_quote( $needle, '/' ) . '(?:-|$)/', $slug )
+			: false !== strpos( $slug, $needle );
+		if ( $match ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Resolve a focused facility illustration from a facility slug.
+ *
+ * @param string $slug Facility slug.
+ * @return string
+ */
+function queen_alfalah_facility_visual_variant( $slug ) {
+	if ( queen_alfalah_slug_matches( $slug, array( 'kesehatan', 'uks', 'medis', 'klinik' ) ) ) {
+		return 'facility-health';
+	}
+	if ( queen_alfalah_slug_matches( $slug, array( 'mplb', 'kantor', 'kelas', 'administrasi' ) ) ) {
+		return 'facility-office';
+	}
+	if ( queen_alfalah_slug_matches( $slug, array( 'aula', 'auditorium', 'gedung', 'perpustakaan', 'literasi', 'kantin', 'lapangan', 'olahraga' ) ) ) {
+		return 'facility-campus';
+	}
+	if ( queen_alfalah_slug_matches( $slug, array( 'lab', 'komputer', 'tjkt', 'dkv', 'podcast', 'fiber', 'foto', 'drone', 'broadcast', 'editing', 'studio' ) ) ) {
+		return 'facility-digital';
+	}
+	return 'facility';
+}
+
+/**
+ * Resolve the best bundled fallback category for a post or page.
+ *
+ * This is presentation-only: it never writes to the Media Library and never
+ * replaces an administrator-provided Featured Image.
+ *
+ * @param int $post_id Optional post ID.
+ * @return string
+ */
+function queen_alfalah_visual_variant( $post_id = 0 ) {
+	$post = get_post( $post_id ? $post_id : get_the_ID() );
+	if ( ! $post instanceof WP_Post ) {
+		return 'school';
+	}
+
+	$direct = array(
+		'qaf_teacher'     => 'people',
+		'qaf_alumni'      => 'people',
+		'qaf_program'     => 'facility',
+		'qaf_notice'      => 'service',
+		'qaf_agenda'      => 'service',
+		'qaf_achievement' => 'achievement',
+		'qaf_extra'       => 'achievement',
+		'qaf_service'     => 'service',
+		'qaf_gallery'     => 'gallery',
+		'qaf_partner'     => 'career',
+		'qaf_vacancy'     => 'career',
+	);
+
+	if ( 'qaf_facility' === $post->post_type ) {
+		return queen_alfalah_facility_visual_variant( $post->post_name );
+	}
+	if ( isset( $direct[ $post->post_type ] ) ) {
+		return $direct[ $post->post_type ];
+	}
+
+	$slug = (string) $post->post_name;
+	if ( 'page' === $post->post_type ) {
+		if ( queen_alfalah_slug_matches( $slug, array( 'guru', 'tendik', 'struktur', 'organisasi', 'sambutan', 'kepala-sekolah' ) ) ) {
+			return 'people';
+		}
+		if ( queen_alfalah_slug_matches( $slug, array( 'prestasi', 'ekstra' ) ) ) {
+			return 'achievement';
+		}
+		if ( queen_alfalah_slug_matches( $slug, array( 'galeri', 'media-sosial', 'video' ) ) ) {
+			return 'gallery';
+		}
+		if ( queen_alfalah_slug_matches( $slug, array( 'aplikasi', 'pusat-media', 'ppdb', 'spmb', 'pendaftaran', 'informasi', 'kesiswaan' ) ) ) {
+			return 'service';
+		}
+		if ( queen_alfalah_slug_matches( $slug, array( 'mitra', 'industri', 'pkl', 'bkk', 'bursa-kerja', 'lowongan', 'alumni' ) ) ) {
+			return 'career';
+		}
+		if ( queen_alfalah_slug_matches( $slug, array( 'sarana', 'prasarana', 'fasilitas', 'program', 'jurusan' ) ) ) {
+			return 'facility';
+		}
+		return 'school';
+	}
+
+	if ( 'post' === $post->post_type ) {
+		$categories = get_the_category( $post->ID );
+		foreach ( $categories as $category ) {
+			$category_slug = isset( $category->slug ) ? (string) $category->slug : '';
+			if ( queen_alfalah_slug_matches( $category_slug, array( 'prestasi', 'ekstra', 'lomba' ) ) ) {
+				return 'achievement';
+			}
+			if ( queen_alfalah_slug_matches( $category_slug, array( 'galeri', 'video', 'media' ) ) ) {
+				return 'gallery';
+			}
+			if ( queen_alfalah_slug_matches( $category_slug, array( 'ppdb', 'spmb', 'pengumuman', 'agenda', 'layanan' ) ) ) {
+				return 'service';
+			}
+			if ( queen_alfalah_slug_matches( $category_slug, array( 'karier', 'mitra', 'pkl', 'bkk', 'alumni' ) ) ) {
+				return 'career';
+			}
+			if ( queen_alfalah_slug_matches( $category_slug, array( 'sarana', 'fasilitas', 'laboratorium' ) ) ) {
+				return 'facility';
+			}
+		}
+	}
+
+	return 'school';
+}
+
+/**
+ * Return fallback visual metadata for a post with no Featured Image.
+ *
+ * @param int $post_id Optional post ID.
+ * @return array<string,mixed>
+ */
+function queen_alfalah_fallback_visual( $post_id = 0 ) {
+	$post = get_post( $post_id ? $post_id : get_the_ID() );
+	if ( ! $post instanceof WP_Post ) {
+		return array();
+	}
+
+	$special_url = 'qaf_extra' === $post->post_type ? queen_alfalah_extra_illustration( $post->ID ) : '';
+	$variant     = $special_url ? 'activity' : queen_alfalah_visual_variant( $post->ID );
+	$url         = $special_url ? $special_url : queen_alfalah_placeholder( $variant );
+
+	return array(
+		'url'     => $url,
+		'width'   => 1200,
+		'height'  => 800,
+		'variant' => $variant,
+		'label'   => __( 'Ilustrasi', 'queen-alfalah' ),
+		'caption' => __( 'Ilustrasi visual sementara; ganti dengan dokumentasi asli sekolah saat tersedia.', 'queen-alfalah' ),
+	);
 }
 
 /**

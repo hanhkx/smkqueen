@@ -33,7 +33,7 @@ Lakukan uji staging sebelum pembaruan WordPress besar, PHP, plugin, tema, atau s
 
 1. Masuk ke Dasbor WordPress.
 2. Buka **Tampilan > Tema > Tambah Tema > Unggah Tema**.
-3. Pilih berkas **queen-alfalah-1.5.0.zip**.
+3. Pilih berkas **queen-alfalah-1.6.1.zip**.
 4. Klik **Pasang Sekarang**, lalu **Aktifkan**.
 5. Buka **Plugin > Tambah Plugin > Unggah Plugin**, unggah **queen-alfalah-core-1.9.1.zip**, lalu aktifkan.
 6. Lanjutkan ke penyiapan awal di bawah.
@@ -119,6 +119,15 @@ Buka **Tampilan > Sesuaikan** dan tinjau:
 
 Saat plugin pendamping aktif, ubah data portabel seperti nama legal, NPSN, alamat, telepon, email, visi, dan URL pendaftaran melalui **Sekolah > Pengaturan**. Customizer tetap menangani tampilan, hero, gambar, warna, dan statistik beranda.
 
+### Peta lokasi interaktif
+
+1. Buka **Sekolah > Pengaturan > Kontak dan Lokasi**.
+2. Isi **Latitude** dan **Longitude** lokasi sekolah dalam format desimal.
+3. Isi **Tautan Peta** untuk tombol *Buka di Google Maps*.
+4. Simpan, lalu periksa bagian **Temui Kami** pada beranda dan halaman Kontak saat login maupun logout.
+
+Tema membentuk iframe hanya dari koordinat tervalidasi pada domain Google yang tetap. Tautan Peta yang dapat diedit tidak pernah dipakai langsung sebagai sumber iframe. Jika koordinat tidak valid, tampilan kembali ke tautan peta biasa. Embed dimuat secara malas, tetapi tetap membuat koneksi pihak ketiga ke Google ketika mendekati viewport; jelaskan penggunaan ini pada kebijakan privasi sekolah.
+
 ### Background gambar/GIF landing page
 
 1. Buka **Tampilan > Sesuaikan > Hero Beranda**.
@@ -149,6 +158,8 @@ Plugin pendamping menyediakan:
 12. **Sarana Prasarana** — profil fasilitas, kapasitas, status, foto, dan informasi penggunaan.
 
 Isikan gambar unggulan, ringkasan, dan data penting pada setiap entri. Caption gambar unggulan dapat disunting dari Media Library dan akan tampil bersama kredit/sumber berita bila plugin pendamping menyediakannya. Gunakan judul yang deskriptif; jangan memasukkan tanggal ke judul bila tanggal sudah memiliki kolom tersendiri.
+
+Jika Gambar Unggulan belum tersedia, tema menampilkan ilustrasi kategori berlabel **Ilustrasi** untuk Sarana Prasarana, guru/tendik, Galeri, Prestasi, layanan, karier, serta halaman umum. Ilustrasi tidak ditulis ke database dan langsung digantikan saat administrator memilih Gambar Unggulan. Lihat `docs/VISUAL-FALLBACKS.md` untuk pemetaan, cara mengganti, dan aturan integritas visual.
 
 ## Galeri lokal dan sosial
 
