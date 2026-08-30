@@ -5,7 +5,7 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 ## Komponen
 
 - `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.1.1.
-- `queen-alfalah-core/` — plugin pendamping versi 1.1.0 untuk tipe konten dan pengaturan sekolah.
+- `queen-alfalah-core/` — plugin pendamping versi 1.4.0 untuk tipe konten dan pengaturan sekolah.
 
 ## Fitur utama
 
@@ -25,11 +25,37 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 
 ## Instalasi
 
-1. Buat ZIP folder `queen-alfalah`, kemudian unggah melalui **Tampilan → Tema → Tambah Tema**.
-2. Buat ZIP folder `queen-alfalah-core`, kemudian unggah melalui **Plugin → Tambah Plugin**.
-3. Aktifkan plugin dan tema.
-4. Buka **Sekolah → Pengaturan** untuk melengkapi identitas sekolah.
-5. Buka **Pengaturan → Permalink**, lalu simpan ulang permalink.
+1. Jalankan `powershell -ExecutionPolicy Bypass -File .\build-packages.ps1` dari PowerShell untuk membuat ZIP tema dan plugin yang kompatibel dengan WordPress.
+2. Unggah `dist/queen-alfalah-1.1.1.zip` melalui **Tampilan → Tema → Tambah Tema**.
+3. Unggah `dist/queen-alfalah-core-1.4.0.zip` melalui **Plugin → Tambah Plugin**.
+4. Aktifkan plugin dan tema.
+5. Buka **Sekolah → Pengaturan** untuk melengkapi identitas sekolah.
+6. Buka **Pengaturan → Permalink**, lalu simpan ulang permalink.
+
+Jangan membuat ulang paket plugin dengan pemampat yang menyimpan pemisah jalur Windows (`\`). WordPress memerlukan file utama pada jalur portabel `queen-alfalah-core/queen-alfalah-core.php`.
+
+## Membangun paket WordPress
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\build-packages.ps1
+```
+
+Skrip membaca versi dari header tema/plugin, membuat arsip di folder `dist`, menggunakan pemisah jalur `/`, dan memverifikasi bahwa `style.css` serta file utama plugin berada pada lokasi yang dikenali WordPress.
+
+Untuk membangun hanya salah satu komponen:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\build-packages.ps1 -Component Plugin
+powershell -ExecutionPolicy Bypass -File .\build-packages.ps1 -Component Theme
+```
+
+Jika WordPress menampilkan **Plugin file does not exist**, pastikan hasil ekstraksi tepat seperti berikut:
+
+```text
+wp-content/plugins/queen-alfalah-core/queen-alfalah-core.php
+```
+
+Hapus folder plugin yang kosong atau salah tingkat, lalu unggah kembali ZIP hasil skrip di atas. Data sekolah tidak dihapus saat folder kode plugin diganti.
 
 ## Pengembangan lokal
 
