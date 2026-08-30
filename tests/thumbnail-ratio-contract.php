@@ -53,8 +53,9 @@ $program_images = qaf_css_rule( $css, '.program-card__media img' );
 qaf_expect_css( (bool) preg_match( '/object-fit\s*:\s*contain\s*;/', $program_images ), 'Program logos must be fully visible with object-fit: contain.', $errors );
 
 $people_and_partner_images = qaf_css_rule( $css, '.news-card.type-qaf_teacher .news-card__media img' );
-qaf_expect_css( (bool) preg_match( '/object-fit\s*:\s*contain\s*;/', $people_and_partner_images ), 'Teacher/staff and partner images must be fully visible with object-fit: contain.', $errors );
+qaf_expect_css( (bool) preg_match( '/object-fit\s*:\s*contain\s*;/', $people_and_partner_images ), 'Teacher/staff, partner, and achievement images must be fully visible with object-fit: contain.', $errors );
 qaf_expect_css( false !== strpos( $css, '.news-card.type-qaf_partner .news-card__media img' ), 'Partner logos must share the non-cropping image rule.', $errors );
+qaf_expect_css( false !== strpos( $css, '.news-card.type-qaf_achievement .news-card__media img' ), 'Achievement posters must share the non-cropping image rule.', $errors );
 
 $gallery_images = qaf_css_rule( $css, '.gallery-grid img' );
 qaf_expect_css( (bool) preg_match( '/aspect-ratio\s*:\s*1(?:\s*\/\s*1)?\s*;/', $gallery_images ), 'Gallery thumbnails must remain 1:1.', $errors );
@@ -62,7 +63,7 @@ qaf_expect_css( (bool) preg_match( '/object-fit\s*:\s*cover\s*;/', $gallery_imag
 
 qaf_expect_css( (bool) preg_match( "/add_image_size\(\s*'queen-card-square'\s*,\s*720\s*,\s*720\s*,\s*true\s*\)/", $functions ), 'The theme must register a square cropped card image size.', $errors );
 qaf_expect_css( (bool) preg_match( "/add_image_size\(\s*'queen-card-contain'\s*,\s*900\s*,\s*900\s*,\s*false\s*\)/", $functions ), 'The theme must register an uncropped image size for people and logos.', $errors );
-qaf_expect_css( false !== strpos( $card_template, "'qaf_program', 'qaf_teacher', 'qaf_partner'" ), 'Program, teacher/staff, and partner cards must use the uncropped image path.', $errors );
+qaf_expect_css( false !== strpos( $card_template, "'qaf_program', 'qaf_teacher', 'qaf_partner', 'qaf_achievement'" ), 'Program, teacher/staff, partner, and achievement cards must use the uncropped image path.', $errors );
 qaf_expect_css( false !== strpos( $card_template, "'queen-card-contain' : 'queen-card-square'" ), 'Card templates must select the square or uncropped image size explicitly.', $errors );
 qaf_expect_css( false !== strpos( $front_page, "the_post_thumbnail( 'queen-card-contain'" ), 'Homepage program logos must request the uncropped image size.', $errors );
 qaf_expect_css( false !== strpos( $front_page, "the_post_thumbnail( 'queen-card-square'" ), 'Homepage gallery thumbnails must request the square image size.', $errors );

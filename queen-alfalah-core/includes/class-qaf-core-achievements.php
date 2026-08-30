@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class QAF_Core_Achievements {
 	const VERSION_OPTION       = 'qaf_achievements_data_version';
 	const IMAGE_VERSION_OPTION = 'qaf_achievements_image_version';
+	const LOCK_OPTION          = 'qaf_achievements_upgrade_lock';
+	const LOCK_TTL             = 300;
 	const SOURCE_META          = '_qaf_achievement_source_id';
 	const IMAGE_SOURCE_META    = '_qaf_bundled_achievement_image';
 
@@ -63,33 +65,108 @@ final class QAF_Core_Achievements {
 	 * @return void
 	 */
 	private static function run_upgrade() {
-		$data = self::load_data();
-		if ( is_wp_error( $data ) ) {
+		$lock = self::acquire_upgrade_lock();
+		if ( false === $lock ) {
 			return;
 		}
 
-		$current_version = (string) get_option( self::VERSION_OPTION, '0.0.0' );
-		if ( version_compare( $current_version, $data['version'], '<' ) ) {
-			$errors = self::insert_missing( $data['items'] );
-			$errors = array_merge( $errors, self::correct_known_placeholders( $data['items'] ) );
-			if ( empty( $errors ) ) {
-				update_option( self::VERSION_OPTION, $data['version'], false );
+		try {
+			$data = self::load_data();
+			if ( is_wp_error( $data ) ) {
+				return;
 			}
+
+			$current_version = (string) get_option( self::VERSION_OPTION, '0.0.0' );
+			if ( version_compare( $current_version, $data['version'], '<' ) ) {
+				$errors = self::insert_missing( $data['items'] );
+				$errors = array_merge( $errors, self::correct_known_placeholders( $data['items'] ) );
+				if ( empty( $errors ) ) {
+					update_option( self::VERSION_OPTION, $data['version'], false );
+				}
+			}
+
+			$current_image_version = (string) get_option( self::IMAGE_VERSION_OPTION, '0.0.0' );
+			if (
+				'0.0.0' !== $data['image_version'] &&
+				version_compare( $current_image_version, $data['image_version'], '<' )
+			) {
+				$image_errors = array_merge(
+					self::remove_known_incorrect_images( $data['items'] ),
+					self::sync_images( $data['items'] )
+				);
+				if ( empty( $image_errors ) ) {
+					update_option( self::IMAGE_VERSION_OPTION, $data['image_version'], false );
+				}
+			}
+		} finally {
+			self::release_upgrade_lock( $lock );
+		}
+	}
+
+	/**
+	 * Claim a short-lived atomic lock for the importer.
+	 *
+	 * WordPress stores option names uniquely, so add_option() is the normal
+	 * atomic claim. An abandoned stale lock is removed only when its complete
+	 * serialized value still matches the row that was inspected; a newer lock
+	 * can therefore never be deleted by a delayed request.
+	 *
+	 * @return array<string,mixed>|false Lock payload, or false when another request owns it.
+	 */
+	private static function acquire_upgrade_lock() {
+		$lock = array(
+			'token'   => wp_generate_uuid4(),
+			'created' => time(),
+		);
+
+		if ( add_option( self::LOCK_OPTION, $lock, '', false ) ) {
+			return $lock;
 		}
 
-		$current_image_version = (string) get_option( self::IMAGE_VERSION_OPTION, '0.0.0' );
-		if (
-			'0.0.0' !== $data['image_version'] &&
-			version_compare( $current_image_version, $data['image_version'], '<' )
-		) {
-			$image_errors = array_merge(
-				self::remove_known_incorrect_images( $data['items'] ),
-				self::sync_images( $data['items'] )
-			);
-			if ( empty( $image_errors ) ) {
-				update_option( self::IMAGE_VERSION_OPTION, $data['image_version'], false );
-			}
+		$existing = get_option( self::LOCK_OPTION, false );
+		$created  = is_array( $existing ) && isset( $existing['created'] )
+			? (int) $existing['created']
+			: 0;
+		if ( $created > time() - self::LOCK_TTL ) {
+			return false;
 		}
+
+		if ( ! self::delete_exact_lock( $existing ) ) {
+			return false;
+		}
+
+		return add_option( self::LOCK_OPTION, $lock, '', false ) ? $lock : false;
+	}
+
+	/**
+	 * Release only the exact lock payload claimed by this request.
+	 *
+	 * @param array<string,mixed> $lock Claimed lock payload.
+	 * @return void
+	 */
+	private static function release_upgrade_lock( $lock ) {
+		self::delete_exact_lock( $lock );
+	}
+
+	/**
+	 * Delete one lock row only while its serialized payload remains unchanged.
+	 *
+	 * @param mixed $lock Expected option value.
+	 * @return bool
+	 */
+	private static function delete_exact_lock( $lock ) {
+		global $wpdb;
+
+		$deleted = $wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name = %s AND option_value = %s",
+				self::LOCK_OPTION,
+				maybe_serialize( $lock )
+			)
+		);
+		wp_cache_delete( self::LOCK_OPTION, 'options' );
+
+		return 1 === (int) $deleted;
 	}
 
 	/**
@@ -436,6 +513,7 @@ final class QAF_Core_Achievements {
 
 			$source_id = self::sanitize_source_id( isset( $item['source_id'] ) ? $item['source_id'] : '' );
 			$image     = self::sanitize_image_path( $item['image'] );
+			$image_alt = sanitize_text_field( isset( $item['image_alt'] ) ? $item['image_alt'] : '' );
 			if ( '' === $source_id || '' === $image ) {
 				$errors[] = sprintf( 'Referensi gambar prestasi pada indeks %d tidak valid.', (int) $index );
 				continue;
@@ -451,7 +529,7 @@ final class QAF_Core_Achievements {
 				continue;
 			}
 
-			$attachment_id = self::get_or_import_image( $image, $post_id );
+			$attachment_id = self::get_or_import_image( $image, $post_id, $image_alt );
 			if ( is_wp_error( $attachment_id ) ) {
 				$errors[] = sprintf( '%s: %s', $source_id, $attachment_id->get_error_message() );
 				continue;
@@ -470,9 +548,10 @@ final class QAF_Core_Achievements {
 	 *
 	 * @param string $relative_path Safe path relative to the achievement asset directory.
 	 * @param int    $post_id       Achievement receiving the image.
+	 * @param string $image_alt     Optional neutral alt text for an image shared by multiple pages.
 	 * @return int|WP_Error
 	 */
-	private static function get_or_import_image( $relative_path, $post_id ) {
+	private static function get_or_import_image( $relative_path, $post_id, $image_alt = '' ) {
 		$matches = get_posts(
 			array(
 				'post_type'              => 'attachment',
@@ -489,7 +568,7 @@ final class QAF_Core_Achievements {
 		);
 		if ( ! empty( $matches ) ) {
 			$attachment_id = (int) $matches[0];
-			self::maybe_set_attachment_alt( $attachment_id, $post_id );
+			self::maybe_set_attachment_alt( $attachment_id, $post_id, $image_alt );
 			return $attachment_id;
 		}
 
@@ -540,7 +619,7 @@ final class QAF_Core_Achievements {
 		}
 
 		update_post_meta( $attachment, self::IMAGE_SOURCE_META, $relative_path );
-		self::maybe_set_attachment_alt( $attachment, $post_id );
+		self::maybe_set_attachment_alt( $attachment, $post_id, $image_alt );
 
 		return (int) $attachment;
 	}
@@ -548,16 +627,20 @@ final class QAF_Core_Achievements {
 	/**
 	 * Add descriptive alt text only when an attachment does not already have it.
 	 *
-	 * @param int $attachment_id Attachment ID.
-	 * @param int $post_id       Achievement post ID.
+	 * @param int    $attachment_id Attachment ID.
+	 * @param int    $post_id       Achievement post ID.
+	 * @param string $image_alt     Optional neutral alt text for a shared source image.
 	 * @return void
 	 */
-	private static function maybe_set_attachment_alt( $attachment_id, $post_id ) {
+	private static function maybe_set_attachment_alt( $attachment_id, $post_id, $image_alt = '' ) {
 		if ( '' === (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ) {
+			$image_alt = sanitize_text_field( $image_alt );
 			update_post_meta(
 				$attachment_id,
 				'_wp_attachment_image_alt',
-				sprintf( 'Dokumentasi prestasi %s', wp_strip_all_tags( get_the_title( $post_id ) ) )
+				$image_alt
+					? $image_alt
+					: sprintf( 'Dokumentasi prestasi %s', wp_strip_all_tags( get_the_title( $post_id ) ) )
 			);
 		}
 	}

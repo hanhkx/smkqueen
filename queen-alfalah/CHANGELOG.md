@@ -2,6 +2,13 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.6.2 — 2026-08-30
+
+### Diubah
+
+- Poster Prestasi tetap berada dalam kartu rasio 1:1 tetapi memakai ukuran gambar tanpa crop dan mode `contain`, sehingga teks, siswa, dan hasil pada poster vertikal maupun lebar tetap terlihat utuh.
+- Efek zoom pada kartu Prestasi dinonaktifkan agar tepi dokumentasi tidak terpotong saat pointer diarahkan ke kartu.
+
 ## 1.6.1 — 2026-08-30
 
 ### Diubah

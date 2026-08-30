@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.9.1**
+Versi: **1.10.0**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -22,7 +22,7 @@ Lisensi: **GPL-2.0-or-later**
 - Struktur organisasi tahun pelajaran 2026/2027 dengan tupoksi per jabatan dan foto dari direktori Guru & Tendik.
 - Metadata prestasi lengkap untuk penyelenggara, juara/penghargaan, bidang, tingkat, dan tautan sumber.
 - Importer prestasi berversi yang idempoten serta tidak menimpa suntingan administrator.
-- Tujuh belas halaman prestasi siswa dari unggahan Instagram resmi tahun 2023–2026 beserta 16 foto sumber terverifikasi yang disinkronkan ke slot gambar unggulan kosong. Foto khusus regu LBB putri menunggu dokumentasi sekolah yang tepat.
+- Dua puluh sembilan halaman prestasi/partisipasi tahun 2023–2026 tanpa menimpa 17 entri lama. Dua puluh empat halaman menerima gambar sumber lokal pada slot kosong; lima halaman tanpa foto tepat memakai fallback berlabel ilustrasi.
 - Enam data awal Sarana Prasarana dengan field lokasi, fungsi, fitur, akses, pengelola, kapasitas, kondisi, dan tanggal pemeriksaan.
 - Empat belas profil awal PKL & Mitra Industri dengan sumber dan status verifikasi yang dapat ditinjau administrator.
 - Lima belas kartu logo/foto profil Mitra DUDI berasio 3:2 dengan sumber, kredit, alt text, dukungan slug legacy, dan lima identitas sementara yang jelas ketika logo resmi belum terverifikasi.
@@ -134,7 +134,7 @@ Saat plugin diaktifkan atau administrator membuka dashboard setelah pembaruan, k
 - **PKL & Mitra Industri:** 14 profil awal berisi identitas, lokasi, bidang keahlian, program terkait, bentuk dukungan/kerja sama, sumber publik, dan status verifikasi. Profil publik membantu pengisian awal, tetapi tidak membuktikan MoU aktif, periode, kuota, atau penempatan; cocokkan kembali dengan dokumen sekolah.
 - **Ekstrakurikuler:** 11 entri berisi manfaat kegiatan dan relevansinya bagi kompetensi kerja. Field yang sudah berisi data tidak ditimpa. Gambar unggulan buatan administrator selalu diprioritaskan, kemudian ilustrasi bawaan dipakai sebagai fallback.
 
-Importer Prestasi menangani 17 halaman berdasarkan ID sumber Instagram resmi. Enam belas foto lokal yang terverifikasi dimasukkan ke Media Library dan dijadikan gambar unggulan hanya ketika post tersebut belum memiliki gambar unggulan. Unggahan LBB Kecamatan Mojo menyebut prestasi putra dan putri, tetapi poster yang tersedia hanya menampilkan regu putra; karena itu halaman putri sengaja tidak diberi poster putra. Gambar yang sudah dipilih administrator, status post, dan suntingan teks tetap dipertahankan.
+Importer Prestasi menangani 29 halaman berdasarkan ID sumber stabil dari Instagram/YouTube resmi, situs sekolah, hasil OLPAIN, dan dokumen LKS. Dua belas record baru menambahkan prestasi individual serta partisipasi yang secara eksplisit tidak diklaim sebagai juara. Sebanyak 21 berkas gambar sumber dipakai oleh 24 halaman; gambar hanya dimasukkan ke Media Library dan dijadikan gambar unggulan ketika post belum memiliki pilihan administrator. Halaman tanpa foto yang tepat memakai fallback tema berlabel ilustrasi. Item di Sampah, status post, dan suntingan teks tetap dipertahankan. Kunci pembaruan atomik mencegah duplikasi ketika dua request admin terjadi bersamaan.
 
 Importer Media Berita menangani delapan artikel Agustus 2026 berdasarkan slug ekspor dan ID unggahan Instagram resmi. Slide pertama disimpan sebagai aset lokal, lalu dimasukkan ke Media Library bersama caption, alt text, kredit, serta URL sumber. Importer hanya mengisi slot gambar unggulan kosong; gambar dan metadata yang sudah disunting administrator tidak diganti. Gunakan tema Queen Al-Falah 1.5.0 agar caption dan kredit tampil di halaman detail.
 
@@ -280,6 +280,15 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 Alat pengembangan opsional `tools/build-partner-images.mjs` memakai Node.js ≥20.9 dan Sharp yang versinya dikunci di `tools/package-lock.json`. Ikuti manifest sumber dan instruksi di [`tools/PARTNER-IMAGE-SOURCES.md`](../tools/PARTNER-IMAGE-SOURCES.md); dependency alat tidak dimasukkan ke ZIP plugin.
 
 ## Changelog
+
+### 1.10.0 — 2026-08-30
+
+- Menambahkan 12 halaman Prestasi/Partisipasi dari Instagram resmi, YouTube resmi, situs sekolah, hasil OLPAIN, dan dokumen LKS tanpa mengubah 17 halaman lama.
+- Memisahkan empat capaian DKV The Silent Heritage of District Paree menjadi halaman individual sesuai nama, bidang, dan peringkatnya.
+- Menambahkan partisipasi Festival Anak Sholeh, LBB Kabupaten Kediri, PAIS Love Festival, OLPAIN, dan Semarak 17 Agustus dengan label faktual tanpa klaim juara.
+- Menambahkan lima dokumentasi lokal; 24 dari 29 halaman kini memperoleh gambar sumber sementara halaman tanpa foto tepat tetap memakai fallback berlabel ilustrasi.
+- Menggunakan alt text netral untuk poster yang dipakai bersama dan tidak mempublikasikan nilai maupun nomor ujian OLPAIN pada halaman sekolah.
+- Menambahkan kunci pembaruan atomik, simulasi konkurensi/stale, dan pemeriksaan kontrak dataset untuk mencegah duplikasi serta menjaga item lama, Sampah, status, suntingan, dan gambar administrator.
 
 ### 1.9.1 — 2026-08-30
 

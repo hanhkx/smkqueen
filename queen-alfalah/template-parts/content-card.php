@@ -12,7 +12,7 @@ $queen_is_achievement = 'qaf_achievement' === $queen_post_type;
 $queen_is_gallery     = 'qaf_gallery' === $queen_post_type;
 $queen_card_class     = $queen_is_program ? 'program-card' : 'news-card';
 $queen_article_class  = $queen_card_class . ( $queen_is_achievement ? ' achievement-card' : '' );
-$queen_uses_contain   = in_array( $queen_post_type, array( 'qaf_program', 'qaf_teacher', 'qaf_partner' ), true );
+$queen_uses_contain   = in_array( $queen_post_type, array( 'qaf_program', 'qaf_teacher', 'qaf_partner', 'qaf_achievement' ), true );
 $queen_image_size     = $queen_uses_contain ? 'queen-card-contain' : 'queen-card-square';
 $queen_fallback_visual = has_post_thumbnail() ? array() : queen_alfalah_fallback_visual( get_the_ID() );
 

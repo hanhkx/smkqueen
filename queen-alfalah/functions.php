@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUEEN_ALFALAH_VERSION', '1.6.1' );
+define( 'QUEEN_ALFALAH_VERSION', '1.6.2' );
 define( 'QUEEN_ALFALAH_DIR', get_template_directory() );
 define( 'QUEEN_ALFALAH_URI', get_template_directory_uri() );
 

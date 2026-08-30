@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.9.1
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -24,7 +24,7 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Tautan Google Drive per divisi yang wajib login dan dapat diganti dari Pengaturan Sekolah.
 * Struktur organisasi 2026/2027 dengan tupoksi dan foto tersinkron dari Guru & Tendik.
 * Data prestasi terstruktur beserta penyelenggara, juara, bidang, tingkat, dan tautan sumber.
-* Tujuh belas Prestasi dengan 16 foto sumber terverifikasi yang hanya mengisi slot gambar unggulan kosong; foto LBB putri menunggu dokumentasi yang tepat.
+* Dua puluh sembilan Prestasi/Partisipasi tahun 2023–2026 dengan 24 halaman bergambar sumber; entri tanpa foto tepat memakai fallback berlabel ilustrasi.
 * Katalog berversi untuk enam Sarana Prasarana dan 14 profil awal PKL & Mitra Industri.
 * Lima belas kartu logo/foto mitra DUDI yang disalin lokal, lengkap dengan sumber, alt text, kredit, dukungan entri legacy, dan placeholder jujur untuk identitas yang belum terverifikasi.
 * Sebelas Ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi fallback.
@@ -116,6 +116,16 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 
 == Changelog ==
 
+= 1.10.0 - 2026-08-30 =
+
+* Menambahkan 12 halaman Prestasi/Partisipasi dari Instagram resmi, YouTube resmi, situs sekolah, hasil OLPAIN, dan dokumen LKS tanpa mengubah 17 halaman lama.
+* Memisahkan empat capaian DKV The Silent Heritage of District Paree menjadi halaman individual sesuai nama, bidang, dan peringkatnya.
+* Menambahkan partisipasi Festival Anak Sholeh, LBB Kabupaten Kediri, PAIS Love Festival, OLPAIN, dan Semarak 17 Agustus dengan label faktual tanpa klaim juara.
+* Menambahkan lima berkas dokumentasi lokal; 24 dari 29 halaman kini memperoleh gambar sumber sementara entri tanpa foto tepat tetap memakai fallback berlabel ilustrasi.
+* Menggunakan alt text netral untuk poster yang dipakai bersama dan tidak mempublikasikan nilai maupun nomor ujian OLPAIN pada halaman sekolah.
+* Menambahkan kunci pembaruan atomik agar dua request administrator tidak dapat membuat halaman prestasi ganda.
+* Menambahkan pemeriksaan dataset serta simulasi kunci konkurensi/stale untuk menjaga sumber lama, gambar, label partisipasi, dan perilaku importer non-destruktif.
+
 = 1.9.1 - 2026-08-30 =
 
 * Menambahkan 15 kartu gambar Mitra DUDI dalam rasio 3:2 agar logo tidak terpotong pada arsip.
@@ -205,6 +215,10 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 * Menambahkan kebijakan uninstall non-destruktif.
 
 == Upgrade Notice ==
+
+= 1.10.0 =
+
+Masuk ke dashboard satu kali untuk menambahkan 12 halaman Prestasi/Partisipasi baru dan gambar sumber yang tersedia. Entri lama, item di Sampah, gambar unggulan pilihan administrator, status, dan suntingan manual tetap dipertahankan.
 
 = 1.9.1 =
 
