@@ -2,6 +2,15 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.6.1 — 2026-08-30
+
+### Diubah
+
+- Seluruh thumbnail kartu Berita, Program Keahlian, Guru/Tendik, Prestasi, Galeri, Mitra, Sarana Prasarana, dan arsip konten lain memakai rasio 1:1.
+- Foto Guru/Tendik serta logo Program Keahlian dan Mitra memakai mode `contain` agar visual tampil utuh di dalam kotak.
+- Foto berita, galeri, prestasi, dan konten fotografis tetap memenuhi kotak dengan mode `cover`; foto orang dan Prestasi diposisikan dari bagian atas untuk menjaga wajah tetap terlihat.
+- Ukuran gambar WordPress baru memisahkan thumbnail persegi dan visual tanpa crop; media lama tetap memiliki fallback ke berkas sumber sampai thumbnail diregenerasi.
+
 ## 1.6.0 — 2026-08-30
 
 ### Ditambahkan

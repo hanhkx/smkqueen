@@ -165,7 +165,7 @@ if ( $landing_bg ) {
 						<article <?php post_class( 'program-card' ); ?>>
 							<a class="program-card__media" href="<?php the_permalink(); ?>">
 								<?php if ( has_post_thumbnail() ) : ?>
-									<?php the_post_thumbnail( 'queen-program', array( 'loading' => 'lazy' ) ); ?>
+									<?php the_post_thumbnail( 'queen-card-contain', array( 'loading' => 'lazy' ) ); ?>
 								<?php else : ?>
 									<img src="<?php echo esc_url( queen_alfalah_placeholder( 'program' ) ); ?>" width="900" height="620" loading="lazy" alt="">
 									<span class="visual-disclosure"><?php esc_html_e( 'Ilustrasi', 'queen-alfalah' ); ?></span>
@@ -367,7 +367,7 @@ if ( $landing_bg ) {
 				<?php if ( $gallery_query && $gallery_query->have_posts() ) : ?>
 					<?php while ( $gallery_query->have_posts() ) : $gallery_query->the_post(); ?>
 						<a href="<?php the_permalink(); ?>">
-							<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'queen-card', array( 'loading' => 'lazy', 'alt' => get_the_title() ) ); else : ?><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="1200" height="800" loading="lazy" alt=""><span class="visual-disclosure"><?php esc_html_e( 'Ilustrasi', 'queen-alfalah' ); ?></span><?php endif; ?>
+							<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'queen-card-square', array( 'loading' => 'lazy', 'alt' => get_the_title() ) ); else : ?><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="1200" height="800" loading="lazy" alt=""><span class="visual-disclosure"><?php esc_html_e( 'Ilustrasi', 'queen-alfalah' ); ?></span><?php endif; ?>
 							<span class="gallery-caption">
 								<span><?php the_title(); ?></span>
 								<small class="gallery-caption__source"><?php echo esc_html( queen_alfalah_gallery_source_label( get_the_ID() ) ); ?></small>

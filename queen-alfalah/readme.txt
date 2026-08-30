@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, blog, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready, block-styles, wide-blocks
@@ -90,6 +90,12 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 
 == Changelog ==
 
+= 1.6.1 - 2026-08-30 =
+
+* Mengubah seluruh thumbnail kartu berita, program, Guru/Tendik, Prestasi, Galeri, Mitra, Sarana Prasarana, dan arsip lain menjadi rasio 1:1.
+* Menampilkan foto Guru/Tendik serta logo Program Keahlian dan Mitra secara utuh dengan mode contain.
+* Menambahkan ukuran gambar persegi dan tanpa crop untuk unggahan baru, dengan fallback aman ke berkas sumber bagi media lama.
+
 = 1.6.0 - 2026-08-30 =
 
 * Menampilkan embed Google Maps dari koordinat tervalidasi pada beranda dan halaman Kontak, dengan tautan luar sebagai fallback.
@@ -139,6 +145,10 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 * Menambahkan tata letak responsif, aksesibel, dan bebas dependensi pihak ketiga.
 
 == Upgrade Notice ==
+
+= 1.6.1 =
+
+Menyeragamkan thumbnail kartu menjadi persegi dan mencegah foto Guru/Tendik serta logo Program Keahlian dan Mitra terpotong.
 
 = 1.6.0 =
 

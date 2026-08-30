@@ -4,7 +4,7 @@ Theme URI: https://smkqueenalfalah.sch.id/
 Author: SMK Queen Al-Falah
 Author URI: https://smkqueenalfalah.sch.id/
 Description: Tema sekolah modern untuk SMK Queen Al-Falah dengan tampilan emerald, emas, dan krem; responsif, ramah aksesibilitas, serta siap untuk berita, program keahlian, agenda, galeri, dan informasi sekolah.
-Version: 1.6.0
+Version: 1.6.1
 Requires at least: 6.2
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -1148,7 +1148,8 @@ body:not(.has-sticky-header) .site-header {
 .program-card__image {
   position: relative;
   display: block;
-  aspect-ratio: 16 / 10;
+  flex: 0 0 auto;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: var(--qa-emerald-100);
 }
@@ -1163,11 +1164,37 @@ body:not(.has-sticky-header) .site-header {
   transition: transform 450ms ease;
 }
 
+.program-card__media img,
+.program-card__image img,
+.news-card.type-qaf_teacher .news-card__media img,
+.news-card.type-qaf_teacher .news-card__image img,
+.news-card.type-qaf_partner .news-card__media img,
+.news-card.type-qaf_partner .news-card__image img {
+  background: #ffffff;
+  object-fit: contain;
+}
+
+.news-card.type-qaf_teacher .news-card__media img,
+.news-card.type-qaf_teacher .news-card__image img,
+.news-card.type-qaf_achievement .news-card__media img,
+.news-card.type-qaf_achievement .news-card__image img {
+  object-position: center top;
+}
+
 .news-card:hover .news-card__media img,
 .news-card:hover .news-card__image img,
 .program-card:hover .program-card__media img,
 .program-card:hover .program-card__image img {
   transform: scale(1.035);
+}
+
+.program-card:hover .program-card__media img,
+.program-card:hover .program-card__image img,
+.news-card.type-qaf_teacher:hover .news-card__media img,
+.news-card.type-qaf_teacher:hover .news-card__image img,
+.news-card.type-qaf_partner:hover .news-card__media img,
+.news-card.type-qaf_partner:hover .news-card__image img {
+  transform: none;
 }
 
 .news-card__category,

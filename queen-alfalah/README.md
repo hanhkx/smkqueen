@@ -33,7 +33,7 @@ Lakukan uji staging sebelum pembaruan WordPress besar, PHP, plugin, tema, atau s
 
 1. Masuk ke Dasbor WordPress.
 2. Buka **Tampilan > Tema > Tambah Tema > Unggah Tema**.
-3. Pilih berkas **queen-alfalah-1.6.0.zip**.
+3. Pilih berkas **queen-alfalah-1.6.1.zip**.
 4. Klik **Pasang Sekarang**, lalu **Aktifkan**.
 5. Buka **Plugin > Tambah Plugin > Unggah Plugin**, unggah **queen-alfalah-core-1.9.1.zip**, lalu aktifkan.
 6. Lanjutkan ke penyiapan awal di bawah.
