@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.10.0**
+Versi: **1.11.0**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -20,6 +20,8 @@ Lisensi: **GPL-2.0-or-later**
 - Portal Pusat Media privat dengan peran Waka Sekolah, Guru, dan Tenaga Kependidikan.
 - Tautan Google Drive terpisah untuk Waka, Guru, dan Tendik yang dapat diganti dari Pengaturan Sekolah.
 - Struktur organisasi tahun pelajaran 2026/2027 dengan tupoksi per jabatan dan foto dari direktori Guru & Tendik.
+- Importer direktori Guru & Tendik yang menambahkan 13 personel internal yang belum tercatat tanpa mengubah profil lama, status, taksonomi, isi, atau foto pilihan administrator.
+- Sebelas alias ejaan nama yang menyambungkan kembali profil/foto lama ke kartu Struktur Organisasi tanpa mengganti judul profil.
 - Metadata prestasi lengkap untuk penyelenggara, juara/penghargaan, bidang, tingkat, dan tautan sumber.
 - Importer prestasi berversi yang idempoten serta tidak menimpa suntingan administrator.
 - Dua puluh sembilan halaman prestasi/partisipasi tahun 2023–2026 tanpa menimpa 17 entri lama. Dua puluh empat halaman menerima gambar sumber lokal pada slot kosong; lima halaman tanpa foto tepat memakai fallback berlabel ilustrasi.
@@ -71,7 +73,7 @@ Seluruh key menggunakan awalan privat `_qaf_` dan satu nilai per post:
 
 - Berita: `_qaf_instagram_source_url`, `_qaf_image_credit`, `_qaf_news_source_id`.
 - Program: `_qaf_program_code`, `_qaf_program_head`, `_qaf_program_gender`, `_qaf_competencies`, `_qaf_careers`.
-- Guru/tendik: `_qaf_role`, `_qaf_subject`, `_qaf_order`.
+- Guru/tendik: `_qaf_role`, `_qaf_subject`, `_qaf_order`, `_qaf_staff_source_id` (readonly untuk record baru dari struktur).
 - Pengumuman: `_qaf_priority`, `_qaf_expiry`, `_qaf_file_url`.
 - Agenda: `_qaf_start_date`, `_qaf_end_date`, `_qaf_location`.
 - Prestasi: `_qaf_level`, `_qaf_achievement_date`, `_qaf_recipient`, `_qaf_organizer`, `_qaf_award`, `_qaf_field`, `_qaf_source_url`, `_qaf_achievement_source_id`.
@@ -135,6 +137,12 @@ Saat plugin diaktifkan atau administrator membuka dashboard setelah pembaruan, k
 - **Ekstrakurikuler:** 11 entri berisi manfaat kegiatan dan relevansinya bagi kompetensi kerja. Field yang sudah berisi data tidak ditimpa. Gambar unggulan buatan administrator selalu diprioritaskan, kemudian ilustrasi bawaan dipakai sebagai fallback.
 
 Importer Prestasi menangani 29 halaman berdasarkan ID sumber stabil dari Instagram/YouTube resmi, situs sekolah, hasil OLPAIN, dan dokumen LKS. Dua belas record baru menambahkan prestasi individual serta partisipasi yang secara eksplisit tidak diklaim sebagai juara. Sebanyak 21 berkas gambar sumber dipakai oleh 24 halaman; gambar hanya dimasukkan ke Media Library dan dijadikan gambar unggulan ketika post belum memiliki pilihan administrator. Halaman tanpa foto yang tepat memakai fallback tema berlabel ilustrasi. Item di Sampah, status post, dan suntingan teks tetap dipertahankan. Kunci pembaruan atomik mencegah duplikasi ketika dua request admin terjadi bersamaan.
+
+## Direktori Guru & Tendik non-destruktif
+
+Saat aktivasi atau kunjungan administrator pertama setelah pembaruan, plugin membandingkan data struktur dengan seluruh profil Guru & Tendik pada semua status, termasuk Sampah. Pemeriksaan memakai ID sumber, nama kanonik, alias ejaan, slug aktif, dan slug lama. Profil yang sudah ada dilewati sepenuhnya: judul, isi, status, meta, taksonomi, gambar unggulan, dan keputusan menghapus ke Sampah tidak diubah.
+
+Dataset 1.0.0 hanya menambahkan 13 personel internal yang belum ditemukan pada ekspor situs 26 Agustus 2026: 5 guru/pimpinan serta 8 tendik/pembantu pelaksana. Della dari Sanggar Tari dipertahankan sebagai pendamping eksternal pada struktur dan tidak dibuat sebagai profil Guru/Tendik. Profil baru memakai fallback ilustrasi orang sampai administrator memilih foto resmi. Sebelas variasi ejaan profil lama dipakai hanya untuk pencocokan foto dan tautan pada Struktur Organisasi; judul profil lama tidak diganti.
 
 Importer Media Berita menangani delapan artikel Agustus 2026 berdasarkan slug ekspor dan ID unggahan Instagram resmi. Slide pertama disimpan sebagai aset lokal, lalu dimasukkan ke Media Library bersama caption, alt text, kredit, serta URL sumber. Importer hanya mengisi slot gambar unggulan kosong; gambar dan metadata yang sudah disunting administrator tidak diganti. Gunakan tema Queen Al-Falah 1.5.0 agar caption dan kredit tampil di halaman detail.
 
@@ -280,6 +288,14 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 Alat pengembangan opsional `tools/build-partner-images.mjs` memakai Node.js ≥20.9 dan Sharp yang versinya dikunci di `tools/package-lock.json`. Ikuti manifest sumber dan instruksi di [`tools/PARTNER-IMAGE-SOURCES.md`](../tools/PARTNER-IMAGE-SOURCES.md); dependency alat tidak dimasukkan ke ZIP plugin.
 
 ## Changelog
+
+### 1.11.0 — 2026-08-30
+
+- Menambahkan 13 profil yang belum ada berdasarkan Struktur Kelembagaan 2026/2027: 5 guru/pimpinan dan 8 tendik/pembantu pelaksana.
+- Menjaga 53 profil lama serta empat guru di luar daftar struktur tetap utuh tanpa perubahan judul, isi, status, meta, taksonomi, urutan, atau foto.
+- Menambahkan pencocokan 11 variasi ejaan agar foto/profil lama kembali terhubung pada setiap penugasan di halaman Struktur Organisasi.
+- Mengecualikan pendamping eksternal Sanggar Tari dari impor Guru & Tendik.
+- Menambahkan dataset berversi, ID sumber readonly, pemeriksaan nama/alias/slug/Sampah, dan kunci pembaruan atomik agar proses idempoten.
 
 ### 1.10.0 — 2026-08-30
 

@@ -176,6 +176,37 @@ final class QAF_Core_Organization {
 		return $profiles;
 	}
 
+	/**
+	 * Return known legacy profile-title variants for one canonical structure name.
+	 *
+	 * The aliases repair photo/profile matching only. Existing Guru/Tendik posts
+	 * remain authoritative and are never renamed or edited.
+	 *
+	 * @param string $name Canonical organization name.
+	 * @return array<int,string>
+	 */
+	private static function directory_aliases_for( $name ) {
+		static $aliases = null;
+		if ( null === $aliases ) {
+			$aliases = array();
+			$path    = QAF_CORE_PATH . 'includes/staff-directory-data.php';
+			if ( is_readable( $path ) ) {
+				$data = require $path;
+				if ( is_array( $data ) && isset( $data['profile_aliases'] ) && is_array( $data['profile_aliases'] ) ) {
+					foreach ( $data['profile_aliases'] as $canonical => $variants ) {
+						$key = self::normalize_name( $canonical );
+						if ( $key && is_array( $variants ) ) {
+							$aliases[ $key ] = array_values( array_filter( array_map( 'strval', $variants ) ) );
+						}
+					}
+				}
+			}
+		}
+
+		$key = self::normalize_name( $name );
+		return $key && isset( $aliases[ $key ] ) ? $aliases[ $key ] : array();
+	}
+
 	/** Find a Guru/Tendik profile using the canonical name and known aliases. */
 	private static function profile_for( $member ) {
 		if ( ! empty( $member['collective'] ) ) {
@@ -185,7 +216,8 @@ final class QAF_Core_Organization {
 		$profiles = self::teacher_profiles();
 		$names    = array_merge(
 			array( isset( $member['name'] ) ? $member['name'] : '' ),
-			isset( $member['aliases'] ) && is_array( $member['aliases'] ) ? $member['aliases'] : array()
+			isset( $member['aliases'] ) && is_array( $member['aliases'] ) ? $member['aliases'] : array(),
+			self::directory_aliases_for( isset( $member['name'] ) ? $member['name'] : '' )
 		);
 		foreach ( $names as $name ) {
 			$key = self::normalize_name( $name );

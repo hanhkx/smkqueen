@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.10.0
+Stable tag: 1.11.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -23,6 +23,7 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Pusat Media privat dengan akun Waka, Guru, dan Tenaga Kependidikan.
 * Tautan Google Drive per divisi yang wajib login dan dapat diganti dari Pengaturan Sekolah.
 * Struktur organisasi 2026/2027 dengan tupoksi dan foto tersinkron dari Guru & Tendik.
+* Importer non-destruktif untuk 13 Guru/Tendik yang belum tercatat serta 11 alias ejaan yang menyambungkan foto/profil lama ke Struktur Organisasi.
 * Data prestasi terstruktur beserta penyelenggara, juara, bidang, tingkat, dan tautan sumber.
 * Dua puluh sembilan Prestasi/Partisipasi tahun 2023–2026 dengan 24 halaman bergambar sumber; entri tanpa foto tepat memakai fallback berlabel ilustrasi.
 * Katalog berversi untuk enam Sarana Prasarana dan 14 profil awal PKL & Mitra Industri.
@@ -57,6 +58,10 @@ Importer demo membuat halaman inti, pengaturan halaman depan, empat program awal
 = Apakah aman menjalankan importer kembali? =
 
 Ya. Penanda privat dan slug stabil mencegah duplikat. Konten yang sudah ada tidak ditimpa dan item di Sampah tidak dipulihkan otomatis.
+
+= Bagaimana penambahan Guru dan Tendik menjaga profil lama? =
+
+Importer membandingkan ID sumber, nama, alias ejaan, slug aktif, slug lama, dan semua status termasuk Sampah. Bila ada kecocokan, profil dilewati sepenuhnya: judul, isi, status, meta, taksonomi, urutan, dan foto tidak disentuh. Hanya 13 personel internal yang tidak ditemukan pada ekspor 26 Agustus 2026 yang dibuat; pendamping Sanggar Tari yang eksternal tidak dimasukkan.
 
 = Apakah importer menerbitkan berita dan jadwal contoh? =
 
@@ -115,6 +120,14 @@ Tidak. Plugin hanya menyimpan dan menampilkan informasi atau tautan. Sistem pend
 Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif, serta foto tanpa dasar izin yang sesuai.
 
 == Changelog ==
+
+= 1.11.0 - 2026-08-30 =
+
+* Menambahkan 13 profil yang belum ada berdasarkan Struktur Kelembagaan 2026/2027: 5 guru/pimpinan dan 8 tendik/pembantu pelaksana.
+* Mempertahankan 53 profil lama dan empat profil guru di luar daftar struktur tanpa mengubah data atau foto pilihan administrator.
+* Menambahkan 11 alias ejaan agar foto/profil lama tersambung pada Struktur Organisasi tanpa mengganti judul post.
+* Mengecualikan pendamping eksternal Sanggar Tari dari direktori Guru & Tendik.
+* Menambahkan dataset berversi, ID sumber readonly, pemeriksaan seluruh status termasuk Sampah, serta kunci pembaruan atomik.
 
 = 1.10.0 - 2026-08-30 =
 
@@ -215,6 +228,10 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 * Menambahkan kebijakan uninstall non-destruktif.
 
 == Upgrade Notice ==
+
+= 1.11.0 =
+
+Masuk ke dashboard satu kali untuk menambahkan profil Guru/Tendik yang belum ada. Profil lama, item di Sampah, status, isi, taksonomi, urutan, serta foto pilihan administrator tidak akan diubah.
 
 = 1.10.0 =
 

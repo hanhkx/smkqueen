@@ -137,6 +137,12 @@ final class QAF_Core_Meta {
 					'description' => 'Angka lebih kecil ditampilkan lebih awal.',
 					'default'     => 0,
 				),
+				'_qaf_staff_source_id' => array(
+					'label'       => 'ID Data Struktur',
+					'type'        => 'text',
+					'description' => 'Penanda stabil agar penambahan Guru dan Tendik tidak membuat duplikasi. Jangan diubah.',
+					'readonly'    => true,
+				),
 			),
 			'qaf_notice'      => array(
 				'_qaf_priority' => array(
