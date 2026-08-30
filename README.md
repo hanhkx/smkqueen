@@ -14,6 +14,7 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 - Berita, pengumuman, agenda, prestasi, guru/tendik, program keahlian, galeri, BKK, dan PPDB.
 - Pusat Aplikasi `/aplikasi/` untuk Ujian Online, E-Rapor, E-Perpustakaan, SPMB, dan Gamifikasi Edu.
 - Pusat Media privat `/pusat-media/` dengan akun WordPress per Waka/Guru/Tendik, folder Drive pribadi otomatis, serta unggah-unduh terotorisasi.
+- Struktur Organisasi 2026/2027 lengkap dengan tupoksi dan foto yang tersinkron dari Guru & Tendik.
 - Struktur ZIP tema dan plugin yang kompatibel dengan pemasang WordPress.
 - Dukungan penggunaan offline melalui WordPress dan Laragon.
 

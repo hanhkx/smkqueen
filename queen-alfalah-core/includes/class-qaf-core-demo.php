@@ -217,7 +217,8 @@ final class QAF_Core_Demo {
 			'struktur-organisasi' => array(
 				'title'       => 'Struktur Organisasi',
 				'parent_slug' => 'profil-sekolah',
-				'content'     => '<!-- wp:paragraph --><p>Tambahkan struktur organisasi terbaru yang telah disahkan. Cantumkan nama dan jabatan hanya setelah memperoleh persetujuan publikasi.</p><!-- /wp:paragraph -->',
+				'template'    => 'page-templates/template-full-width.php',
+				'content'     => '<!-- wp:shortcode -->[qaf_organization]<!-- /wp:shortcode -->',
 			),
 			'kesiswaan' => array(
 				'title'   => 'Kesiswaan',

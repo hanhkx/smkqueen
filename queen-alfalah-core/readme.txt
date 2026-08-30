@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -23,6 +23,7 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Pusat Media privat dengan akun Waka, Guru, dan Tenaga Kependidikan.
 * Folder Google Drive pribadi yang dibuat otomatis per username.
 * Unggah dan unduh terotorisasi langsung dari folder pribadi.
+* Struktur organisasi 2026/2027 dengan tupoksi dan foto tersinkron dari Guru & Tendik.
 * Retensi seluruh data saat plugin dihapus.
 
 Tema Queen Al-Falah direkomendasikan, tetapi konten tetap disimpan menggunakan API WordPress standar.
@@ -69,6 +70,13 @@ Tidak. Plugin hanya menyimpan dan menampilkan informasi atau tautan. Sistem pend
 Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif, serta foto tanpa dasar izin yang sesuai.
 
 == Changelog ==
+
+= 1.4.0 - 2026-07-23 =
+
+* Menambahkan halaman Struktur Organisasi berdasarkan SK tahun pelajaran 2026/2027.
+* Menampilkan 19 bidang/tim, seluruh penugasan, dan tupoksi setiap jabatan.
+* Mencocokkan foto dan tautan profil otomatis dari entri Guru & Tendik.
+* Mempertahankan inisial aman ketika foto atau profil belum dipublikasikan.
 
 = 1.3.0 - 2026-07-23 =
 

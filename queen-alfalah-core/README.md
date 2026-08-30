@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.3.0**
+Versi: **1.4.0**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -20,6 +20,7 @@ Lisensi: **GPL-2.0-or-later**
 - Portal Pusat Media privat dengan peran Waka Sekolah, Guru, dan Tenaga Kependidikan.
 - Folder Google Drive pribadi yang dibuat otomatis berdasarkan username.
 - Unggah dan unduh terotorisasi pada folder pribadi beserta subfoldernya.
+- Struktur organisasi tahun pelajaran 2026/2027 dengan tupoksi per jabatan dan foto dari direktori Guru & Tendik.
 - Data dipertahankan saat plugin dihapus.
 
 ## Instalasi
@@ -161,6 +162,18 @@ Pengguna hanya dapat membuka, mengunggah, dan mengunduh file pada folder pribadi
 
 Panduan lengkap tersedia di [`GOOGLE-DRIVE-SETUP.md`](GOOGLE-DRIVE-SETUP.md).
 
+## Struktur Organisasi
+
+Halaman dengan slug `struktur-organisasi` dibuat atau dimigrasikan secara non-destruktif ketika administrator membuka dashboard setelah pembaruan plugin. Jika halaman Profil Sekolah sudah ada, halaman struktur ditempatkan sebagai turunannya. Halaman memuat shortcode `[qaf_organization]` dan menampilkan:
+
+- 19 bidang/tim sesuai struktur tahun pelajaran 2026/2027;
+- nama, jabatan, dan tupoksi setiap penugasan;
+- foto serta tautan profil yang dicocokkan dari post type `qaf_teacher`;
+- inisial sebagai fallback apabila foto/profil belum diterbitkan;
+- indeks bagian dan layout responsif untuk desktop maupun perangkat seluler.
+
+Pencocokan foto menggunakan nama tanpa gelar akademik dan beberapa variasi ejaan yang telah diketahui. Foto tetap dikelola satu kali melalui **Guru & Tendik → Gambar Utama**, sehingga perubahan foto otomatis muncul pada halaman struktur.
+
 Tidak ada akun atau password contoh yang dibuat otomatis. Administrator harus membuat username unik dan password kuat untuk setiap personel agar kredensial tidak dipakai bersama.
 
 ## Penghapusan plugin
@@ -193,6 +206,13 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 ```
 
 ## Changelog
+
+### 1.4.0 — 2026-07-23
+
+- Menambahkan Struktur Organisasi 2026/2027 berisi 19 bidang/tim dan seluruh penugasan.
+- Menambahkan penjelasan tupoksi per jabatan.
+- Menambahkan pencocokan foto dan tautan profil otomatis dari Guru & Tendik.
+- Menambahkan migrasi aman dari konten placeholder serta tampilan responsif khusus.
 
 ### 1.3.0 — 2026-07-23
 

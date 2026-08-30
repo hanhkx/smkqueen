@@ -1,0 +1,316 @@
+.entry-content > .qaf-org {
+  max-width: 80rem;
+}
+
+.qaf-org {
+  --qaf-org-green: var(--qa-emerald-800, #075e4b);
+  --qaf-org-green-dark: var(--qa-emerald-950, #052e26);
+  --qaf-org-green-soft: var(--qa-emerald-50, #f0faf6);
+  --qaf-org-gold: var(--qa-gold-500, #d6a62d);
+  --qaf-org-line: #d9e3de;
+  --qaf-org-muted: #5b6964;
+  color: #18231f;
+}
+
+.qaf-org-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.5rem;
+  overflow: hidden;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 92% 15%, rgba(214, 166, 45, 0.2), transparent 24rem),
+    linear-gradient(135deg, var(--qaf-org-green-dark), var(--qaf-org-green));
+  color: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 24px 70px rgba(5, 46, 38, 0.18);
+}
+
+.qaf-org-hero h2 {
+  max-width: 50rem;
+  margin: 0.15rem 0 0.65rem;
+  color: #fff;
+  font-size: clamp(2rem, 6vw, 4.25rem);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.qaf-org-hero p {
+  max-width: 46rem;
+  margin: 0;
+}
+
+.qaf-org-eyebrow {
+  color: #f0c863;
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.qaf-org-hero__meta {
+  display: grid;
+  width: 8rem;
+  min-height: 8rem;
+  place-content: center;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.qaf-org-hero__meta strong {
+  color: #fff;
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.qaf-org-hero__meta span {
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.qaf-org-note {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1.25rem 0;
+  padding: 1rem 1.15rem;
+  border-inline-start: 0.3rem solid var(--qaf-org-gold);
+  border-radius: 0 0.8rem 0.8rem 0;
+  background: #fff9e9;
+  color: #5d4b22;
+}
+
+.qaf-org-note p {
+  margin: 0;
+}
+
+.qaf-org-index {
+  margin: 1.5rem 0 2rem;
+}
+
+.qaf-org-index ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.qaf-org-index a {
+  display: grid;
+  height: 100%;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.75rem;
+  border: 1px solid var(--qaf-org-line);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: var(--qaf-org-green-dark);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.qaf-org-index a:hover,
+.qaf-org-index a:focus-visible {
+  border-color: var(--qaf-org-gold);
+  box-shadow: 0 8px 22px rgba(5, 46, 38, 0.09);
+  transform: translateY(-0.12rem);
+}
+
+.qaf-org-index a span {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--qaf-org-green-soft);
+  color: var(--qaf-org-green);
+  font-size: 0.72rem;
+}
+
+.qaf-org-sections {
+  display: grid;
+  gap: 2rem;
+}
+
+.qaf-org-section {
+  scroll-margin-top: 7rem;
+}
+
+.qaf-org-section__header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 2px solid var(--qaf-org-line);
+}
+
+.qaf-org-section__header > span {
+  display: grid;
+  width: 2.8rem;
+  height: 2.8rem;
+  place-items: center;
+  border-radius: 0.8rem;
+  background: var(--qaf-org-green);
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 850;
+}
+
+.qaf-org-section__header h2 {
+  margin: 0;
+  color: var(--qaf-org-green-dark);
+  font-size: clamp(1.35rem, 3.2vw, 2rem);
+  line-height: 1.2;
+}
+
+.qaf-org-section__header p {
+  max-width: 64rem;
+  margin: 0.35rem 0 0;
+  color: var(--qaf-org-muted);
+  font-size: 0.9rem;
+}
+
+.qaf-org-people {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.qaf-org-person {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid var(--qaf-org-line);
+  border-radius: 0.9rem;
+  background: #fff;
+  box-shadow: 0 5px 16px rgba(5, 46, 38, 0.045);
+}
+
+.qaf-org-section:first-child .qaf-org-person:first-child {
+  border-color: rgba(214, 166, 45, 0.65);
+  background: linear-gradient(145deg, #fff9e9, #fff);
+}
+
+.qaf-org-person__portrait {
+  display: grid;
+  width: 4.2rem;
+  height: 4.8rem;
+  overflow: hidden;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: linear-gradient(145deg, var(--qaf-org-green), var(--qaf-org-green-dark));
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+}
+
+.qaf-org-person__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.qaf-org-person__body {
+  min-width: 0;
+}
+
+.qaf-org-person h3 {
+  margin: 0;
+  color: var(--qaf-org-green-dark);
+  font-family: inherit;
+  font-size: 0.96rem;
+  line-height: 1.32;
+}
+
+.qaf-org-person h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.qaf-org-person h3 a:hover,
+.qaf-org-person h3 a:focus-visible {
+  color: var(--qaf-org-green);
+  text-decoration: underline;
+}
+
+.qaf-org-person__role {
+  margin: 0.22rem 0 0.55rem;
+  color: #98701b;
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.qaf-org-person__duty {
+  margin: 0;
+  color: var(--qaf-org-muted);
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.qaf-org-person__duty strong {
+  color: #34413c;
+}
+
+@media (max-width: 64rem) {
+  .qaf-org-index ol,
+  .qaf-org-people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 44rem) {
+  .qaf-org-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .qaf-org-hero__meta {
+    width: auto;
+    min-height: 0;
+    grid-template-columns: auto auto;
+    gap: 0.55rem;
+    border-radius: 999px;
+  }
+
+  .qaf-org-hero__meta strong {
+    font-size: 1.5rem;
+  }
+
+  .qaf-org-hero__meta span {
+    margin-top: 0;
+  }
+
+  .qaf-org-index ol,
+  .qaf-org-people {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 28rem) {
+  .qaf-org-person {
+    grid-template-columns: 1fr;
+  }
+
+  .qaf-org-person__portrait {
+    width: 3.8rem;
+    height: 3.8rem;
+    border-radius: 50%;
+  }
+}
