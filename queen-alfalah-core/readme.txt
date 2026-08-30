@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -26,6 +26,7 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Data prestasi terstruktur beserta penyelenggara, juara, bidang, tingkat, dan tautan sumber.
 * Tujuh belas Prestasi dengan 16 foto sumber terverifikasi yang hanya mengisi slot gambar unggulan kosong; foto LBB putri menunggu dokumentasi yang tepat.
 * Katalog berversi untuk enam Sarana Prasarana dan 14 profil awal PKL & Mitra Industri.
+* Lima belas kartu logo/foto mitra DUDI yang disalin lokal, lengkap dengan sumber, alt text, kredit, dukungan entri legacy, dan placeholder jujur untuk identitas yang belum terverifikasi.
 * Sebelas Ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi fallback.
 * Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan URL kanonik, pemilih Media Library, serta kontrol klik/otomatis/tautan.
 * Sinkronisasi Reel/video akun Instagram Profesional melalui API resmi dengan jadwal harian opsional, deduplikasi, status draf/terbit, poster lokal, dan pembaruan long-lived token.
@@ -63,7 +64,7 @@ Tidak. Berita, pengumuman, agenda, dan placeholder demo yang belum diverifikasi 
 
 = Bagaimana katalog Sarana, Mitra, Ekstrakurikuler, dan Prestasi diperbarui? =
 
-Katalog berversi menambahkan item yang belum ada dan tidak memulihkan item di Sampah. Field Ekstrakurikuler hanya dilengkapi bila masih kosong. Foto Prestasi hanya dipasang bila post belum memiliki gambar unggulan. Profil Mitra adalah data awal berbasis sumber publik; status kerja sama formal, periode, dan kuota tetap harus diverifikasi dengan dokumen sekolah.
+Katalog berversi menambahkan item yang belum ada dan tidak memulihkan item di Sampah. Field Ekstrakurikuler hanya dilengkapi bila masih kosong. Foto Prestasi dan gambar Mitra hanya dipasang bila post belum memiliki gambar unggulan. Profil Mitra adalah data awal berbasis sumber publik; status kerja sama formal, periode, kuota, dan hak penggunaan merek tetap harus diverifikasi dengan dokumen sekolah atau mitra.
 
 = Bagaimana gambar dan caption berita Instagram diperbarui? =
 
@@ -114,6 +115,14 @@ Tidak. Plugin hanya menyimpan dan menampilkan informasi atau tautan. Sistem pend
 Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif, serta foto tanpa dasar izin yang sesuai.
 
 == Changelog ==
+
+= 1.9.1 - 2026-08-30 =
+
+* Menambahkan 15 kartu gambar Mitra DUDI dalam rasio 3:2 agar logo tidak terpotong pada arsip.
+* Menggunakan logo/foto profil dari kanal resmi untuk JTV Kediri, OurWeb.id, Terra Computer, CV NMM, BeAD, Candradimuka Digital, LP3I Kediri, RS Bhayangkara Kediri, Puskesmas Mojo, dan RSU Arga Husada.
+* Menandai FA Cinema, PT Alfiz, Beneficia Tech, PT JWB, dan Asterix Comp dengan identitas sementara karena logo publiknya belum dapat diverifikasi.
+* Menambahkan importer Media Library idempoten dan terkunci atomik yang hanya mengisi gambar unggulan kosong, memakai ulang attachment, memverifikasi sumber/kredit/alt text, serta mendukung slug legacy tanpa menimpa pilihan administrator.
+* Menstabilkan urutan arsip Mitra agar pagination tidak mengulang kartu dan tidak melewatkan entri lain.
 
 = 1.9.0 - 2026-08-29 =
 
@@ -196,6 +205,10 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 * Menambahkan kebijakan uninstall non-destruktif.
 
 == Upgrade Notice ==
+
+= 1.9.1 =
+
+Masuk ke dashboard satu kali untuk mengimpor gambar Mitra DUDI ke Media Library. Gambar unggulan yang sudah dipilih administrator tidak akan diganti; konfirmasikan lima identitas sementara kepada Hubin/TU sebelum menggantinya dengan logo resmi.
 
 = 1.9.0 =
 

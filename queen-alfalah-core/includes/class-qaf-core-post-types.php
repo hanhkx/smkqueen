@@ -49,6 +49,18 @@ final class QAF_Core_Post_Types {
 			return;
 		}
 
+		if ( $query->is_post_type_archive( 'qaf_partner' ) ) {
+			$query->set(
+				'orderby',
+				array(
+					'menu_order' => 'ASC',
+					'title'      => 'ASC',
+					'ID'         => 'ASC',
+				)
+			);
+			return;
+		}
+
 		if ( ! $query->is_post_type_archive( 'qaf_notice' ) ) {
 			return;
 		}

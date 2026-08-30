@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.9.0**
+Versi: **1.9.1**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -25,6 +25,7 @@ Lisensi: **GPL-2.0-or-later**
 - Tujuh belas halaman prestasi siswa dari unggahan Instagram resmi tahun 2023–2026 beserta 16 foto sumber terverifikasi yang disinkronkan ke slot gambar unggulan kosong. Foto khusus regu LBB putri menunggu dokumentasi sekolah yang tepat.
 - Enam data awal Sarana Prasarana dengan field lokasi, fungsi, fitur, akses, pengelola, kapasitas, kondisi, dan tanggal pemeriksaan.
 - Empat belas profil awal PKL & Mitra Industri dengan sumber dan status verifikasi yang dapat ditinjau administrator.
+- Lima belas kartu logo/foto profil Mitra DUDI berasio 3:2 dengan sumber, kredit, alt text, dukungan slug legacy, dan lima identitas sementara yang jelas ketika logo resmi belum terverifikasi.
 - Sebelas data ekstrakurikuler dengan manfaat, relevansi dunia kerja, informasi keikutsertaan, dan ilustrasi fallback.
 - Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan jenis media, pemilih video, perilaku embed, dan filter sumber.
 - Sinkronisasi Reel/video akun Instagram Profesional melalui API resmi, dengan jadwal harian opsional, deduplikasi ID media, status draf/terbit, poster lokal, status koneksi, dan pembaruan long-lived token.
@@ -270,13 +271,23 @@ Periksa anggota serta level izin pada dialog berbagi folder Google Drive. Login 
 
 ## Pengembangan
 
-Tidak ada dependency build atau library eksternal. Jalankan pemeriksaan sintaks untuk semua berkas PHP sebelum rilis:
+Plugin WordPress tidak memiliki dependency runtime atau library eksternal. Jalankan pemeriksaan sintaks untuk semua berkas PHP sebelum rilis:
 
 ```sh
 find queen-alfalah-core -name '*.php' -exec php -l {} \;
 ```
 
+Alat pengembangan opsional `tools/build-partner-images.mjs` memakai Node.js ≥20.9 dan Sharp yang versinya dikunci di `tools/package-lock.json`. Ikuti manifest sumber dan instruksi di [`tools/PARTNER-IMAGE-SOURCES.md`](../tools/PARTNER-IMAGE-SOURCES.md); dependency alat tidak dimasukkan ke ZIP plugin.
+
 ## Changelog
+
+### 1.9.1 — 2026-08-30
+
+- Menambahkan sepuluh logo/foto profil yang bersumber dari kanal resmi mitra dan lima kartu identitas sementara untuk nama yang belum memiliki logo publik terverifikasi.
+- Menambahkan importer logo Mitra DUDI berversi terpisah dengan kunci atomik antarsesi yang hanya mengisi featured image kosong, menggunakan satu attachment untuk entri canonical/legacy, serta tidak menyentuh item di Sampah.
+- Menyimpan judul, caption, alt text, kredit, URL sumber, dan penanda berkas pada Media Library tanpa menimpa suntingan administrator; kegagalan metadata membatalkan attachment baru agar aman dicoba kembali.
+- Menambahkan urutan arsip Mitra yang stabil berdasarkan urutan, judul, dan ID agar pagination tidak mengulang atau melewatkan kartu.
+- Menambahkan manifest sumber, alat pembentuk aset yang dapat direproduksi, pemeriksaan kontrak 15 aset, dan pengujian importer untuk idempotensi, konkurensi, metadata, alias, retry, traversal, serta perlindungan gambar pilihan administrator.
 
 ### 1.9.0 — 2026-08-29
 

@@ -53,9 +53,175 @@ $qaf_partner_item = static function ( $slug, $title, $sector, $profile, $program
 	return $item;
 };
 
+$qaf_partner_image = static function ( $seed_key, $slug, $image, $title, $alt, $caption, $credit, $source_url = '', $aliases = array() ) {
+	return array(
+		'seed_key'  => $seed_key,
+		'slug'      => $slug,
+		'aliases'   => $aliases,
+		'image'     => $image,
+		'title'     => $title,
+		'alt'       => $alt,
+		'caption'   => $caption,
+		'credit'    => $credit,
+		'source_url' => $source_url,
+	);
+};
+
 return array(
-	'version' => '1.1.0',
-	'items'   => array(
+	'version'       => '1.1.0',
+	'image_version' => '1.0.0',
+	'images'        => array(
+		$qaf_partner_image(
+			'partner:jtv-kediri',
+			'jtv-kediri',
+			'jtv-kediri.webp',
+			'Logo JTV Kediri',
+			'Logo JTV Kediri, mitra DUDI bidang Desain Komunikasi Visual',
+			'Kartu identitas mitra DUDI JTV Kediri menggunakan logo dari halaman biro resminya.',
+			'Logo: JTV Kediri melalui Portal JTV.',
+			'https://portaljtv.com/biro/kediri',
+			array( 'jtv' )
+		),
+		$qaf_partner_image(
+			'partner:fa-cinema',
+			'fa-cinema',
+			'fa-cinema.webp',
+			'Identitas sementara FA Cinema',
+			'Identitas sementara FA Cinema; logo resmi belum terverifikasi',
+			'Kartu identitas sementara FA Cinema. Logo resmi menunggu konfirmasi sekolah atau mitra.',
+			'Identitas visual sementara: SMK Queen Al-Falah; logo resmi belum terverifikasi.',
+			'',
+			array( 'fa-cinema-id' )
+		),
+		$qaf_partner_image(
+			'partner:ourweb',
+			'ourweb',
+			'ourweb.webp',
+			'Logo OurWeb.id',
+			'Logo OurWeb.id, mitra DUDI bidang website dan industri kreatif',
+			'Kartu identitas mitra DUDI OurWeb.id menggunakan logo dari situs perusahaan.',
+			'Logo: OurWeb.id melalui situs resmi OurWeb.id.',
+			'https://ourweb.id/'
+		),
+		$qaf_partner_image(
+			'partner:terra-computer-system-kediri',
+			'terra-computer-system-kediri',
+			'terra-computer-kediri.webp',
+			'Foto profil Terra Computer System Kediri',
+			'Foto profil Terra Computer System Kediri, mitra DUDI bidang TJKT',
+			'Kartu identitas mitra DUDI Terra Computer System Kediri menggunakan foto profil akun resminya.',
+			'Foto profil: Instagram @terracomputersystemkediri.',
+			'https://www.instagram.com/terracomputersystemkediri/'
+		),
+		$qaf_partner_image(
+			'partner:cv-nusantara-media-mandiri',
+			'cv-nusantara-media-mandiri',
+			'cv-nusantara-media-mandiri.webp',
+			'Ikon CV Nusantara Media Mandiri',
+			'Ikon CV Nusantara Media Mandiri, mitra DUDI bidang teknologi informasi',
+			'Kartu identitas mitra DUDI CV Nusantara Media Mandiri menggunakan ikon dari situs perusahaan.',
+			'Ikon merek: CV Nusantara Media Mandiri melalui situs resminya.',
+			'https://cv-nmm.com/'
+		),
+		$qaf_partner_image(
+			'partner:cv-besar-anugrah-djaya',
+			'cv-besar-anugrah-djaya',
+			'cv-besar-anugrah-djaya.webp',
+			'Logo BeAD IT Consultant',
+			'Logo BeAD IT Consultant, kandidat identitas CV BAD pada data mitra sekolah',
+			'Kartu identitas mitra DUDI CV Besar Anugrah Djaya menggunakan logo BeAD IT Consultant.',
+			'Logo: BeAD IT Consultant melalui situs BeAD Group.',
+			'https://beadgrup.com/tentang-kami/'
+		),
+		$qaf_partner_image(
+			'partner:candradimuka-digital',
+			'candradimuka-digital',
+			'candradimuka-digital.webp',
+			'Logo Candradimuka Digital',
+			'Logo Candradimuka Digital, mitra DUDI bidang website dan industri kreatif',
+			'Kartu identitas mitra DUDI Candradimuka Digital menggunakan logo dari situs perusahaan.',
+			'Logo: Candradimuka Digital melalui situs resminya.',
+			'https://candradimukadigital.com/'
+		),
+		$qaf_partner_image(
+			'partner:pt-alfiz',
+			'pt-alfiz',
+			'pt-alfiz.webp',
+			'Identitas sementara PT Alfiz',
+			'Identitas sementara PT Alfiz; logo resmi belum terverifikasi',
+			'Kartu identitas sementara PT Alfiz. Logo resmi menunggu konfirmasi sekolah atau mitra.',
+			'Identitas visual sementara: SMK Queen Al-Falah; logo resmi belum terverifikasi.'
+		),
+		$qaf_partner_image(
+			'partner:beneficia-tech',
+			'beneficia-tech',
+			'beneficia-tech.webp',
+			'Identitas sementara Beneficia Tech',
+			'Identitas sementara Beneficia Tech; logo resmi belum terverifikasi',
+			'Kartu identitas sementara Beneficia Tech. Logo resmi menunggu konfirmasi pemilik merek.',
+			'Identitas visual sementara: SMK Queen Al-Falah; logo resmi belum terverifikasi.'
+		),
+		$qaf_partner_image(
+			'partner:pt-jwb',
+			'pt-jwb',
+			'pt-jwb.webp',
+			'Identitas sementara PT JWB',
+			'Identitas sementara PT JWB; logo resmi belum terverifikasi',
+			'Kartu identitas sementara PT JWB. Logo resmi menunggu konfirmasi nama legal dan mitra.',
+			'Identitas visual sementara: SMK Queen Al-Falah; logo resmi belum terverifikasi.'
+		),
+		$qaf_partner_image(
+			'partner:lp3i-college-kediri',
+			'lp3i-college-kediri',
+			'lp3i-college-kediri.webp',
+			'Logo LP3I College Kediri',
+			'Logo LP3I College Kediri, mitra DUDI bidang MPLB',
+			'Kartu identitas mitra DUDI LP3I College Kediri menggunakan logo dari situs LP3I.',
+			'Logo: LP3I melalui situs resmi LP3I College Kediri.',
+			'https://www.lp3i.ac.id/campus/lp3i-college-kediri/'
+		),
+		$qaf_partner_image(
+			'partner:rs-bhayangkara-kediri',
+			'rs-bhayangkara-kediri',
+			'rs-bhayangkara-kediri.webp',
+			'Logo Rumah Sakit Bhayangkara Tk. II Kediri',
+			'Logo Rumah Sakit Bhayangkara Tk. II Kediri, mitra DUDI bidang Layanan Kesehatan',
+			'Kartu identitas mitra DUDI Rumah Sakit Bhayangkara Tk. II Kediri menggunakan logo situs rumah sakit.',
+			'Logo: Rumah Sakit Bhayangkara Tk. II Kediri melalui situs resminya.',
+			'https://rsbhayangkarakediri.com/'
+		),
+		$qaf_partner_image(
+			'partner:uptd-puskesmas-mojo',
+			'uptd-puskesmas-mojo',
+			'uptd-puskesmas-mojo.webp',
+			'Foto profil UPTD Puskesmas Mojo',
+			'Foto profil UPTD Puskesmas Mojo, mitra DUDI bidang Layanan Kesehatan',
+			'Kartu identitas mitra DUDI UPTD Puskesmas Mojo menggunakan foto profil akun resminya.',
+			'Foto profil: Instagram @uptd_puskesmas_mojo.',
+			'https://www.instagram.com/uptd_puskesmas_mojo/'
+		),
+		$qaf_partner_image(
+			'partner:rsu-arga-husada',
+			'rsu-arga-husada',
+			'rsu-arga-husada.webp',
+			'Logo Rumah Sakit Umum Arga Husada',
+			'Logo Rumah Sakit Umum Arga Husada, mitra DUDI bidang Layanan Kesehatan',
+			'Kartu identitas mitra DUDI Rumah Sakit Umum Arga Husada menggunakan logo situs rumah sakit.',
+			'Logo: Rumah Sakit Umum Arga Husada melalui situs resminya.',
+			'https://rsargahusada.com/',
+			array( 'rumah-sakit-arga-husada' )
+		),
+		$qaf_partner_image(
+			'',
+			'asterix-comp',
+			'asterix-comp.webp',
+			'Identitas sementara Asterix Comp',
+			'Identitas sementara Asterix Comp; logo resmi belum terverifikasi',
+			'Kartu identitas sementara Asterix Comp. Kandidat perusahaan di Kediri belum terkonfirmasi sebagai mitra yang sama.',
+			'Identitas visual sementara: SMK Queen Al-Falah; logo resmi belum terverifikasi.'
+		),
+	),
+	'items'         => array(
 		$qaf_partner_item(
 			'jtv-kediri',
 			'JTV Kediri',

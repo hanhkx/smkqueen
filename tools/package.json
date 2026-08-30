@@ -1,0 +1,15 @@
+{
+  "name": "smkqueen-wordpress-asset-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reproducible development-only image builders for the SMK Queen Al-Falah WordPress project.",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "build:partners": "node build-partner-images.mjs"
+  },
+  "dependencies": {
+    "sharp": "0.35.4"
+  }
+}
