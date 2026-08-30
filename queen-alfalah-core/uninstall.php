@@ -18,6 +18,7 @@ wp_clear_scheduled_hook( 'qaf_instagram_gallery_sync_event' );
 delete_option( 'qaf_instagram_gallery_sync' );
 delete_option( 'qaf_instagram_gallery_sync_state' );
 delete_option( 'qaf_instagram_gallery_sync_lock' );
+delete_option( 'qaf_partner_catalog_image_lock' );
 delete_transient( 'qaf_instagram_gallery_sync_lock' );
 
 // Institutional content and all non-secret plugin data remain preserved.
