@@ -4,12 +4,13 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 
 ## Komponen
 
-- `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.5.0.
+- `queen-alfalah/` — tema WordPress Queen Al-Falah versi 1.6.0.
 - `queen-alfalah-core/` — plugin pendamping versi 1.9.1 untuk tipe konten, sinkronisasi Galeri Instagram, media berita, katalog gambar Mitra DUDI, analitik opsional, dan pengaturan sekolah.
 
 ## Fitur utama
 
 - Landing page responsif dengan background gambar/GIF yang dapat diganti.
+- Embed Google Maps berbasis koordinat tervalidasi pada beranda dan halaman Kontak, dengan tautan eksternal sebagai fallback.
 - Identitas, kontak, kepala sekolah, logo, warna, dan konten yang dapat dikelola dari dashboard.
 - Berita, pengumuman, agenda, prestasi, guru/tendik, program keahlian, galeri, BKK, dan PPDB.
 - Galeri terpadu yang dapat memuat foto/video sekolah dari Media Library atau konten publik Instagram, TikTok, Facebook, dan YouTube, lengkap dengan penyaring sumber dan opsi privasi klik-untuk-muat.
@@ -24,6 +25,7 @@ Tema dan plugin pendamping WordPress untuk website SMK Queen Al-Falah. Project m
 - Delapan berita terbaru Agustus 2026 dilengkapi sampul lokal dari unggahan Instagram resmi, caption, alt text, kredit, dan tautan sumber tanpa hotlink CDN sementara.
 - Google Analytics 4 dan verifikasi Search Console dapat diaktifkan dari Pengaturan Sekolah setelah ID resmi tersedia; field kosong tidak memuat integrasi pihak ketiga.
 - Sebelas halaman ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi bawaan sebagai fallback gambar.
+- Sebelas ilustrasi WebP kategori yang otomatis mengisi tampilan kosong secara non-destruktif dan selalu diberi label **Ilustrasi**.
 - Struktur ZIP tema dan plugin yang kompatibel dengan pemasang WordPress.
 - Dukungan penggunaan offline melalui WordPress dan Laragon.
 
@@ -37,7 +39,7 @@ Profil mitra merupakan data awal berbasis sumber publik. Status kerja sama forma
 ## Instalasi
 
 1. Jalankan `powershell -ExecutionPolicy Bypass -File .\build-packages.ps1` dari PowerShell untuk membuat ZIP tema dan plugin yang kompatibel dengan WordPress.
-2. Unggah `dist/queen-alfalah-1.5.0.zip` melalui **Tampilan → Tema → Tambah Tema**.
+2. Unggah `dist/queen-alfalah-1.6.0.zip` melalui **Tampilan → Tema → Tambah Tema**.
 3. Unggah `dist/queen-alfalah-core-1.9.1.zip` melalui **Plugin → Tambah Plugin**.
 4. Aktifkan plugin dan tema.
 5. Buka **Sekolah → Pengaturan** untuk melengkapi identitas sekolah.
@@ -88,6 +90,12 @@ Isi tiga alamat folder di **Sekolah → Pengaturan → Pusat Media**: Folder Goo
 WordPress tidak mengunggah, mengunduh, atau memproksi file. Semua pengelolaan dokumen berlangsung langsung di Google Drive, sehingga aturan berbagi Drive merupakan batas keamanan sebenarnya. Gunakan mode berbagi **Dibatasi** dan beri izin hanya kepada akun Google yang berwenang. Jangan mengandalkan kerahasiaan URL folder sebagai pengganti pengaturan izin Drive.
 
 Lihat panduan lengkap di [`queen-alfalah-core/GOOGLE-DRIVE-SETUP.md`](queen-alfalah-core/GOOGLE-DRIVE-SETUP.md).
+
+## Peta, visual fallback, dan roadmap
+
+- Atur koordinat serta tautan luar peta melalui **Sekolah → Pengaturan → Kontak dan Lokasi**. Tema tidak memakai URL bebas sebagai sumber iframe.
+- Gambar Unggulan administrator selalu mengalahkan ilustrasi fallback. Panduan: [`queen-alfalah/docs/VISUAL-FALLBACKS.md`](queen-alfalah/docs/VISUAL-FALLBACKS.md).
+- Roadmap fungsi, kaji ulang, benchmark, dan KPI 2026/2027: [`queen-alfalah/docs/ROADMAP-2026-2027.md`](queen-alfalah/docs/ROADMAP-2026-2027.md).
 
 ## Galeri lokal dan sosial media
 

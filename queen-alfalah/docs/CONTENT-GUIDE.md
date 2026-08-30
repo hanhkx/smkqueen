@@ -11,6 +11,8 @@ Panduan ini membantu administrator mengubah kerangka demo menjadi situs sekolah 
 5. **Aksesibel** — teks tetap dapat dipahami tanpa gambar, warna, atau audio.
 6. **Jujur** — konten contoh, angka sementara, dan rencana belum final tidak boleh terlihat sebagai fakta.
 
+Ilustrasi otomatis tema hanya mencegah area kosong dan selalu kalah prioritas dari Gambar Unggulan administrator. Ilustrasi bukan dokumentasi kejadian atau fasilitas nyata; pertahankan label **Ilustrasi** dan ganti dengan foto autentik ketika tersedia. Pemetaan lengkap ada di `VISUAL-FALLBACKS.md`.
+
 ## Data yang sudah diisi
 
 Tema menyertakan fakta awal berikut berdasarkan informasi resmi yang diberikan untuk proyek:
@@ -144,6 +146,8 @@ Jangan menerbitkan data operasional hanya karena sudah muncul dalam demo. Tetapk
 - **Kontak**
 
 Pada ponsel, hindari lebih dari tiga tingkat menu. Jika struktur menjadi terlalu dalam, arahkan item tingkat kedua ke halaman hub yang berisi kartu menuju halaman detail.
+
+Rencana pengembangan fungsi, ritme evaluasi, benchmark, dan KPI September 2026–Agustus 2027 tersedia di `ROADMAP-2026-2027.md`.
 
 ## Panduan per tipe konten
 
