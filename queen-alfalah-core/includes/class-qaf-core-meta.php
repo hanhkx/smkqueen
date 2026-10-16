@@ -75,6 +75,14 @@ final class QAF_Core_Meta {
 	 */
 	public static function get_fields() {
 		return array(
+			'qaf_work' => array(
+				'_qaf_work_creator' => array( 'label' => 'Nama Pembuat / Tim', 'type' => 'text', 'description' => 'Isi hanya nama yang telah dikonfirmasi dan diizinkan untuk publikasi.' ),
+				'_qaf_work_class' => array( 'label' => 'Kelas / Program Keahlian', 'type' => 'text' ),
+				'_qaf_work_date' => array( 'label' => 'Tanggal Karya', 'type' => 'date', 'description' => 'Kosongkan jika belum diketahui. Tanggal unggahan tidak otomatis menjadi tanggal karya.' ),
+				'_qaf_work_source_url' => array( 'label' => 'Sumber Karya', 'type' => 'url' ),
+				'_qaf_work_award' => array( 'label' => 'Prestasi / Partisipasi Terverifikasi', 'type' => 'text', 'description' => 'Kosongkan bila tidak ada bukti. Partisipasi bukan juara.' ),
+				'_qaf_work_evidence_url' => array( 'label' => 'Bukti Prestasi / Partisipasi', 'type' => 'url' ),
+			),
 			'post'            => array(
 				'_qaf_instagram_source_url' => array(
 					'label'       => 'Sumber Instagram',
@@ -94,6 +102,16 @@ final class QAF_Core_Meta {
 				),
 			),
 			'qaf_program'     => array(
+				'_qaf_content_owner' => array(
+					'label'       => 'Penanggung Jawab Data',
+					'type'        => 'text',
+					'description' => 'Nama atau unit yang memverifikasi informasi ini, misalnya Waka Kurikulum atau Kepala Program.',
+				),
+				'_qaf_last_reviewed' => array(
+					'label'       => 'Tanggal Tinjau Terakhir',
+					'type'        => 'date',
+					'description' => 'Tanggal isi halaman terakhir dicocokkan dengan data resmi sekolah.',
+				),
 				'_qaf_program_code'   => array(
 					'label'       => 'Kode/Singkatan Program',
 					'type'        => 'text',
@@ -121,6 +139,16 @@ final class QAF_Core_Meta {
 				),
 			),
 			'qaf_teacher'     => array(
+				'_qaf_content_owner' => array(
+					'label'       => 'Penanggung Jawab Data',
+					'type'        => 'text',
+					'description' => 'Nama atau unit yang memverifikasi profil, misalnya Tata Usaha atau Operator Sekolah.',
+				),
+				'_qaf_last_reviewed' => array(
+					'label'       => 'Tanggal Tinjau Terakhir',
+					'type'        => 'date',
+					'description' => 'Tanggal profil terakhir dicocokkan dengan data kepegawaian resmi.',
+				),
 				'_qaf_role'    => array(
 					'label'       => 'Jabatan/Peran',
 					'type'        => 'text',
@@ -228,6 +256,16 @@ final class QAF_Core_Meta {
 				),
 			),
 			'qaf_extra'       => array(
+				'_qaf_content_owner' => array(
+					'label'       => 'Penanggung Jawab Data',
+					'type'        => 'text',
+					'description' => 'Pembina atau unit yang memverifikasi jadwal, manfaat, dan informasi pendaftaran.',
+				),
+				'_qaf_last_reviewed' => array(
+					'label'       => 'Tanggal Tinjau Terakhir',
+					'type'        => 'date',
+					'description' => 'Tanggal informasi ekstrakurikuler terakhir diperiksa.',
+				),
 				'_qaf_schedule' => array(
 					'label'       => 'Jadwal Latihan',
 					'type'        => 'text',
@@ -351,7 +389,7 @@ final class QAF_Core_Meta {
 				'_qaf_album_date' => array(
 					'label'       => 'Tanggal Album',
 					'type'        => 'date',
-					'description' => 'Tanggal kegiatan atau dokumentasi.',
+					'description' => 'Tanggal kegiatan yang terkonfirmasi. Mengurutkan galeri dan beranda dari terbaru ke terlama. Kosongkan jika belum diketahui; jangan memakai tanggal unggah sebagai perkiraan.',
 				),
 			),
 			'qaf_partner'     => array(
@@ -429,6 +467,55 @@ final class QAF_Core_Meta {
 					'type'        => 'url',
 					'description' => 'Tautan resmi perusahaan atau penyedia lowongan.',
 				),
+				'_qaf_vacancy_location' => array(
+					'label'       => 'Lokasi Kerja',
+					'type'        => 'text',
+					'description' => 'Kota, kabupaten, atau alamat penempatan yang tercantum pada sumber.',
+				),
+				'_qaf_vacancy_employment_type' => array(
+					'label'       => 'Jenis Kerja',
+					'type'        => 'text',
+					'description' => 'Contoh: penuh waktu, magang, kontrak, onsite, hybrid, atau remote.',
+				),
+				'_qaf_vacancy_education' => array(
+					'label'       => 'Pendidikan Minimum',
+					'type'        => 'text',
+				),
+				'_qaf_vacancy_salary' => array(
+					'label'       => 'Informasi Gaji',
+					'type'        => 'text',
+					'description' => 'Salin apa adanya dari sumber; tulis “Tidak dicantumkan pada sumber” bila kosong.',
+				),
+				'_qaf_vacancy_verified_date' => array(
+					'label'       => 'Tanggal Verifikasi',
+					'type'        => 'date',
+					'description' => 'Tanggal terakhir staf BKK mengecek bahwa halaman sumber masih dapat diakses.',
+				),
+				'_qaf_vacancy_source_name' => array(
+					'label'       => 'Nama Sumber',
+					'type'        => 'text',
+					'description' => 'Contoh: LinkedIn Jobs, Glints, Karirhub, Jobstreet, atau situs karier perusahaan.',
+				),
+				'_qaf_vacancy_source_url' => array(
+					'label'       => 'Tautan Sumber',
+					'type'        => 'url',
+					'description' => 'Halaman asli tempat informasi lowongan diverifikasi.',
+				),
+				'_qaf_vacancy_contact' => array(
+					'label'       => 'Kontak Publik Rekrutmen',
+					'type'        => 'text',
+					'description' => 'Isi hanya bila kontak dipublikasikan oleh perusahaan pada sumber resmi.',
+				),
+				'_qaf_vacancy_image_credit' => array(
+					'label'       => 'Kredit Logo/Gambar',
+					'type'        => 'text',
+				),
+				'_qaf_vacancy_source_id' => array(
+					'label'       => 'ID Sumber Lowongan',
+					'type'        => 'text',
+					'description' => 'Penanda stabil agar impor tidak membuat duplikasi. Jangan diubah.',
+					'readonly'    => true,
+				),
 			),
 			'qaf_alumni'      => array(
 				'_qaf_graduation_year' => array(
@@ -443,6 +530,16 @@ final class QAF_Core_Meta {
 				),
 			),
 			'qaf_facility'    => array(
+				'_qaf_content_owner' => array(
+					'label'       => 'Penanggung Jawab Data',
+					'type'        => 'text',
+					'description' => 'Nama atau unit yang memverifikasi informasi sarana, misalnya Waka Sarpras.',
+				),
+				'_qaf_last_reviewed' => array(
+					'label'       => 'Tanggal Tinjau Terakhir',
+					'type'        => 'date',
+					'description' => 'Tanggal informasi halaman terakhir diperiksa; berbeda dari tanggal pemeriksaan kondisi sarana.',
+				),
 				'_qaf_capacity'        => array(
 					'label'       => 'Kapasitas/Jumlah',
 					'type'        => 'integer',
@@ -577,6 +674,13 @@ final class QAF_Core_Meta {
 					<li><?php esc_html_e( 'Untuk entri manual, masukkan URL kanonik satu postingan. Jangan tempel iframe, token API, atau alamat profil pada field konten.', 'queen-alfalah-core' ); ?></li>
 					<li><?php esc_html_e( 'Untuk mengambil Reel/video baru dari akun resmi, gunakan Sekolah → Instagram Galeri. Token hanya disimpan melalui halaman koneksi tersebut.', 'queen-alfalah-core' ); ?></li>
 				</ul>
+			</div>
+		<?php endif; ?>
+		<?php if ( 'qaf_service' === $post->post_type ) : ?>
+			<div class="notice notice-info inline" role="note">
+				<p><strong><?php esc_html_e( 'Pengaturan tampilan aplikasi', 'queen-alfalah-core' ); ?></strong></p>
+				<p><?php esc_html_e( 'Kartu hanya tampil di Beranda dan Pusat Aplikasi bila Status Aplikasi = Aktif serta Alamat Layanan berisi URL HTTP/HTTPS yang lengkap. Pilih Pemeliharaan atau Nonaktif untuk menyembunyikannya tanpa menghapus data.', 'queen-alfalah-core' ); ?></p>
+				<p><?php esc_html_e( 'Urutan kartu dapat diubah melalui Atribut → Urutan pada panel editor.', 'queen-alfalah-core' ); ?></p>
 			</div>
 		<?php endif; ?>
 		<table class="form-table" role="presentation">

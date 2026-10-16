@@ -12,7 +12,7 @@ $queen_is_achievement = 'qaf_achievement' === $queen_post_type;
 $queen_is_gallery     = 'qaf_gallery' === $queen_post_type;
 $queen_card_class     = $queen_is_program ? 'program-card' : 'news-card';
 $queen_article_class  = $queen_card_class . ( $queen_is_achievement ? ' achievement-card' : '' );
-$queen_uses_contain   = in_array( $queen_post_type, array( 'qaf_program', 'qaf_teacher', 'qaf_partner', 'qaf_achievement' ), true );
+$queen_uses_contain   = in_array( $queen_post_type, array( 'qaf_program', 'qaf_teacher', 'qaf_partner', 'qaf_achievement', 'qaf_vacancy' ), true );
 $queen_image_size     = $queen_uses_contain ? 'queen-card-contain' : 'queen-card-square';
 $queen_fallback_visual = has_post_thumbnail() ? array() : queen_alfalah_fallback_visual( get_the_ID() );
 
@@ -48,7 +48,7 @@ $queen_compact_meta = array(
 	'qaf_extra'       => array( 'schedule', __( 'Jadwal', 'queen-alfalah' ) ),
 	'qaf_gallery'     => array( 'album_date', __( 'Tanggal dokumentasi', 'queen-alfalah' ) ),
 	'qaf_partner'     => array( 'partner_sector', __( 'Sektor', 'queen-alfalah' ) ),
-	'qaf_vacancy'     => array( 'deadline', __( 'Batas lamaran', 'queen-alfalah' ) ),
+	'qaf_vacancy'     => array( 'vacancy_location', __( 'Lokasi kerja', 'queen-alfalah' ) ),
 	'qaf_alumni'      => array( 'graduation_year', __( 'Tahun lulus', 'queen-alfalah' ) ),
 	'qaf_facility'    => array( 'capacity', __( 'Kapasitas/jumlah', 'queen-alfalah' ) ),
 );
@@ -118,7 +118,9 @@ if ( $queen_is_achievement ) {
 
 	<div class="<?php echo esc_attr( $queen_card_class . '__content' ); ?>">
 		<div class="<?php echo esc_attr( $queen_card_class . '__meta' . ( $queen_is_achievement ? ' achievement-card__meta' : '' ) ); ?>">
-			<?php if ( $queen_is_achievement && $queen_achievement_summary ) : ?>
+			<?php if ( $queen_is_gallery ) : ?>
+				<?php echo queen_alfalah_gallery_date_html( get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by helper. ?>
+			<?php elseif ( $queen_is_achievement && $queen_achievement_summary ) : ?>
 				<?php if ( isset( $queen_achievement_summary['award'] ) ) : ?>
 					<strong class="achievement-card__award">
 						<span class="screen-reader-text"><?php esc_html_e( 'Juara atau penghargaan: ', 'queen-alfalah' ); ?></span>

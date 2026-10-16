@@ -128,7 +128,15 @@ final class QAF_Core_News_Media {
 				continue;
 			}
 
-			$post_id = self::find_news_post( $record['source_id'], $record['post_slug'] );
+			$post_id = self::find_news_post( $record['source_id'], $record['post_slug'], $record['source_url'], $record['post'] );
+			if ( ! $post_id && ! empty( $record['post'] ) ) {
+				$post_id = self::create_news_post( $record );
+				if ( is_wp_error( $post_id ) ) {
+					$errors[] = sprintf( '%s: %s', $record['source_id'], $post_id->get_error_message() );
+					continue;
+				}
+			}
+
 			if ( ! $post_id ) {
 				$errors[] = sprintf( '%s: berita tujuan belum tersedia.', $record['source_id'] );
 				continue;
@@ -136,6 +144,16 @@ final class QAF_Core_News_Media {
 
 			if ( 'trash' === get_post_status( $post_id ) ) {
 				continue;
+			}
+
+			self::publish_due_post( $post_id, $record );
+
+			if ( ! empty( $record['publish_matching_draft'] ) && ! empty( $record['post'] ) && 'draft' === get_post_status( $post_id ) ) {
+				$published = self::publish_matching_draft( $post_id, $record );
+				if ( is_wp_error( $published ) ) {
+					$errors[] = sprintf( '%s: %s', $record['source_id'], $published->get_error_message() );
+					continue;
+				}
 			}
 
 			self::fill_post_meta( $post_id, $record );
@@ -160,6 +178,35 @@ final class QAF_Core_News_Media {
 	}
 
 	/**
+	 * Publish a verified same-day article when WordPress converted the desired
+	 * published state into a future post because of server-clock differences.
+	 *
+	 * @param int                 $post_id Existing post ID.
+	 * @param array<string,mixed> $record  Sanitized record.
+	 * @return void
+	 */
+	private static function publish_due_post( $post_id, $record ) {
+		if (
+			empty( $record['post'] )
+			|| 'publish' !== $record['post']['status']
+			|| 'future' !== get_post_status( $post_id )
+			|| substr( $record['post']['date'], 0, 10 ) > current_time( 'Y-m-d' )
+		) {
+			return;
+		}
+
+		$now = current_time( 'mysql' );
+		wp_update_post(
+			array(
+				'ID'            => $post_id,
+				'post_status'   => 'publish',
+				'post_date'     => $now,
+				'post_date_gmt' => get_gmt_from_date( $now ),
+			)
+		);
+	}
+
+	/**
 	 * Validate one dataset row before it reaches WordPress persistence APIs.
 	 *
 	 * @param mixed $item Raw row.
@@ -179,15 +226,174 @@ final class QAF_Core_News_Media {
 			'caption'    => sanitize_textarea_field( isset( $item['caption'] ) ? $item['caption'] : '' ),
 			'credit'     => sanitize_text_field( isset( $item['credit'] ) ? $item['credit'] : '' ),
 			'source_url' => self::sanitize_instagram_url( isset( $item['source_url'] ) ? $item['source_url'] : '' ),
+			'publish_matching_draft' => ! empty( $item['publish_matching_draft'] ),
+			'post'       => self::sanitize_post_payload( isset( $item['post'] ) ? $item['post'] : array() ),
 		);
 
-		foreach ( $record as $value ) {
+		foreach ( array( 'source_id', 'post_slug', 'image', 'title', 'alt', 'caption', 'credit', 'source_url' ) as $field ) {
+			$value = $record[ $field ];
 			if ( '' === $value ) {
 				return new WP_Error( 'qaf_news_media_field_missing', 'Ada field wajib yang kosong atau tidak valid.' );
 			}
 		}
 
+		if ( is_wp_error( $record['post'] ) ) {
+			return $record['post'];
+		}
+
 		return $record;
+	}
+
+	/**
+	 * Sanitize an optional news-post payload.
+	 *
+	 * Records without this payload remain media-only updates for posts that
+	 * already exist. A complete payload may create one missing verified post.
+	 *
+	 * @param mixed $payload Raw post payload.
+	 * @return array<string,mixed>|WP_Error
+	 */
+	private static function sanitize_post_payload( $payload ) {
+		if ( empty( $payload ) ) {
+			return array();
+		}
+
+		if ( ! is_array( $payload ) ) {
+			return new WP_Error( 'qaf_news_post_payload_invalid', 'Data berita baru bukan array.' );
+		}
+
+		$date = isset( $payload['date'] ) && is_scalar( $payload['date'] ) ? trim( (string) $payload['date'] ) : '';
+		if ( ! preg_match( '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $date ) ) {
+			return new WP_Error( 'qaf_news_post_date_invalid', 'Tanggal berita baru tidak valid.' );
+		}
+
+		$status = isset( $payload['status'] ) && is_scalar( $payload['status'] ) ? sanitize_key( (string) $payload['status'] ) : '';
+		if ( ! in_array( $status, array( 'draft', 'publish' ), true ) ) {
+			return new WP_Error( 'qaf_news_post_status_invalid', 'Status berita baru tidak didukung.' );
+		}
+
+		$post = array(
+			'title'      => sanitize_text_field( isset( $payload['title'] ) ? $payload['title'] : '' ),
+			'excerpt'    => sanitize_textarea_field( isset( $payload['excerpt'] ) ? $payload['excerpt'] : '' ),
+			'content'    => wp_kses_post( isset( $payload['content'] ) ? $payload['content'] : '' ),
+			'date'       => $date,
+			'status'     => $status,
+			'category'   => sanitize_text_field( isset( $payload['category'] ) ? $payload['category'] : '' ),
+			'tags'       => array(),
+		);
+
+		if ( isset( $payload['tags'] ) && is_array( $payload['tags'] ) ) {
+			$post['tags'] = array_values( array_filter( array_map( 'sanitize_text_field', $payload['tags'] ) ) );
+		}
+
+		foreach ( array( 'title', 'excerpt', 'content', 'category' ) as $field ) {
+			if ( '' === trim( (string) $post[ $field ] ) ) {
+				return new WP_Error( 'qaf_news_post_field_missing', 'Ada field berita baru yang kosong.' );
+			}
+		}
+
+		return $post;
+	}
+
+	/**
+	 * Create one missing, verified news post without changing existing posts.
+	 *
+	 * @param array<string,mixed> $record Sanitized media and post record.
+	 * @return int|WP_Error
+	 */
+	private static function create_news_post( $record ) {
+		$payload = $record['post'];
+		$term    = term_exists( $payload['category'], 'category' );
+
+		if ( ! $term ) {
+			$term = wp_insert_term( $payload['category'], 'category' );
+		}
+
+		if ( is_wp_error( $term ) ) {
+			return $term;
+		}
+
+		$category_id = is_array( $term ) ? (int) $term['term_id'] : (int) $term;
+		$post_id     = wp_insert_post(
+			wp_slash(
+				array(
+					'post_type'     => 'post',
+					'post_status'   => $payload['status'],
+					'post_author'   => get_current_user_id() ? get_current_user_id() : 1,
+					'post_name'     => $record['post_slug'],
+					'post_title'    => $payload['title'],
+					'post_excerpt'  => $payload['excerpt'],
+					'post_content'  => $payload['content'],
+					'post_date'     => $payload['date'],
+					'post_date_gmt' => get_gmt_from_date( $payload['date'] ),
+					'post_category' => array( $category_id ),
+					'tags_input'    => $payload['tags'],
+				)
+			),
+			true
+		);
+
+		if ( is_wp_error( $post_id ) ) {
+			return $post_id;
+		}
+
+		self::fill_post_meta( (int) $post_id, $record );
+		return (int) $post_id;
+	}
+
+	/**
+	 * Complete and publish one exact matching draft without replacing editor copy.
+	 *
+	 * Only empty title, excerpt, and content fields receive the verified package
+	 * copy. The source date becomes the publication date, while existing terms
+	 * are preserved and the verified category/tags are appended.
+	 *
+	 * @param int                 $post_id Existing draft ID.
+	 * @param array<string,mixed> $record  Sanitized media and post record.
+	 * @return int|WP_Error
+	 */
+	private static function publish_matching_draft( $post_id, $record ) {
+		$post = get_post( $post_id );
+		if ( ! $post instanceof WP_Post || 'post' !== $post->post_type || 'draft' !== $post->post_status ) {
+			return new WP_Error( 'qaf_news_draft_mismatch', 'Berita yang ditemukan bukan draf Berita yang dapat dipublikasikan.' );
+		}
+
+		$payload = $record['post'];
+		$update  = array(
+			'ID'            => $post_id,
+			'post_status'   => 'publish',
+			'post_date'     => $payload['date'],
+			'post_date_gmt' => get_gmt_from_date( $payload['date'] ),
+		);
+
+		if ( '' === trim( (string) $post->post_title ) ) {
+			$update['post_title'] = $payload['title'];
+		}
+		if ( '' === trim( (string) $post->post_excerpt ) ) {
+			$update['post_excerpt'] = $payload['excerpt'];
+		}
+		if ( '' === trim( (string) $post->post_content ) ) {
+			$update['post_content'] = $payload['content'];
+		}
+
+		$updated = wp_update_post( wp_slash( $update ), true );
+		if ( is_wp_error( $updated ) ) {
+			return $updated;
+		}
+
+		$term = term_exists( $payload['category'], 'category' );
+		if ( ! $term ) {
+			$term = wp_insert_term( $payload['category'], 'category' );
+		}
+		if ( is_wp_error( $term ) ) {
+			return $term;
+		}
+
+		$category_id = is_array( $term ) ? (int) $term['term_id'] : (int) $term;
+		wp_set_post_terms( $post_id, array( $category_id ), 'category', true );
+		wp_set_post_terms( $post_id, $payload['tags'], 'post_tag', true );
+
+		return (int) $updated;
 	}
 
 	/**
@@ -195,9 +401,11 @@ final class QAF_Core_News_Media {
 	 *
 	 * @param string $source_id Stable source marker.
 	 * @param string $post_slug Exported post slug.
+	 * @param string $source_url Canonical source URL.
+	 * @param array<string,mixed> $payload Optional verified post payload.
 	 * @return int
 	 */
-	private static function find_news_post( $source_id, $post_slug ) {
+	private static function find_news_post( $source_id, $post_slug, $source_url, $payload ) {
 		$matches = get_posts(
 			array(
 				'post_type'              => 'post',
@@ -218,8 +426,52 @@ final class QAF_Core_News_Media {
 			return (int) $matches[0];
 		}
 
+		$matches = get_posts(
+			array(
+				'post_type'              => 'post',
+				'post_status'            => array_values( get_post_stati() ),
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'ignore_sticky_posts'    => true,
+				'suppress_filters'       => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'meta_key'               => self::INSTAGRAM_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value'             => $source_url, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+			)
+		);
+
+		if ( $matches ) {
+			return (int) $matches[0];
+		}
+
 		$post = get_page_by_path( $post_slug, OBJECT, 'post' );
-		return $post instanceof WP_Post ? (int) $post->ID : 0;
+		if ( $post instanceof WP_Post ) {
+			return (int) $post->ID;
+		}
+
+		if ( ! empty( $payload['title'] ) ) {
+			$matches = get_posts(
+				array(
+					'post_type'              => 'post',
+					'post_status'            => 'draft',
+					'title'                  => $payload['title'],
+					'posts_per_page'         => 1,
+					'fields'                 => 'ids',
+					'no_found_rows'          => true,
+					'ignore_sticky_posts'    => true,
+					'suppress_filters'       => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+				)
+			);
+			if ( $matches ) {
+				return (int) $matches[0];
+			}
+		}
+
+		return 0;
 	}
 
 	/**

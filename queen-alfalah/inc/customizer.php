@@ -54,6 +54,11 @@ function queen_alfalah_sanitize_overlay( $value ) {
 	return max( 20, min( 90, absint( $value ) ) );
 }
 
+/** Clamp the homepage vacancy-card count. */
+function queen_alfalah_sanitize_vacancy_count( $value ) {
+	return max( 3, min( 8, absint( $value ) ) );
+}
+
 /**
  * Register theme options.
  *
@@ -165,6 +170,26 @@ function queen_alfalah_customize_register( $wp_customize ) {
 				'label'     => __( 'Foto hero sekolah', 'queen-alfalah' ),
 				'section'   => 'queen_hero',
 				'mime_type' => 'image',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'queen_landing_background_video',
+		array(
+			'default'           => 0,
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		new WP_Customize_Media_Control(
+			$wp_customize,
+			'queen_landing_background_video',
+			array(
+				'label'       => __( 'Video background landing page (MP4/WebM)', 'queen-alfalah' ),
+				'description' => __( 'Direkomendasikan sebagai pengganti GIF agar Beranda lebih ringan. Video hanya tampil pada hero, diputar tanpa suara, berulang otomatis, dan dapat diganti kapan saja.', 'queen-alfalah' ),
+				'section'     => 'queen_hero',
+				'mime_type'   => 'video',
 			)
 		)
 	);
@@ -323,6 +348,35 @@ function queen_alfalah_customize_register( $wp_customize ) {
 			'label'   => __( 'Tampilkan tombol WhatsApp mengambang', 'queen-alfalah' ),
 			'section' => 'queen_home',
 			'type'    => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_setting( 'queen_home_vacancies_show', array( 'default' => true, 'sanitize_callback' => 'queen_alfalah_sanitize_checkbox' ) );
+	$wp_customize->add_control(
+		'queen_home_vacancies_show',
+		array(
+			'label'       => __( 'Tampilkan Lowongan Kerja di beranda', 'queen-alfalah' ),
+			'description' => __( 'Bagian ini tampil paling bawah sebelum footer dan tidak menghapus lowongan lama.', 'queen-alfalah' ),
+			'section'     => 'queen_home',
+			'type'        => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_setting( 'queen_home_vacancies_title', array( 'default' => __( 'Lowongan Kerja Terbaru', 'queen-alfalah' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+	$wp_customize->add_control( 'queen_home_vacancies_title', array( 'label' => __( 'Judul bagian lowongan', 'queen-alfalah' ), 'section' => 'queen_home', 'type' => 'text' ) );
+
+	$wp_customize->add_setting( 'queen_home_vacancies_description', array( 'default' => __( 'Informasi peluang kerja terkurasi untuk lulusan DKV, TJKT, MPLB, dan Layanan Kesehatan. Selalu periksa sumber asli sebelum melamar.', 'queen-alfalah' ), 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$wp_customize->add_control( 'queen_home_vacancies_description', array( 'label' => __( 'Deskripsi bagian lowongan', 'queen-alfalah' ), 'section' => 'queen_home', 'type' => 'textarea' ) );
+
+	$wp_customize->add_setting( 'queen_home_vacancies_count', array( 'default' => 4, 'sanitize_callback' => 'queen_alfalah_sanitize_vacancy_count' ) );
+	$wp_customize->add_control(
+		'queen_home_vacancies_count',
+		array(
+			'label'       => __( 'Jumlah lowongan di beranda', 'queen-alfalah' ),
+			'description' => __( 'Pilih 3–8 lowongan terbaru. Semua lowongan lain tetap tersedia pada Bursa Kerja.', 'queen-alfalah' ),
+			'section'     => 'queen_home',
+			'type'        => 'number',
+			'input_attrs' => array( 'min' => 3, 'max' => 8, 'step' => 1 ),
 		)
 	);
 

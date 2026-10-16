@@ -242,6 +242,7 @@ qaf_test_assert( 2 === $first['videos'], 'Expected two videos.' );
 qaf_test_assert( 1 === $first['created'], 'Expected one new Gallery entry.' );
 qaf_test_assert( 1 === $first['updated'], 'Expected the equivalent manual URL to be enriched.' );
 qaf_test_assert( 2 === count( $qaf_test_posts ), 'Unexpected post count after first synchronization.' );
+qaf_test_assert( empty( $qaf_test_meta[50]['_qaf_album_date'] ) && empty( $qaf_test_meta[101]['_qaf_album_date'] ), 'Instagram upload date must not be assumed to be the activity date.' );
 
 $first_id = array_key_first( $qaf_test_posts );
 qaf_test_assert( 'instagram' === $qaf_test_meta[ $first_id ]['_qaf_gallery_source'], 'Instagram source metadata was not stored.' );

@@ -14,6 +14,32 @@ $phone       = queen_alfalah_school_info( 'phone' );
 $email       = queen_alfalah_school_info( 'email' );
 $ppdb_url    = queen_alfalah_school_info( 'ppdb_url' );
 $notice      = null;
+$mobile_navigation_items = array(
+	array(
+		'label'   => __( 'Beranda', 'queen-alfalah' ),
+		'url'     => home_url( '/' ),
+		'icon'    => 'home',
+		'current' => is_front_page(),
+	),
+	array(
+		'label'   => __( 'Berita', 'queen-alfalah' ),
+		'url'     => queen_alfalah_page_url( 'berita' ),
+		'icon'    => 'newspaper',
+		'current' => is_home() || is_singular( 'post' ) || is_category() || is_tag() || is_author(),
+	),
+	array(
+		'label'   => __( 'Aplikasi', 'queen-alfalah' ),
+		'url'     => queen_alfalah_archive_url( 'qaf_service', 'aplikasi' ),
+		'icon'    => 'monitor',
+		'current' => is_post_type_archive( 'qaf_service' ) || is_singular( 'qaf_service' ),
+	),
+	array(
+		'label'   => __( 'PPDB', 'queen-alfalah' ),
+		'url'     => $ppdb_url ? $ppdb_url : queen_alfalah_page_url( 'ppdb' ),
+		'icon'    => 'users',
+		'current' => is_page( 'ppdb' ),
+	),
+);
 
 if ( post_type_exists( 'qaf_notice' ) ) {
 	$notice_query = new WP_Query(
@@ -141,3 +167,16 @@ if ( post_type_exists( 'qaf_notice' ) ) {
 			</div>
 		</div>
 	</header>
+
+	<nav class="mobile-dock" aria-label="<?php esc_attr_e( 'Navigasi cepat', 'queen-alfalah' ); ?>" data-mobile-dock>
+		<?php foreach ( $mobile_navigation_items as $mobile_navigation_item ) : ?>
+			<a class="mobile-dock__item<?php echo $mobile_navigation_item['current'] ? ' is-current' : ''; ?>" href="<?php echo esc_url( $mobile_navigation_item['url'] ); ?>"<?php echo $mobile_navigation_item['current'] ? ' aria-current="page"' : ''; ?>>
+				<span class="mobile-dock__icon"><?php echo queen_alfalah_icon( $mobile_navigation_item['icon'] ); ?></span>
+				<span class="mobile-dock__label"><?php echo esc_html( $mobile_navigation_item['label'] ); ?></span>
+			</a>
+		<?php endforeach; ?>
+		<button class="mobile-dock__item mobile-dock__menu" type="button" aria-expanded="false" aria-controls="site-navigation" data-mobile-nav-toggle>
+			<span class="mobile-dock__icon"><?php echo queen_alfalah_icon( 'menu' ); ?></span>
+			<span class="mobile-dock__label"><?php esc_html_e( 'Menu', 'queen-alfalah' ); ?></span>
+		</button>
+	</nav>

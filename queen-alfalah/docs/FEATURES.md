@@ -130,10 +130,11 @@ Statistik harus diisi dengan data yang disahkan. Tema tidak menghitung hasil tra
 - Instagram;
 - YouTube;
 - TikTok;
-- X atau kanal lain yang disediakan;
 - tautan sosial resmi sekolah.
 
-Pengaturan Customizer di atas ditujukan untuk tautan akun resmi sekolah. URL pada entri Galeri ditujukan untuk satu postingan/video publik dari Instagram, TikTok, Facebook, atau YouTube. Tema tidak meminta token atau kata sandi. Sinkronisasi Reel/video Instagram merupakan fitur server-side Queen Al-Falah Core 1.9.0 dan dikonfigurasi terpisah melalui **Sekolah → Instagram Galeri**; URL kosong tidak perlu ditampilkan.
+Pengaturan di atas ditujukan untuk tautan akun resmi sekolah. Tautan yang terisi otomatis tampil sebagai tombol pada footer, halaman Kontak, dan setiap detail berita maupun tipe konten publik; karena diterapkan oleh templat, tombol juga muncul pada posting lama tanpa menyunting isinya. Kanal dengan URL kosong tidak ditampilkan.
+
+URL pada entri Galeri ditujukan untuk satu postingan/video publik dari Instagram, TikTok, Facebook, atau YouTube. Tema tidak meminta token atau kata sandi. Sinkronisasi Reel/video Instagram merupakan fitur server-side Queen Al-Falah Core 1.9.0 dan dikonfigurasi terpisah melalui **Sekolah → Instagram Galeri**.
 
 ## Komponen beranda
 

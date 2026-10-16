@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.11.0
+Stable tag: 1.26.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -17,13 +17,21 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Taksonomi sekolah, REST meta terstruktur, serta meta box yang aman.
 * Pengaturan identitas, visi-misi, kontak, lokasi, pendaftaran, dan media sosial.
 * Kolom admin dan pengurutan meta.
+* Status aplikasi terlihat di daftar admin; hanya kartu Aktif dengan URL HTTP/HTTPS valid yang ditampilkan oleh tema 1.10.0.
 * Agenda publik terurut berdasarkan tanggal mulai.
 * Penyaringan pengumuman kedaluwarsa hanya pada arsip publik.
 * Penyiapan demo satu klik yang idempoten dan tidak menimpa data pengguna.
 * Pusat Media privat dengan akun Waka, Guru, dan Tenaga Kependidikan.
-* Tautan Google Drive per divisi yang wajib login dan dapat diganti dari Pengaturan Sekolah.
+* Tautan Google Drive khusus per akun yang wajib login, dengan folder divisi sebagai cadangan.
+* Dashboard terbatas untuk Waka: unggah Media Library serta buat, sunting, dan terbitkan Pengumuman tanpa akses admin umum.
+* Penilaian Kinerja Guru dengan nama dan kelas lengkap untuk akuntabilitas, sepuluh aspek pengalaman belajar, serta tiga pertanyaan reflektif.
+* Pencegahan pengisian ganda berdasarkan identitas tersamar dan token perangkat untuk setiap guru pada semester yang sama.
+* Dashboard khusus administrator berisi grafik, rata-rata, sebaran kelas, tema komentar, saran tindak lanjut, dan kesimpulan otomatis berbasis aturan tanpa layanan AI eksternal.
+* Paket Bursa Kerja terverifikasi dengan sepuluh lowongan lintas DKV, TJKT, MPLB, dan Layanan Kesehatan; logo perusahaan, sumber asli, lokasi, gaji, pendidikan, serta tombol lamaran disimpan terstruktur.
+* Provisioner administrator untuk empat akun Waka dengan username tetap, password sementara satu kali, dan deteksi akun yang sudah ada.
 * Struktur organisasi 2026/2027 dengan tupoksi dan foto tersinkron dari Guru & Tendik.
 * Importer non-destruktif untuk 13 Guru/Tendik yang belum tercatat serta 11 alias ejaan yang menyambungkan foto/profil lama ke Struktur Organisasi.
+* Optimasi Media Library ke WebP secara bertahap, termasuk semua thumbnail serta gambar baru, dengan pilihan aman atau penghapusan JPG/PNG lama setelah migrasi berhasil.
 * Data prestasi terstruktur beserta penyelenggara, juara, bidang, tingkat, dan tautan sumber.
 * Dua puluh sembilan Prestasi/Partisipasi tahun 2023–2026 dengan 24 halaman bergambar sumber; entri tanpa foto tepat memakai fallback berlabel ilustrasi.
 * Katalog berversi untuk enam Sarana Prasarana dan 14 profil awal PKL & Mitra Industri.
@@ -31,8 +39,11 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Sebelas Ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi fallback.
 * Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan URL kanonik, pemilih Media Library, serta kontrol klik/otomatis/tautan.
 * Sinkronisasi Reel/video akun Instagram Profesional melalui API resmi dengan jadwal harian opsional, deduplikasi, status draf/terbit, poster lokal, dan pembaruan long-lived token.
-* Delapan sampul berita Agustus 2026 dari Instagram resmi yang disalin ke Media Library dan hanya mengisi gambar unggulan yang masih kosong.
+* Lima belas paket media berita Agustus–Oktober 2026 dari Instagram resmi; gambar hanya mengisi slot kosong dan satu draf Oktober yang tepat dapat dipublikasikan tanpa duplikasi.
+* Audit Kelengkapan Oktober untuk Program Keahlian, Guru/Tendik, Sarana Prasarana, Ekstrakurikuler, serta status halaman Struktur Organisasi.
+* Field Penanggung Jawab Data dan Tanggal Tinjau Terakhir agar validasi konten inti dapat ditelusuri.
 * Caption, alt text, kredit foto, dan URL Instagram sumber yang tetap dapat disunting oleh administrator.
+* Pemasang gambar Karya Siswa Batch 2 yang menyalin enam cover frame Instagram dan dua belas thumbnail YouTube resmi ke Media Library tanpa menimpa gambar unggulan pilihan editor.
 * Pengaturan opsional Google Analytics 4 dan verifikasi Search Console; keduanya nonaktif sampai ID resmi diisi.
 * Retensi seluruh data saat plugin dihapus.
 
@@ -81,7 +92,11 @@ Buka Sekolah > Pengaturan > Analitik dan Verifikasi. Isi Measurement ID GA4 berf
 
 = Apakah WordPress mengunggah file Pusat Media ke Google Drive? =
 
-Tidak. Setelah login, pengguna hanya melihat tautan folder sesuai perannya. Semua operasi file berlangsung di Google Drive. Atur tiga URL di Sekolah > Pengaturan > Pusat Media, gunakan berbagi Drive Dibatasi, dan beri akses hanya kepada akun Google yang berwenang.
+Tidak. Setiap akun dapat diberi satu URL folder khusus melalui profil Pengguna; bila kosong, portal memakai folder divisi dari Sekolah > Pengaturan > Pusat Media. Semua operasi file berlangsung di Google Drive. Gunakan berbagi Drive Dibatasi dan beri akses hanya kepada akun Google yang berwenang.
+
+= Bagaimana membuat akun Waka? =
+
+Masuk sebagai administrator lalu buka Sekolah > Akun Waka. Periksa empat nama dan username tetap, kemudian jalankan pembuatan akun yang belum ada. Tool dilindungi nonce, tidak berjalan otomatis, tidak mengarang email, dan tidak mengubah akun lama. Simpan password sementara 32 karakter saat ditampilkan; setiap Waka wajib menggantinya pada login pertama.
 
 = Bagaimana menambahkan foto atau video ke Galeri? =
 
@@ -97,7 +112,7 @@ Klik untuk memuat adalah default dan dirender oleh tema Queen Al-Falah 1.5.0 set
 
 = Izin apa yang diperlukan dan bagaimana privasi pengunjung dijaga? =
 
-Plugin tidak menambah capability baru. Menyunting meta Galeri mengikuti izin `edit_post`, sedangkan unggah media mengikuti `upload_files`. Pastikan sekolah memiliki hak penggunaan dan izin publikasi media. Embed platform dapat mengirim data teknis pengunjung kepada pihak ketiga; mode Klik untuk memuat menundanya sampai interaksi, sementara Tautan saja tidak membuat embed.
+Fitur Galeri tidak memberi capability tambahan. Menyunting meta Galeri mengikuti izin `edit_post`, sedangkan unggah media mengikuti `upload_files`. Pastikan sekolah memiliki hak penggunaan dan izin publikasi media. Embed platform dapat mengirim data teknis pengunjung kepada pihak ketiga; mode Klik untuk memuat menundanya sampai interaksi, sementara Tautan saja tidak membuat embed.
 
 = Apakah entri Galeri lama tetap kompatibel? =
 
@@ -120,6 +135,108 @@ Tidak. Plugin hanya menyimpan dan menampilkan informasi atau tautan. Sistem pend
 Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif, serta foto tanpa dasar izin yang sesuai.
 
 == Changelog ==
+
+= 1.26.1 - 2026-10-16 =
+
+* Memastikan Berita dan Galeri resmi pada tanggal kalender hari ini tidak tertahan sebagai konten terjadwal akibat perbedaan jam server.
+* Mempertahankan tanggal album, sumber, narasi, media, dan deduplikasi yang sudah tersimpan.
+
+= 1.26.0 - 2026-10-16 =
+
+* Menambahkan berita dan Galeri "Yuk Happy di Sekolah" dari Reel Instagram resmi 16 Oktober 2026 dengan thumbnail WebP sumber, narasi, kredit, dan tanggal unggahan terverifikasi.
+* Menjaga pembaruan idempoten berdasarkan ID sumber, URL, serta slug sehingga konten yang telah ada tidak diduplikasi atau ditimpa.
+* Audit kanal resmi tidak menemukan Prestasi atau Karya Siswa baru yang terverifikasi setelah paket sebelumnya; arsip yang telah terbit dipertahankan.
+
+= 1.25.1 - 2026-10-13 =
+
+* Memperbaiki deteksi halaman Struktur Organisasi yang berada di bawah halaman induk Profil.
+* Menambahkan pencocokan judul tepat sebagai fallback terakhir agar draf lama dapat dimanfaatkan tanpa membuat duplikasi baru.
+
+= 1.25.0 - 2026-10-13 =
+
+* Menambahkan berita apresiasi SMK Queen Al-Falah untuk perjuangan Timnas Indonesia berdasarkan unggahan Instagram resmi 5 Oktober 2026, lengkap dengan sampul WebP sumber, kredit, dan tautan verifikasi.
+* Menerbitkan draf yang benar-benar cocok berdasarkan sumber atau slug tanpa membuat duplikasi; narasi editor yang sudah terisi tetap dipertahankan.
+* Menambahkan menu Sekolah → Audit Kelengkapan untuk memetakan kekurangan isi, gambar, metadata inti, penanggung jawab data, dan tanggal tinjau pada empat area prioritas Oktober.
+* Menambahkan field tata kelola Penanggung Jawab Data dan Tanggal Tinjau Terakhir pada Program Keahlian, Guru/Tendik, Sarana Prasarana, dan Ekstrakurikuler.
+* Audit kanal resmi memastikan Prestasi, Karya Siswa, dan Galeri terbaru yang telah terbit tidak digandakan.
+
+= 1.24.0 - 2026-10-07 =
+
+* Menambahkan berita dan Prestasi finalis National Speech Contest Bahasa Arab UNISMA atas nama Figur Bagus Fambagya, lengkap dengan gambar unggahan Instagram resmi.
+* Melengkapi arsip Prestasi Juara 3 English Olympiad Kabupaten Kediri atas nama Mikael Fadh tanpa menduplikasi berita yang telah terbit.
+* Menambahkan video pembelajaran Design Brief DKV dari kanal YouTube resmi ke Galeri, lengkap dengan tanggal album, thumbnail sumber, dan narasi standar website.
+* Importer baru bersifat idempoten, mempertahankan item di Sampah, dan tidak menimpa konten atau gambar pilihan administrator.
+
+= 1.23.3 - 2026-10-07 =
+
+* Menambahkan empat lowongan aktif terbaru dari sumber asli tanpa menghapus atau menimpa lowongan BKK yang telah ada.
+* Menyertakan logo sumber, kualifikasi, tanggung jawab, lokasi, gaji bila tersedia, kanal lamaran, dan tanggal verifikasi untuk DKV, TJKT, MPLB, serta Layanan Kesehatan.
+* Menampilkan status Pusat Aplikasi pada daftar admin dan panduan editor agar kartu aktif dapat dikelola tanpa menghapus entri.
+
+= 1.22.1 - 2026-10-03 =
+* Memperketat pencocokan singkatan agar UKS, LBB, DKV, PKL, dan istilah pendek lain tidak terbaca sebagai potongan kata biasa.
+* Memprioritaskan konteks judul seperti Idulfitri dan kompetisi sebelum istilah umum dalam isi.
+* Membangun ulang versi narasi berikutnya dari cadangan asli untuk mencegah pembuka atau subjudul ganda.
+
+= 1.22.0 - 2026-10-03 =
+* Menambahkan menu Sekolah → Standar Narasi untuk Berita, Galeri, Prestasi, dan Karya Siswa yang sudah terbit.
+* Menyusun pembuka faktual, subjudul sesuai jenis konten, nilai pembelajaran berdasarkan topik, penutup, dan excerpt ringkas tanpa menghapus isi, media, kredit, atau tautan sumber lama.
+* Membuat cadangan asli satu kali untuk setiap postingan, proses idempoten, kunci proses, pemeriksaan izin/nonce, laporan hasil, dan pemulihan menyeluruh.
+
+= 1.21.0 - 2026-09-17 =
+* Menambahkan folder Google Drive khusus per akun Pusat Media dengan folder divisi sebagai fallback.
+* Menambahkan status pengaturan folder pada daftar Pengguna dan validasi URL host Google Drive resmi.
+* Tidak menyimpan token Google atau isi dokumen serta tidak mengaktifkan penghapusan otomatis file sumber.
+
+= 1.20.0 - 2026-09-17 =
+* Mewajibkan nama lengkap dan kelas rinci pada Penilaian Kinerja Guru; identitas hanya dapat dilihat administrator.
+* Memperluas survei dari empat menjadi sepuluh aspek dengan pilihan jawaban kontekstual berbasis pengalaman siswa.
+* Menambahkan refleksi kekuatan, kebutuhan perbaikan, dan harapan siswa serta rekomendasi otomatis berbasis aturan.
+* Mencegah pengisian berulang menggunakan kombinasi identitas tersamar dan token perangkat per guru/semester.
+
+= 1.19.0 - 2026-09-17 =
+* Menambahkan enam lowongan terkurasi untuk empat program keahlian tanpa menimpa lowongan lama.
+* Menambahkan logo perusahaan, platform sumber, lokasi, jenis kerja, pendidikan, gaji, kontak publik, dan tanggal verifikasi.
+* Memperjelas kanal lamaran serta catatan keamanan rekrutmen pada setiap lowongan.
+
+= 1.18.0 - 2026-09-16 =
+
+* Menambahkan Penilaian Kinerja Guru anonim untuk siswa dan kartu aktifnya pada Pusat Aplikasi.
+* Menilai kepuasan, pemahaman, pengaruh positif, serta kedisiplinan melalui pilihan sederhana skala 1–5 dan cerita opsional.
+* Menambahkan pencegahan respons ganda per guru/semester, grafik administrator, ringkasan berbasis aturan, serta tema komentar tanpa mengirim data ke pihak luar.
+
+= 1.17.0 - 2026-09-16 =
+
+* Menambahkan foto sumber asli unggahan Instagram sebagai gambar unggulan berita Kompetisi Pembawa Berita JTV Kediri tanpa mengganti gambar pilihan editor.
+* Menambahkan berita Peringatan Maulid Nabi Muhammad SAW 1448 H dari feed resmi 15 September 2026 beserta foto sumber, kredit, tautan verifikasi, dan catatan bahwa tanggal unggahan bukan tanggal kegiatan.
+* Importer berita tetap idempoten: konten lama, item di Sampah, serta gambar dan metadata yang sudah disunting administrator dipertahankan.
+
+= 1.16.0 - 2026-09-16 =
+
+* Menambahkan pemasang 18 gambar sumber untuk Karya Siswa Batch 2: enam cover frame Instagram dan dua belas thumbnail kanal YouTube resmi.
+* Menyalin gambar ke Media Library, memberi alt text dan caption sumber, serta tidak menimpa gambar unggulan pilihan editor.
+* Menyediakan laporan hasil yang idempoten pada menu Sekolah > Penyiapan Karya Siswa.
+
+= 1.14.1 - 2026-09-06 =
+
+* Album bertanggal tetap di atas dengan urutan tanggal album terbaru ke terlama.
+* Album tanpa tanggal dibalik: publikasi paling lama tampil lebih dahulu setelah kelompok album bertanggal; waktu sama memakai ID kecil lebih dahulu.
+* Hanya urutan tampilan yang berubah, tanpa mengubah metadata tanggal, tanggal publikasi, isi, media, maupun status postingan.
+
+= 1.14.0 - 2026-09-06 =
+
+* Galeri publik dan beranda diurutkan berdasarkan Tanggal Album terbaru ke terlama; album tanpa tanggal tetap terlihat di belakang.
+* Menu Tanggal Album Galeri menerapkan lima tanggal terverifikasi dari video tanpa mengubah tanggal publikasi, konten, media, atau status draf.
+* Validasi kalender, bukti tanggal, pemeriksaan sumber unik, nonce/admin, cadangan tanggal lama, dan pelaporan per album.
+* Tanggal unggahan Instagram tidak lagi otomatis dianggap sebagai tanggal kegiatan.
+
+= 1.12.0 - 2026-09-05 =
+
+* Memisahkan capability Pengumuman dari Post sehingga Waka hanya memperoleh akses Media Library dan Pengumuman yang diperlukan.
+* Menjaga Guru/Tendik sebagai pengguna Pusat Media tanpa dashboard serta memberi Waka menu Pengumuman terbatas.
+* Menambahkan provisioner empat akun Waka berbasis POST, nonce, dan manage_options yang melewati akun lama tanpa mengubahnya.
+* Membuat password sementara acak 32 karakter yang hanya ditampilkan sekali, tanpa email buatan, serta mewajibkan penggantian pada login pertama.
+* Mempertahankan akses role editorial bawaan setelah migrasi capability dan menambahkan pengujian idempotensi/batas hak akses.
 
 = 1.11.0 - 2026-08-30 =
 
@@ -228,6 +345,22 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 * Menambahkan kebijakan uninstall non-destruktif.
 
 == Upgrade Notice ==
+
+= 1.26.1 =
+
+Masuk ke dashboard sebagai administrator satu kali agar Berita dan Galeri resmi pada tanggal hari ini langsung diterbitkan meskipun jam server berbeda.
+
+= 1.26.0 =
+
+Masuk ke dashboard sebagai administrator satu kali untuk menambahkan satu Berita dan satu Galeri Reel resmi terbaru tanpa menduplikasi konten lama.
+
+= 1.25.1 =
+
+Masuk ke dashboard sebagai administrator satu kali untuk mengimpor berita, Prestasi, dan Galeri resmi terbaru. Karya Siswa BSJC yang sudah ada tidak diduplikasi.
+
+= 1.12.0 =
+
+Masuk ke dashboard sebagai administrator agar capability baru diterapkan, lalu buka Sekolah > Akun Waka. Periksa data sebelum menekan tombol; akun tidak dibuat otomatis dan password sementara hanya ditampilkan satu kali.
 
 = 1.11.0 =
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Verified media package for the August 2026 school news batch.
+ * Verified media package for the August-September 2026 school news batch.
  *
  * Images are local copies of the first slide from the corresponding post on
  * the school's official Instagram account. The source URL remains attached to
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 return array(
-	'version' => '1.0.0',
+	'version' => '1.5.1',
 	'items'   => array(
 		array(
 			'source_id' => 'instagram:Db2CHFFiWrI',
@@ -95,6 +95,113 @@ return array(
 			'caption'   => 'Dari sejarah lahir karya dan prestasi. Empat siswa DKV SMK Queen Al-Falah meraih Juara Harapan 1 dan peringkat 8 Video Reels, serta peringkat 17 dan 22 Fotografi dalam The Silent Heritage of District Paree.',
 			'credit'    => 'Foto: Instagram @smkqueenalfalah_official.',
 			'source_url' => 'https://www.instagram.com/p/DcVPSxuCQ8m/',
+		),
+		array(
+			'source_id' => 'instagram:Dcz45RVCd7e',
+			'post_slug' => 'semarak-hut-ri-ke-81-putri-smk-queen-al-falah-kebersamaan-dan-keceriaan',
+			'image'     => 'semarak-hut-ri-81-putri.jpg',
+			'title'     => 'Semarak HUT RI ke-81 Putri: Kebersamaan dan Keceriaan',
+			'alt'       => 'Para siswi SMK Queen Al-Falah bergembira bersama dalam rangkaian lomba sekolah untuk memperingati HUT RI ke-81.',
+			'caption'   => 'Semarak HUT RI ke-81 menghadirkan kebersamaan dan keceriaan bagi para siswi SMK Queen Al-Falah. Melalui rangkaian lomba sekolah, mereka bergerak, tertawa, dan membangun sportivitas dalam memperingati Hari Kemerdekaan Indonesia.',
+			'credit'    => 'Foto: Instagram @smkqueenalfalah_official.',
+			'source_url' => 'https://www.instagram.com/p/Dcz45RVCd7e/',
+		),
+		array(
+			'source_id' => 'instagram:Dcz4TJbiZYL',
+			'post_slug' => 'semarak-hut-ri-ke-81-putra-smk-queen-al-falah-satu-semangat-satu-kebersamaan',
+			'image'     => 'semarak-hut-ri-81-putra.jpg',
+			'title'     => 'Semarak HUT RI ke-81 Putra: Satu Semangat, Satu Kebersamaan',
+			'alt'       => 'Para siswa putra SMK Queen Al-Falah bersemangat mengikuti rangkaian lomba sekolah untuk memperingati HUT RI ke-81.',
+			'caption'   => 'Satu semangat, satu kebersamaan. Para siswa putra SMK Queen Al-Falah mengikuti rangkaian lomba sekolah dengan antusias, menumbuhkan kekompakan dan sportivitas dalam semarak peringatan HUT RI ke-81.',
+			'credit'    => 'Foto: Instagram @smkqueenalfalah_official.',
+			'source_url' => 'https://www.instagram.com/p/Dcz4TJbiZYL/',
+		),
+		array(
+			'source_id' => 'instagram:DdB3xxRCS-r',
+			'post_slug' => 'siswa-smk-queen-al-falah-ikuti-kompetisi-pembawa-berita-jtv-kediri',
+			'image'     => 'kompetisi-pembawa-berita-jtv-kediri.jpg',
+			'title'     => 'Kompetisi Pembawa Berita JTV Kediri',
+			'alt'       => 'Poster Kompetisi Pembawa Berita JTV Kediri yang diikuti siswa SMK Queen Al-Falah.',
+			'caption'   => 'Siswa SMK Queen Al-Falah mengikuti Kompetisi Pembawa Berita JTV Kediri untuk melatih komunikasi publik, keberanian tampil, dan kepercayaan diri.',
+			'credit'    => 'Foto: Instagram @smkqueenalfalah_official, unggahan 8 September 2026.',
+			'source_url' => 'https://www.instagram.com/p/DdB3xxRCS-r/',
+		),
+		array(
+			'source_id' => 'instagram:DdSks0NiW_C',
+			'post_slug' => 'peringatan-maulid-nabi-muhammad-saw-1448-h-smk-queen-al-falah',
+			'image'     => 'maulid-nabi-1448-h.jpg',
+			'title'     => 'Peringatan Maulid Nabi Muhammad SAW 1448 H',
+			'alt'       => 'Dokumentasi peringatan Maulid Nabi Muhammad SAW 1448 H di SMK Queen Al-Falah.',
+			'caption'   => 'Peringatan Maulid Nabi Muhammad SAW 1448 H menjadi momen refleksi melalui sunnah, shalawat, dan keteladanan Rasulullah.',
+			'credit'    => 'Foto: Instagram @smkqueenalfalah_official, unggahan 15 September 2026.',
+			'source_url' => 'https://www.instagram.com/p/DdSks0NiW_C/',
+			'post'       => array(
+				'title'    => 'Peringatan Maulid Nabi Muhammad SAW 1448 H di SMK Queen Al-Falah',
+				'excerpt'  => 'Dokumentasi Maulid Nabi Muhammad SAW 1448 H di SMK Queen Al-Falah mengajak warga sekolah menjadikan sunnah dan shalawat sebagai ruang refleksi diri.',
+				'content'  => '<p><strong>SMK Queen Al-Falah Mojo Kediri</strong> membagikan dokumentasi peringatan Maulid Nabi Muhammad SAW 1448 H melalui akun Instagram resmi sekolah. Unggahan tersebut membawa pesan sederhana dan bermakna: menjadikan sunnah dan shalawat sebagai ruang untuk merefleksikan diri.</p><h2>Maulid sebagai ruang refleksi dan pembentukan karakter</h2><p>Peringatan Maulid Nabi mengajak warga sekolah tidak hanya mengenang perjalanan Rasulullah, tetapi juga mempelajari keteladanan beliau dalam kehidupan sehari-hari. Nilai santun, disiplin, jujur, peduli, dan bertanggung jawab dapat tumbuh melalui kebiasaan kecil di kelas, lingkungan sekolah, asrama, maupun masyarakat.</p><p>Bagi pendidikan vokasi berbasis pesantren, pembentukan keterampilan dan karakter berjalan berdampingan. Kompetensi membantu siswa menghadapi dunia kerja, sedangkan akhlak menjadi landasan saat bekerja sama, melayani orang lain, dan mengambil keputusan.</p><h2>Menjaga semangat belajar dan keteladanan</h2><p>Melalui shalawat dan refleksi bersama, keluarga besar SMK Queen Al-Falah diajak memperkuat kecintaan kepada Rasulullah serta menerapkan teladan beliau dalam proses belajar dan berkarya. Semangat tersebut sejalan dengan komitmen sekolah untuk menyiapkan generasi yang berilmu, terampil, dan berakhlaqul karimah.</p><p>Informasi kegiatan, program keahlian, dan kabar terbaru SMK Queen Al-Falah dapat diikuti melalui website serta media sosial resmi sekolah.</p><p><em>Foto dan informasi bersumber dari <a href="https://www.instagram.com/p/DdSks0NiW_C/" target="_blank" rel="noreferrer noopener">Instagram @smkqueenalfalah_official</a>, unggahan 15 September 2026. Tanggal tersebut adalah tanggal unggahan dokumentasi, bukan penetapan tanggal kegiatan.</em></p>',
+				'date'     => '2026-09-15 08:52:09',
+				'status'   => 'publish',
+				'category' => 'Berita',
+				'tags'     => array( 'Maulid Nabi 1448 H', 'kegiatan keagamaan', 'SMK Queen Al-Falah', 'SMK Kediri' ),
+			),
+		),
+		array(
+			'source_id' => 'instagram:DeIN3TVTdlC',
+			'post_slug' => 'figur-bagus-fambagya-lolos-final-national-speech-contest-bahasa-arab-unisma-2026',
+			'image'     => 'figur-bagus-finalis-national-speech-contest-2026.webp',
+			'title'     => 'Figur Bagus Fambagya Lolos Final National Speech Contest Bahasa Arab UNISMA 2026',
+			'alt'       => 'Figur Bagus Fambagya dari XI TJKT 2 menjadi finalis National Speech Contest Bahasa Arab di UNISMA.',
+			'caption'   => 'Figur Bagus Fambagya dari XI TJKT 2 melaju ke babak final National Speech Contest kategori Arabic Speech di Universitas Islam Malang.',
+			'credit'    => 'Foto: Instagram @smkqueenalfalah_official, unggahan 6 Oktober 2026.',
+			'source_url' => 'https://www.instagram.com/p/DeIN3TVTdlC/',
+			'post'       => array(
+				'title'    => 'Figur Bagus Fambagya Lolos Final National Speech Contest Bahasa Arab UNISMA 2026',
+				'excerpt'  => 'Siswa XI TJKT 2 SMK Queen Al-Falah, Figur Bagus Fambagya, menembus final National Speech Contest kategori Arabic Speech di UNISMA.',
+				'content'  => '<p><strong>Figur Bagus Fambagya</strong>, siswa XI TJKT 2 SMK Queen Al-Falah Mojo Kediri, berhasil menembus babak final <em>National Speech Contest</em> kategori Khitobah atau <em>Arabic Speech</em> di Universitas Islam Malang (UNISMA).</p><h2>Keberanian berbahasa dan menyampaikan gagasan</h2><p>Kompetisi pidato Bahasa Arab menuntut ketepatan pengucapan, penguasaan materi, keberanian tampil, serta kemampuan menyampaikan gagasan secara runtut. Keberhasilan Figur mencapai babak final menunjukkan proses belajar yang tekun dan kesiapan untuk berkembang melalui pengalaman kompetitif.</p><p>Figur mendapat pendampingan dari <strong>Ana Nur Lailatul Khoiriyah, S.Pd.</strong>, guru Bahasa Arab SMK Queen Al-Falah. Pendampingan tersebut membantu peserta mematangkan materi, intonasi, pelafalan, dan kepercayaan diri menjelang penampilan di panggung final.</p><h2>Dukungan untuk langkah berikutnya</h2><p>Keluarga besar SMK Queen Al-Falah menyampaikan apresiasi atas pencapaian Figur serta mengajak seluruh warga sekolah memberikan doa dan dukungan. Semoga pengalaman ini menjadi motivasi bagi siswa lain untuk berani mengembangkan bakat, mencoba tantangan baru, dan membawa nama baik sekolah.</p><p>Informasi prestasi, karya siswa, serta kegiatan terbaru SMK Queen Al-Falah dapat diikuti melalui website dan akun media sosial resmi sekolah.</p><p><em>Foto dan informasi bersumber dari <a href="https://www.instagram.com/p/DeIN3TVTdlC/" target="_blank" rel="noreferrer noopener">Instagram @smkqueenalfalah_official</a>, unggahan 6 Oktober 2026.</em></p>',
+				'date'     => '2026-10-06 05:08:04',
+				'status'   => 'publish',
+				'category' => 'Berita',
+				'tags'     => array( 'National Speech Contest', 'pidato Bahasa Arab', 'UNISMA', 'prestasi siswa', 'SMK Queen Al-Falah', 'SMK Kediri' ),
+			),
+		),
+		array(
+			'source_id' => 'instagram:DeIPMAazojM',
+			'post_slug' => 'smk-queen-al-falah-apresiasi-perjuangan-timnas-indonesia-di-asean-cup-2026',
+			'image'     => 'apresiasi-timnas-indonesia-asean-cup-2026.webp',
+			'title'     => 'SMK Queen Al-Falah Apresiasi Perjuangan Timnas Indonesia di ASEAN Cup 2026',
+			'alt'       => 'Poster ucapan SMK Queen Al-Falah untuk Timnas Indonesia pada ASEAN Cup 2026.',
+			'caption'   => 'SMK Queen Al-Falah menyampaikan apresiasi atas perjuangan Timnas Indonesia serta mengajak siswa meneladani disiplin, kerja sama, sportivitas, dan semangat hidup sehat.',
+			'credit'    => 'Gambar: Instagram @smkqueenalfalah_official, unggahan 5 Oktober 2026.',
+			'source_url' => 'https://www.instagram.com/p/DeIPMAazojM/',
+			'publish_matching_draft' => true,
+			'post'       => array(
+				'title'    => 'SMK Queen Al-Falah Apresiasi Perjuangan Timnas Indonesia di ASEAN Cup 2026',
+				'excerpt'  => 'SMK Queen Al-Falah mengapresiasi perjuangan Timnas Indonesia dan mengajak siswa meneladani disiplin, kerja sama, sportivitas, serta gaya hidup sehat.',
+				'content'  => '<p><strong>SMK Queen Al-Falah Mojo Kediri</strong> menyampaikan apresiasi kepada Timnas Indonesia melalui unggahan akun Instagram resmi sekolah. Pesan tersebut menjadi bentuk dukungan sekaligus ajakan bagi siswa untuk memaknai olahraga sebagai ruang belajar tentang disiplin, kerja sama, sportivitas, dan daya juang.</p><h2>Apresiasi untuk perjuangan dan sportivitas</h2><p>Di balik setiap pertandingan terdapat proses panjang: latihan yang konsisten, strategi yang disusun bersama, keberanian menghadapi tekanan, serta kemampuan bangkit ketika menemui tantangan. Nilai-nilai tersebut relevan bagi siswa dalam menjalani pembelajaran, kegiatan organisasi, praktik kejuruan, maupun kompetisi.</p><p>Sekolah mengajak warga Queen memberi dukungan secara positif dan tetap menjunjung sportivitas. Hasil pertandingan adalah bagian dari perjalanan, sedangkan sikap saling menghargai dan kemauan untuk terus memperbaiki diri merupakan pelajaran yang dapat dibawa ke kehidupan sehari-hari.</p><h2>Nilai yang dapat diteladani siswa</h2><p>Semangat tim nasional menunjukkan pentingnya berkomunikasi, memahami peran, dan bekerja menuju tujuan bersama. Dalam pendidikan vokasi, kebiasaan tersebut juga dibutuhkan saat siswa mengerjakan proyek, menjalani praktik kerja lapangan, dan menyiapkan diri memasuki dunia kerja.</p><p>Pesan hidup sehat yang disertakan dalam unggahan turut mengingatkan warga sekolah untuk menjaga kebugaran melalui aktivitas fisik, pola istirahat yang baik, dan kebiasaan hidup seimbang.</p><h2>Semangat untuk terus berkembang</h2><p>Semoga perjuangan para atlet Indonesia menjadi motivasi bagi siswa SMK Queen Al-Falah untuk berani menetapkan tujuan, berlatih dengan sungguh-sungguh, menghargai proses, dan terus berkembang bersama.</p><p>Ikuti berita, prestasi, karya siswa, dan kegiatan terbaru SMK Queen Al-Falah melalui website serta kanal media sosial resmi sekolah.</p><p><em>Gambar dan informasi bersumber dari <a href="https://www.instagram.com/p/DeIPMAazojM/" target="_blank" rel="noreferrer noopener">Instagram @smkqueenalfalah_official</a>, unggahan 5 Oktober 2026. Artikel ini merangkum pesan apresiasi yang disampaikan sekolah dan tidak dimaksudkan sebagai verifikasi independen atas hasil pertandingan.</em></p>',
+				'date'     => '2026-10-05 12:00:00',
+				'status'   => 'publish',
+				'category' => 'Berita',
+				'tags'     => array( 'Timnas Indonesia', 'ASEAN Cup 2026', 'sportivitas', 'pendidikan karakter', 'hidup sehat', 'SMK Queen Al-Falah' ),
+			),
+		),
+		array(
+			'source_id' => 'instagram:DeihO7LJ7yE',
+			'post_slug' => 'yuk-happy-di-sekolah-smk-queen-al-falah-belajar-dan-bertumbuh-bersama',
+			'image'     => 'yuk-happy-di-sekolah-2026.webp',
+			'title'     => 'Yuk Happy di Sekolah: Belajar dan Bertumbuh Bersama',
+			'alt'       => 'Siswa SMK Queen Al-Falah berbincang dan menikmati kebersamaan di lingkungan sekolah.',
+			'caption'   => 'Yuk Happy di Sekolah. Kebersihan, pertemanan, belajar, berbagi cerita, kekompakan, dan kebersamaan menjadi bagian dari pengalaman bertumbuh di SMK Queen Al-Falah.',
+			'credit'    => 'Gambar: Instagram @smkqueenalfalah_official, unggahan 16 Oktober 2026.',
+			'source_url' => 'https://www.instagram.com/reel/DeihO7LJ7yE/',
+			'post'       => array(
+				'title'    => 'Yuk Happy di Sekolah: Belajar dan Bertumbuh Bersama di SMK Queen Al-Falah',
+				'excerpt'  => 'Reel resmi SMK Queen Al-Falah mengajak siswa menemukan kebahagiaan melalui kebersihan, pertemanan, kegiatan belajar, berbagi cerita, dan kebersamaan di sekolah.',
+				'content'  => '<p><strong>SMK Queen Al-Falah Mojo Kediri</strong> mengajak siswa menemukan kebahagiaan dalam keseharian sekolah melalui Reel "Yuk Happy di Sekolah" yang dibagikan akun Instagram resmi pada 16 Oktober 2026. Tayangan tersebut memperlihatkan bahwa pengalaman belajar yang bermakna juga tumbuh dari kebiasaan sederhana dan hubungan yang saling mendukung.</p><h2>Kebahagiaan tumbuh dari kebiasaan sederhana</h2><p>Kepedulian menjaga kebersihan, menemani teman, belajar di perpustakaan, saling mendengarkan, bekerja dalam tim, dan menikmati waktu bersama menjadi bagian dari suasana yang ditampilkan. Kebiasaan-kebiasaan tersebut membantu menciptakan lingkungan sekolah yang lebih nyaman dan menyenangkan.</p><p>Kebahagiaan di sekolah bukan berarti mengabaikan tantangan. Siswa justru belajar menghadapinya melalui empati, rasa hormat, komunikasi, dan kolaborasi. Dukungan antarteman serta pendampingan warga sekolah memberi ruang agar setiap siswa dapat berkembang sesuai potensi masing-masing.</p><h2>Lingkungan belajar yang aman dan saling mendukung</h2><p>Lingkungan belajar yang positif membantu siswa berani bertanya, mencoba hal baru, menyampaikan pendapat, dan belajar dari kesalahan. Nilai-nilai tersebut penting dalam pendidikan vokasi karena dunia kerja juga membutuhkan kemampuan bekerja sama, bertanggung jawab, dan menjaga hubungan profesional.</p><h2>Belajar dengan bahagia, berkembang dengan bermakna</h2><p>Sebagai sekolah vokasi berbasis pesantren, SMK Queen Al-Falah terus mendorong keseimbangan antara kompetensi, karakter, dan kepedulian sosial. Ajakan untuk belajar dengan bahagia menjadi pengingat bahwa prestasi dan kesiapan kerja dibangun melalui proses yang sehat, disiplin, serta penuh kebersamaan.</p><p>Saksikan tayangan lengkap melalui <a href="https://www.instagram.com/reel/DeihO7LJ7yE/" target="_blank" rel="noreferrer noopener">Reel Instagram resmi SMK Queen Al-Falah</a>.</p><p><em>Gambar dan informasi bersumber dari Instagram @smkqueenalfalah_official, unggahan 16 Oktober 2026. Artikel ini merangkum isi Reel; tanggal yang dicantumkan merupakan tanggal unggahan sumber.</em></p>',
+				'date'     => '2026-10-16 10:07:03',
+				'status'   => 'publish',
+				'category' => 'Berita',
+				'tags'     => array( 'Yuk Happy di Sekolah', 'kebahagiaan di sekolah', 'pendidikan karakter', 'SMK Queen Al-Falah', 'SMK Kediri' ),
+			),
 		),
 	),
 );

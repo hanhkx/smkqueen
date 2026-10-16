@@ -14,6 +14,14 @@ $queen_type_label  = $queen_type_object ? $queen_type_object->labels->singular_n
  * useful when the companion plugin is deactivated after content was created.
  */
 $queen_detail_fields = array(
+	'qaf_work' => array(
+		array( 'work_creator', __( 'Pembuat / Tim', 'queen-alfalah' ), 'text' ),
+		array( 'work_class', __( 'Kelas / Program Keahlian', 'queen-alfalah' ), 'text' ),
+		array( 'work_date', __( 'Tanggal Karya', 'queen-alfalah' ), 'date' ),
+		array( 'work_source_url', __( 'Sumber Karya', 'queen-alfalah' ), 'url', __( 'Lihat sumber karya', 'queen-alfalah' ) ),
+		array( 'work_award', __( 'Prestasi / Partisipasi', 'queen-alfalah' ), 'text' ),
+		array( 'work_evidence_url', __( 'Bukti Capaian', 'queen-alfalah' ), 'url', __( 'Lihat bukti capaian', 'queen-alfalah' ) ),
+	),
 	'qaf_program'     => array(
 		array( 'program_code', __( 'Kode/Singkatan', 'queen-alfalah' ), 'text' ),
 		array( 'program_head', __( 'Kepala Program', 'queen-alfalah' ), 'text' ),
@@ -56,7 +64,7 @@ $queen_detail_fields = array(
 		array( 'external_url', __( 'Layanan Digital', 'queen-alfalah' ), 'url', __( 'Buka layanan', 'queen-alfalah' ) ),
 	),
 	'qaf_gallery'     => array(
-		array( 'album_date', __( 'Tanggal Dokumentasi', 'queen-alfalah' ), 'date' ),
+		array( 'album_date', __( 'Tanggal Album', 'queen-alfalah' ), 'date' ),
 		array( 'gallery_media_type', __( 'Jenis Media', 'queen-alfalah' ), 'gallery_media_type' ),
 		array( 'video_url', __( 'Tautan Media', 'queen-alfalah' ), 'url', __( 'Buka sumber media', 'queen-alfalah' ) ),
 	),
@@ -73,8 +81,16 @@ $queen_detail_fields = array(
 	),
 	'qaf_vacancy'     => array(
 		array( 'company', __( 'Perusahaan/Instansi', 'queen-alfalah' ), 'text' ),
+		array( 'vacancy_location', __( 'Lokasi Kerja', 'queen-alfalah' ), 'text' ),
+		array( 'vacancy_employment_type', __( 'Jenis Kerja', 'queen-alfalah' ), 'text' ),
+		array( 'vacancy_education', __( 'Pendidikan Minimum', 'queen-alfalah' ), 'text' ),
+		array( 'vacancy_salary', __( 'Informasi Gaji', 'queen-alfalah' ), 'text' ),
+		array( 'vacancy_verified_date', __( 'Terakhir Diverifikasi', 'queen-alfalah' ), 'date' ),
 		array( 'deadline', __( 'Batas Lamaran', 'queen-alfalah' ), 'date' ),
-		array( 'apply_url', __( 'Kanal Lamaran Resmi', 'queen-alfalah' ), 'url', __( 'Buka informasi lamaran', 'queen-alfalah' ) ),
+		array( 'vacancy_contact', __( 'Kontak Rekrutmen yang Dipublikasikan', 'queen-alfalah' ), 'text' ),
+		array( 'vacancy_source_name', __( 'Platform/Sumber', 'queen-alfalah' ), 'text' ),
+		array( 'vacancy_source_url', __( 'Sumber Lowongan', 'queen-alfalah' ), 'url', __( 'Periksa sumber asli', 'queen-alfalah' ) ),
+		array( 'apply_url', __( 'Kanal Lamaran Resmi', 'queen-alfalah' ), 'url', __( 'Daftar melalui sumber', 'queen-alfalah' ) ),
 	),
 	'qaf_alumni'      => array(
 		array( 'graduation_year', __( 'Tahun Lulus', 'queen-alfalah' ), 'number' ),
@@ -121,6 +137,8 @@ $queen_thumbnail_id = has_post_thumbnail() ? (int) get_post_thumbnail_id() : 0;
 $queen_thumbnail_caption = $queen_thumbnail_id ? (string) wp_get_attachment_caption( $queen_thumbnail_id ) : '';
 $queen_instagram_source = 'post' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_instagram_source_url', true ) : '';
 $queen_image_credit = 'post' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_image_credit', true ) : '';
+$queen_vacancy_image_credit = 'qaf_vacancy' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_vacancy_image_credit', true ) : '';
+$queen_vacancy_source = 'qaf_vacancy' === $queen_post_type ? (string) get_post_meta( get_the_ID(), '_qaf_vacancy_source_url', true ) : '';
 $queen_fallback_visual = $queen_thumbnail_id ? array() : queen_alfalah_fallback_visual( get_the_ID() );
 ?>
 
@@ -137,7 +155,7 @@ $queen_fallback_visual = $queen_thumbnail_id ? array() : queen_alfalah_fallback_
 		<?php elseif ( $queen_fallback_visual ) : ?>
 			<img src="<?php echo esc_url( $queen_fallback_visual['url'] ); ?>" alt="" width="<?php echo esc_attr( $queen_fallback_visual['width'] ); ?>" height="<?php echo esc_attr( $queen_fallback_visual['height'] ); ?>" decoding="async">
 		<?php endif; ?>
-		<?php if ( $queen_thumbnail_id && ( $queen_thumbnail_caption || $queen_image_credit || $queen_instagram_source ) ) : ?>
+		<?php if ( $queen_thumbnail_id && ( $queen_thumbnail_caption || $queen_image_credit || $queen_instagram_source || $queen_vacancy_image_credit ) ) : ?>
 			<figcaption class="post-thumbnail__caption">
 				<?php if ( $queen_thumbnail_caption ) : ?>
 					<span><?php echo esc_html( $queen_thumbnail_caption ); ?></span>
@@ -148,6 +166,12 @@ $queen_fallback_visual = $queen_thumbnail_id ? array() : queen_alfalah_fallback_
 					</a>
 				<?php elseif ( $queen_image_credit ) : ?>
 					<small><?php echo esc_html( $queen_image_credit ); ?></small>
+				<?php elseif ( $queen_vacancy_image_credit ) : ?>
+					<?php if ( $queen_vacancy_source ) : ?>
+						<a href="<?php echo esc_url( $queen_vacancy_source ); ?>" rel="external noopener"><?php echo esc_html( $queen_vacancy_image_credit ); ?></a>
+					<?php else : ?>
+						<small><?php echo esc_html( $queen_vacancy_image_credit ); ?></small>
+					<?php endif; ?>
 				<?php endif; ?>
 			</figcaption>
 		<?php elseif ( $queen_fallback_visual ) : ?>
@@ -242,6 +266,8 @@ $queen_fallback_visual = $queen_thumbnail_id ? array() : queen_alfalah_fallback_
 	}
 	?>
 
+	<?php queen_alfalah_article_intro(); ?>
+
 	<div class="entry-content">
 		<?php
 		the_content();
@@ -253,6 +279,10 @@ $queen_fallback_visual = $queen_thumbnail_id ? array() : queen_alfalah_fallback_
 		);
 		?>
 	</div>
+
+	<?php queen_alfalah_article_cta(); ?>
+
+	<?php queen_alfalah_related_articles(); ?>
 
 	<footer class="entry-footer">
 		<?php if ( 'post' === $queen_post_type ) : ?>
@@ -277,4 +307,8 @@ $queen_fallback_visual = $queen_thumbnail_id ? array() : queen_alfalah_fallback_
 	</footer>
 
 	<?php queen_alfalah_share_links(); ?>
+
+	<?php if ( queen_alfalah_supports_post_social_links() ) : ?>
+		<?php queen_alfalah_post_social_links(); ?>
+	<?php endif; ?>
 </article>

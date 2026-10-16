@@ -1,6 +1,6 @@
 <?php
 /**
- * Private school media center with one editable Google Drive link per division.
+ * Private school media center with an editable Google Drive link per account.
  *
  * @package Queen_Alfalah_Core
  */
@@ -15,8 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class QAF_Core_Media_Center {
 	const CAPABILITY           = 'qaf_access_media_center';
 	const UNIT_META            = '_qaf_school_unit';
+	const DRIVE_URL_META       = '_qaf_media_drive_url';
 	const VERSION_OPTION       = 'qaf_media_center_schema_version';
-	const SCHEMA_VERSION       = '2.0.0';
+	const SCHEMA_VERSION       = '3.0.0';
 	const PAGE_OPTION          = 'qaf_media_center_page_id';
 	const PROFILE_NONCE        = 'qaf_media_profile_nonce';
 	const PROFILE_NONCE_ACTION = 'qaf_save_media_profile';
@@ -26,7 +27,7 @@ final class QAF_Core_Media_Center {
 	 *
 	 * Pusat Media intentionally has no upload, download, OAuth, or Drive API
 	 * hooks. WordPress only authenticates the user and reveals the configured
-	 * link for that user's division.
+	 * account folder, with a division folder as a backwards-compatible fallback.
 	 *
 	 * @return void
 	 */
@@ -44,6 +45,8 @@ final class QAF_Core_Media_Center {
 		add_filter( 'login_redirect', array( __CLASS__, 'login_redirect' ), 10, 3 );
 		add_filter( 'show_admin_bar', array( __CLASS__, 'show_admin_bar' ) );
 		add_filter( 'wp_robots', array( __CLASS__, 'robots' ) );
+		add_filter( 'manage_users_columns', array( __CLASS__, 'add_user_columns' ) );
+		add_filter( 'manage_users_custom_column', array( __CLASS__, 'render_user_column' ), 10, 3 );
 	}
 
 	/**
@@ -208,7 +211,7 @@ final class QAF_Core_Media_Center {
 	}
 
 	/**
-	 * Redirect portal-only users to their media center after login.
+	 * Redirect Guru/Tendik portal-only users to their media center after login.
 	 *
 	 * @param string           $redirect_to           Default destination.
 	 * @param string           $requested_redirect_to Requested destination.
@@ -218,7 +221,7 @@ final class QAF_Core_Media_Center {
 	public static function login_redirect( $redirect_to, $requested_redirect_to, $user ) {
 		unset( $requested_redirect_to );
 
-		if ( $user instanceof WP_User && user_can( $user, self::CAPABILITY ) && ! user_can( $user, 'manage_options' ) ) {
+		if ( self::is_portal_only_user( $user ) ) {
 			return self::portal_url();
 		}
 
@@ -231,7 +234,7 @@ final class QAF_Core_Media_Center {
 	 * @return void
 	 */
 	public static function restrict_portal_users() {
-		if ( ! current_user_can( self::CAPABILITY ) || current_user_can( 'manage_options' ) || wp_doing_ajax() ) {
+		if ( ! self::is_portal_only_user( wp_get_current_user() ) || wp_doing_ajax() ) {
 			return;
 		}
 
@@ -246,11 +249,70 @@ final class QAF_Core_Media_Center {
 	 * @return bool
 	 */
 	public static function show_admin_bar( $show ) {
-		if ( current_user_can( self::CAPABILITY ) && ! current_user_can( 'manage_options' ) ) {
+		if ( self::is_portal_only_user( wp_get_current_user() ) ) {
 			return false;
 		}
 
 		return $show;
+	}
+
+	/**
+	 * Show administrators whether each account already has an individual folder.
+	 *
+	 * @param array<string,string> $columns Existing user-list columns.
+	 * @return array<string,string>
+	 */
+	public static function add_user_columns( $columns ) {
+		if ( current_user_can( 'edit_users' ) ) {
+			$columns['qaf_media_drive'] = __( 'Folder Pusat Media', 'queen-alfalah-core' );
+		}
+
+		return $columns;
+	}
+
+	/**
+	 * Render a status only; avoid exposing a private Drive URL in the user table.
+	 *
+	 * @param string $output      Existing output.
+	 * @param string $column_name Column key.
+	 * @param int    $user_id     User ID.
+	 * @return string
+	 */
+	public static function render_user_column( $output, $column_name, $user_id ) {
+		if ( 'qaf_media_drive' !== $column_name || ! current_user_can( 'edit_user', $user_id ) ) {
+			return $output;
+		}
+
+		$url = self::sanitize_drive_url( get_user_meta( $user_id, self::DRIVE_URL_META, true ) );
+		return $url
+			? esc_html__( 'Folder khusus diatur', 'queen-alfalah-core' )
+			: esc_html__( 'Memakai folder divisi', 'queen-alfalah-core' );
+	}
+
+	/**
+	 * Whether an account is limited to the front-end Pusat Media portal.
+	 *
+	 * Waka intentionally receives a focused wp-admin workflow from
+	 * QAF_Core_Waka_Access. A multi-role account containing qaf_waka is therefore
+	 * not treated as portal-only.
+	 *
+	 * @param WP_User|mixed $user WordPress user.
+	 * @return bool
+	 */
+	public static function is_portal_only_user( $user ) {
+		if ( ! $user instanceof WP_User || user_can( $user, 'manage_options' ) ) {
+			return false;
+		}
+
+		$roles = (array) $user->roles;
+		if ( in_array( 'qaf_waka', $roles, true ) ) {
+			return false;
+		}
+
+		return (bool) array_intersect(
+			$roles,
+			array( 'qaf_teacher', 'qaf_staff', 'qaf_media_team', 'qaf_school_unit' )
+		);
 	}
 
 	/**
@@ -288,8 +350,9 @@ final class QAF_Core_Media_Center {
 	 * @return void
 	 */
 	private static function render_access_fields( $user ) {
-		$user_id = $user instanceof WP_User ? $user->ID : 0;
-		$unit    = $user_id ? get_user_meta( $user_id, self::UNIT_META, true ) : '';
+		$user_id   = $user instanceof WP_User ? $user->ID : 0;
+		$unit      = $user_id ? get_user_meta( $user_id, self::UNIT_META, true ) : '';
+		$drive_url = $user_id ? self::sanitize_drive_url( get_user_meta( $user_id, self::DRIVE_URL_META, true ) ) : '';
 
 		wp_nonce_field( self::PROFILE_NONCE_ACTION, self::PROFILE_NONCE );
 		?>
@@ -300,6 +363,13 @@ final class QAF_Core_Media_Center {
 				<td>
 					<input class="regular-text" type="text" id="qaf-school-unit" name="qaf_school_unit" value="<?php echo esc_attr( $unit ); ?>">
 					<p class="description"><?php esc_html_e( 'Contoh: Waka Kurikulum, Guru TJKT, Tata Usaha, BK, Hubin, atau unit lain pada struktur sekolah.', 'queen-alfalah-core' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="qaf-media-drive-url"><?php esc_html_e( 'Folder Google Drive akun', 'queen-alfalah-core' ); ?></label></th>
+				<td>
+					<input class="regular-text code" type="url" id="qaf-media-drive-url" name="qaf_media_drive_url" value="<?php echo esc_attr( $drive_url ); ?>" placeholder="https://drive.google.com/drive/folders/...">
+					<p class="description"><?php esc_html_e( 'Opsional. Bila diisi, akun ini hanya melihat folder khususnya. Bila kosong, tautan folder Waka/Guru/Tendik pada Pengaturan Sekolah tetap digunakan sebagai cadangan.', 'queen-alfalah-core' ); ?></p>
 				</td>
 			</tr>
 		</table>
@@ -348,7 +418,7 @@ final class QAF_Core_Media_Center {
 	}
 
 	/**
-	 * Store only the normalized public unit label.
+	 * Store the normalized unit label and a validated per-account Drive URL.
 	 *
 	 * @param int $user_id User ID.
 	 * @return void
@@ -357,12 +427,45 @@ final class QAF_Core_Media_Center {
 		$unit = isset( $_POST['qaf_school_unit'] )
 			? sanitize_text_field( wp_unslash( $_POST['qaf_school_unit'] ) )
 			: '';
+		$drive_url = isset( $_POST['qaf_media_drive_url'] )
+			? self::sanitize_drive_url( wp_unslash( $_POST['qaf_media_drive_url'] ) )
+			: '';
 
 		if ( $unit ) {
 			update_user_meta( $user_id, self::UNIT_META, $unit );
 		} else {
 			delete_user_meta( $user_id, self::UNIT_META );
 		}
+
+		if ( $drive_url ) {
+			update_user_meta( $user_id, self::DRIVE_URL_META, $drive_url );
+		} else {
+			delete_user_meta( $user_id, self::DRIVE_URL_META );
+		}
+	}
+
+	/**
+	 * Accept only HTTPS links on the two official Google Drive document hosts.
+	 *
+	 * This deliberately stores a link rather than credentials or file content.
+	 *
+	 * @param mixed $value Candidate URL.
+	 * @return string
+	 */
+	public static function sanitize_drive_url( $value ) {
+		if ( ! is_scalar( $value ) ) {
+			return '';
+		}
+
+		$url    = esc_url_raw( trim( (string) $value ), array( 'https' ) );
+		$scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+		$host   = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+
+		if ( 'https' !== $scheme || ! in_array( $host, array( 'drive.google.com', 'docs.google.com' ), true ) ) {
+			return '';
+		}
+
+		return $url;
 	}
 
 	/**
@@ -402,7 +505,7 @@ final class QAF_Core_Media_Center {
 			<header class="qaf-media-hero">
 				<p class="qaf-media-eyebrow"><?php esc_html_e( 'Ruang Kerja Privat', 'queen-alfalah-core' ); ?></p>
 				<h2 id="qaf-media-title"><?php esc_html_e( 'Pusat Media Sekolah', 'queen-alfalah-core' ); ?></h2>
-				<p><?php esc_html_e( 'Akses dokumen resmi sesuai divisi yang ditetapkan pada akun Anda.', 'queen-alfalah-core' ); ?></p>
+				<p><?php esc_html_e( 'Akses folder dokumen resmi yang ditetapkan khusus untuk akun Anda.', 'queen-alfalah-core' ); ?></p>
 			</header>
 
 			<?php if ( ! is_user_logged_in() ) : ?>
@@ -440,7 +543,8 @@ final class QAF_Core_Media_Center {
 	/**
 	 * Return the configured link rows visible to one account.
 	 *
-	 * Portal-only users receive exactly one division link. Administrators may
+	 * Portal users receive their account folder first and otherwise fall back to
+	 * exactly one division link. Administrators may
 	 * see all configured rows so they can verify settings without changing
 	 * their own WordPress role.
 	 *
@@ -463,6 +567,19 @@ final class QAF_Core_Media_Center {
 			),
 		);
 		$category    = self::user_category( $user );
+		$personal    = $user instanceof WP_User ? self::sanitize_drive_url( get_user_meta( $user->ID, self::DRIVE_URL_META, true ) ) : '';
+
+		if ( ! user_can( $user, 'manage_options' ) && $personal ) {
+			$name = trim( (string) $user->display_name );
+			return array(
+				array(
+					'category' => 'Pribadi',
+					'label'    => $name ? sprintf( 'Folder %s', $name ) : 'Folder Akun Saya',
+					'url'      => $personal,
+				),
+			);
+		}
+
 		$allowed     = user_can( $user, 'manage_options' ) ? array_keys( $definitions ) : array( $category );
 		$links       = array();
 
@@ -471,11 +588,8 @@ final class QAF_Core_Media_Center {
 				continue;
 			}
 
-			$url    = qaf_core_get_setting( $definitions[ $key ]['setting'], '' );
-			$url    = is_string( $url ) ? esc_url_raw( $url, array( 'https' ) ) : '';
-			$scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
-			$host   = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
-			if ( 'https' !== $scheme || ! in_array( $host, array( 'drive.google.com', 'docs.google.com' ), true ) ) {
+			$url = self::sanitize_drive_url( qaf_core_get_setting( $definitions[ $key ]['setting'], '' ) );
+			if ( ! $url ) {
 				continue;
 			}
 
@@ -490,7 +604,7 @@ final class QAF_Core_Media_Center {
 	}
 
 	/**
-	 * Render the authorized user's division link.
+	 * Render the authorized user's account or fallback division link.
 	 *
 	 * @return void
 	 */
@@ -518,23 +632,23 @@ final class QAF_Core_Media_Center {
 		if ( empty( $links ) ) {
 			$message = current_user_can( 'manage_options' )
 				? __( 'Belum ada tautan Drive yang valid. Isi bagian Pusat Media pada menu Sekolah → Pengaturan.', 'queen-alfalah-core' )
-				: __( 'Tautan Google Drive untuk divisi Anda belum diatur. Hubungi administrator Pusat Media.', 'queen-alfalah-core' );
+				: __( 'Folder Google Drive untuk akun atau divisi Anda belum diatur. Hubungi administrator Pusat Media.', 'queen-alfalah-core' );
 			self::render_notice( $message, true );
 			return;
 		}
 		?>
 		<div class="qaf-media-link-panel">
-			<p><?php esc_html_e( 'Dokumen disimpan dan dikelola langsung di Google Drive. Izin melihat, mengunggah, menyunting, atau mengunduh mengikuti akun Google yang diberi akses pada folder tersebut.', 'queen-alfalah-core' ); ?></p>
+			<p><?php esc_html_e( 'Dokumen disimpan langsung di Google Drive. Izin melihat, mengunggah, menyunting, atau mengunduh mengikuti akun Google yang diberi akses pada folder tersebut.', 'queen-alfalah-core' ); ?></p>
 			<div class="qaf-media-links">
 				<?php foreach ( $links as $link ) : ?>
 					<a class="qaf-media-drive-link" href="<?php echo esc_url( $link['url'] ); ?>" target="_blank" rel="external noopener noreferrer" referrerpolicy="no-referrer">
 						<span aria-hidden="true">&#128193;</span>
 						<strong><?php echo esc_html( $link['label'] ); ?></strong>
-						<small><?php echo esc_html( sprintf( __( 'Akses divisi %s', 'queen-alfalah-core' ), $link['category'] ) ); ?></small>
+						<small><?php echo esc_html( 'Pribadi' === $link['category'] ? __( 'Folder khusus akun ini', 'queen-alfalah-core' ) : sprintf( __( 'Folder cadangan divisi %s', 'queen-alfalah-core' ), $link['category'] ) ); ?></small>
 					</a>
 				<?php endforeach; ?>
 			</div>
-			<p class="qaf-media-security"><?php esc_html_e( 'Gunakan berbagi Google Drive “Dibatasi” dan berikan izin hanya kepada akun Google yang berwenang.', 'queen-alfalah-core' ); ?></p>
+			<p class="qaf-media-security"><?php esc_html_e( 'Gunakan berbagi Google Drive “Dibatasi”. Jangan menghapus file sumber sebelum salinan di folder sekolah selesai diverifikasi.', 'queen-alfalah-core' ); ?></p>
 		</div>
 		<?php
 	}

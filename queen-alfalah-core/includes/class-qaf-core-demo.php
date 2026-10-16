@@ -380,7 +380,7 @@ final class QAF_Core_Demo {
 	private static function import_extracurriculars( &$result ) {
 		$activities = array(
 			array( 'Pramuka', 'pramuka', 'Kepemimpinan', 'Pembinaan kepemimpinan, kemandirian, kerja sama, dan kepedulian sosial.' ),
-			array( 'Broadcasting', 'broadcasting', 'Kreativitas', 'Ruang belajar produksi konten, penyiaran, dokumentasi, dan komunikasi media.' ),
+			array( 'Jurnalistik', 'jurnalistik', 'Kreativitas', 'Ruang belajar peliputan, wawancara, penulisan, fotografi, video, penyuntingan, dan publikasi media.' ),
 			array( 'Futsal', 'futsal', 'Olahraga', 'Kegiatan olahraga untuk melatih kebugaran, sportivitas, disiplin, dan kerja tim.' ),
 			array( 'Al Banjari', 'al-banjari', 'Keagamaan', 'Pengembangan seni musik islami, kekompakan, dan kepercayaan diri dalam berkarya.' ),
 			array( 'Tenis Meja', 'tenis-meja', 'Olahraga', 'Latihan ketangkasan, konsentrasi, kebugaran, dan sportivitas.' ),

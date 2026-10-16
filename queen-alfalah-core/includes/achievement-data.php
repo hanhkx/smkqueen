@@ -25,8 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 return array(
-	'version'       => '1.3.0',
-	'image_version' => '1.1.0',
+	'version'       => '1.4.0',
+	'image_version' => '1.2.0',
 	'items'         => array(
 		array(
 			'source_id' => 'instagram:CnUV7LqpRIS:prestasi-kelas-jurusan',
@@ -551,6 +551,40 @@ return array(
 			'source_url' => 'https://www.instagram.com/smkqueenalfalah_official/reel/Dcm_rkFJZCy/',
 			'excerpt'   => 'Peserta didik mengikuti semarak lomba 17 Agustus 2026 sebagai ruang kebersamaan, sportivitas, dan kreativitas.',
 			'content'   => '<p>Peserta didik SMK Queen Al-Falah mengikuti semarak lomba 17 Agustus 2026 dalam rangka memperingati HUT ke-81 Republik Indonesia. Kegiatan meliputi tantangan balon, permainan gerak kelompok, dan lomba makan kerupuk.</p><p><strong>Status capaian:</strong> publikasi resmi tidak mencantumkan pemenang atau peringkat. Halaman ini dicatat sebagai partisipasi dan dokumentasi kegiatan internal sekolah.</p>',
+		),
+		array(
+			'source_id' => 'instagram:DdlfOvYJTI8:mikael-fadh-english-olympiad',
+			'title'     => 'Juara 3 English Olympiad Kabupaten Kediri 2026',
+			'slug'      => 'juara-3-english-olympiad-kabupaten-kediri-2026',
+			'status'    => 'publish',
+			'date'      => '2026-09-22',
+			'image'     => 'mikael-fadh-english-olympiad-2026.webp',
+			'image_alt' => 'Mikael Fadh dari XI DKV 2 meraih Juara 3 English Olympiad Kabupaten Kediri pada BSJC 3 2026.',
+			'recipient' => 'Mikael Fadh — XI DKV 2',
+			'organizer' => 'MGMP Bahasa Inggris SMK Jawa Timur — BSJC 3 2026',
+			'award'     => 'Juara 3',
+			'field'     => 'English Olympiad',
+			'level'     => 'Kabupaten Kediri',
+			'source_url' => 'https://www.instagram.com/smkqueenalfalah_official/p/DdlfOvYJTI8/',
+			'excerpt'   => 'Mikael Fadh dari XI DKV 2 meraih Juara 3 English Olympiad Kabupaten Kediri dalam rangkaian BSJC 3 2026.',
+			'content'   => '<p>Mikael Fadh, siswa XI DKV 2 SMK Queen Al-Falah, meraih Juara 3 English Olympiad Kabupaten Kediri dalam rangkaian BSJC 3 2026 yang dipublikasikan oleh MGMP Bahasa Inggris SMK Jawa Timur.</p><p>Capaian ini menunjukkan keberanian berkompetisi, ketekunan mempelajari Bahasa Inggris, dan kemampuan menerapkan pengetahuan dalam suasana kompetitif. Sekolah mengapresiasi usaha Mikael serta pendampingan guru yang mengantarkannya meraih hasil tersebut.</p>',
+		),
+		array(
+			'source_id' => 'instagram:DeIN3TVTdlC:figur-bagus-arabic-speech-finalist',
+			'title'     => 'Finalis National Speech Contest Bahasa Arab UNISMA 2026',
+			'slug'      => 'finalis-national-speech-contest-bahasa-arab-unisma-2026',
+			'status'    => 'publish',
+			'date'      => '2026-10-06',
+			'image'     => 'figur-bagus-finalis-national-speech-contest-2026.webp',
+			'image_alt' => 'Figur Bagus Fambagya dari XI TJKT 2 menjadi finalis National Speech Contest Bahasa Arab di UNISMA.',
+			'recipient' => 'Figur Bagus Fambagya — XI TJKT 2',
+			'organizer' => 'Global Language Community, Universitas Islam Malang (UNISMA)',
+			'award'     => 'Finalis',
+			'field'     => 'Khitobah (Arabic Speech)',
+			'level'     => 'Nasional',
+			'source_url' => 'https://www.instagram.com/smkqueenalfalah_official/p/DeIN3TVTdlC/',
+			'excerpt'   => 'Figur Bagus Fambagya dari XI TJKT 2 menembus babak final National Speech Contest kategori Arabic Speech di UNISMA.',
+			'content'   => '<p>Figur Bagus Fambagya, siswa XI TJKT 2 SMK Queen Al-Falah, berhasil menembus babak final National Speech Contest kategori Khitobah atau Arabic Speech yang diselenggarakan Global Language Community Universitas Islam Malang.</p><p>Dalam proses persiapannya, Figur mendapat pendampingan dari Ana Nur Lailatul Khoiriyah, S.Pd., guru Bahasa Arab SMK Queen Al-Falah. Keberhasilan mencapai babak final menjadi pengalaman penting untuk mengasah keberanian tampil, ketepatan berbahasa, serta kemampuan menyampaikan gagasan secara terstruktur.</p><p>Sekolah mengajak seluruh warga Queen memberikan doa dan dukungan agar Figur dapat menampilkan kemampuan terbaiknya pada panggung final.</p>',
 		),
 	),
 );

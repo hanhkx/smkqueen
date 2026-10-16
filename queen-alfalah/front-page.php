@@ -15,13 +15,26 @@ $news_page     = get_option( 'page_for_posts' );
 $news_url      = $news_page ? get_permalink( $news_page ) : home_url( '/berita/' );
 $landing_bg_id = absint( get_theme_mod( 'queen_landing_background', 0 ) );
 $landing_bg    = $landing_bg_id ? wp_get_attachment_image_url( $landing_bg_id, 'full' ) : '';
+$landing_video_id = absint( get_theme_mod( 'queen_landing_background_video', 0 ) );
+$landing_video    = $landing_video_id ? wp_get_attachment_url( $landing_video_id ) : '';
+$landing_video_type = $landing_video_id ? (string) get_post_mime_type( $landing_video_id ) : '';
+$supported_video_types = array( 'video/mp4', 'video/webm' );
+
+if ( ! in_array( $landing_video_type, $supported_video_types, true ) ) {
+	$landing_video      = '';
+	$landing_video_type = '';
+}
 $bg_mode       = queen_alfalah_sanitize_background_mode( get_theme_mod( 'queen_landing_bg_mode', 'cover' ) );
 $bg_position   = queen_alfalah_sanitize_background_position( get_theme_mod( 'queen_landing_bg_position', 'center center' ) );
 $bg_overlay    = queen_alfalah_sanitize_overlay( get_theme_mod( 'queen_landing_bg_overlay', 68 ) ) / 100;
 $hero_classes  = array( 'hero' );
 $hero_style    = '';
 
-if ( $landing_bg ) {
+if ( $landing_video ) {
+	$hero_classes[] = 'hero--has-video';
+}
+
+if ( $landing_bg && ! $landing_video ) {
 	$hero_classes[] = 'hero--has-background';
 	$hero_classes[] = 'hero--bg-' . sanitize_html_class( $bg_mode );
 	if ( 'image/gif' === get_post_mime_type( $landing_bg_id ) ) {
@@ -38,6 +51,12 @@ if ( $landing_bg ) {
 
 <main id="main-content" class="site-main home-main">
 	<section class="<?php echo esc_attr( implode( ' ', $hero_classes ) ); ?>"<?php echo $hero_style ? ' style="' . esc_attr( $hero_style ) . '"' : ''; ?> aria-labelledby="hero-title">
+		<?php if ( $landing_video ) : ?>
+			<video class="hero__background-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+				<source src="<?php echo esc_url( $landing_video ); ?>"<?php echo $landing_video_type ? ' type="' . esc_attr( $landing_video_type ) . '"' : ''; ?>>
+			</video>
+			<span class="hero__background-overlay" aria-hidden="true" style="--queen-landing-overlay:<?php echo esc_attr( number_format( $bg_overlay, 2, '.', '' ) ); ?>"></span>
+		<?php endif; ?>
 		<div class="container hero__inner">
 			<div class="hero__content" data-reveal>
 				<p class="hero__eyebrow"><?php echo esc_html( get_theme_mod( 'queen_hero_kicker', __( 'Sekolah Vokasi Berbasis Pesantren', 'queen-alfalah' ) ) ); ?></p>
@@ -74,19 +93,16 @@ if ( $landing_bg ) {
 			<h2 id="quick-access-title" class="screen-reader-text"><?php esc_html_e( 'Akses cepat', 'queen-alfalah' ); ?></h2>
 			<ul class="quick-links">
 				<?php
-				$service_query = post_type_exists( 'qaf_service' ) ? new WP_Query(
-					array(
-						'post_type'      => 'qaf_service',
-						'posts_per_page' => 6,
-						'post_status'    => 'publish',
-						'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
-						'no_found_rows'  => true,
-					)
-				) : null;
+				$service_query = post_type_exists( 'qaf_service' ) ? new WP_Query( queen_alfalah_active_service_query_args( -1 ) ) : null;
+				$service_count = 0;
 
 				if ( $service_query && $service_query->have_posts() ) :
 					while ( $service_query->have_posts() ) :
 						$service_query->the_post();
+						if ( ! queen_alfalah_service_is_active( get_the_ID() ) || $service_count >= 6 ) {
+							continue;
+						}
+						++$service_count;
 						$service_url  = queen_alfalah_meta( get_the_ID(), 'external_url', get_permalink() );
 						$service_icon = queen_alfalah_meta( get_the_ID(), 'icon_name', 'external' );
 						$new_tab      = (bool) queen_alfalah_meta( get_the_ID(), 'open_new', false );
@@ -99,7 +115,7 @@ if ( $landing_bg ) {
 						</li>
 					<?php endwhile; ?>
 					<?php wp_reset_postdata(); ?>
-				<?php else : ?>
+				<?php elseif ( ! post_type_exists( 'qaf_service' ) ) : ?>
 					<?php
 					$quick_links = array(
 						array( 'label' => __( 'Pendaftaran', 'queen-alfalah' ), 'url' => queen_alfalah_school_info( 'ppdb_url' ), 'icon' => 'book', 'external' => true ),
@@ -382,6 +398,62 @@ if ( $landing_bg ) {
 		</div>
 	</section>
 
+	<?php if ( get_theme_mod( 'queen_home_vacancies_show', true ) && post_type_exists( 'qaf_vacancy' ) ) : ?>
+		<?php
+		$vacancy_count = max( 3, min( 8, absint( get_theme_mod( 'queen_home_vacancies_count', 4 ) ) ) );
+		$vacancy_query = new WP_Query(
+			array(
+				'post_type'           => 'qaf_vacancy',
+				'posts_per_page'      => $vacancy_count,
+				'post_status'         => 'publish',
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
+				'orderby'             => array( 'date' => 'DESC', 'title' => 'ASC' ),
+				'meta_query'          => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Keeps expired vacancies off the homepage without deleting them.
+					'relation' => 'OR',
+					array(
+						'key'     => '_qaf_deadline',
+						'value'   => wp_date( 'Y-m-d' ),
+						'compare' => '>=',
+						'type'    => 'DATE',
+					),
+					array(
+						'key'     => '_qaf_deadline',
+						'compare' => 'NOT EXISTS',
+					),
+					array(
+						'key'     => '_qaf_deadline',
+						'value'   => '',
+						'compare' => '=',
+					),
+				),
+			)
+		);
+		?>
+		<?php if ( $vacancy_query->have_posts() ) : ?>
+			<section class="section home-vacancies" aria-labelledby="home-vacancies-heading">
+				<div class="container">
+					<?php
+					queen_alfalah_section_heading(
+						__( 'Peluang Karier', 'queen-alfalah' ),
+						get_theme_mod( 'queen_home_vacancies_title', __( 'Lowongan Kerja Terbaru', 'queen-alfalah' ) ),
+						get_theme_mod( 'queen_home_vacancies_description', __( 'Informasi peluang kerja terkurasi untuk lulusan DKV, TJKT, MPLB, dan Layanan Kesehatan. Selalu periksa sumber asli sebelum melamar.', 'queen-alfalah' ) ),
+						'left',
+						'home-vacancies-heading'
+					);
+					?>
+					<div class="card-grid home-vacancies__grid">
+						<?php while ( $vacancy_query->have_posts() ) : $vacancy_query->the_post(); ?>
+							<?php get_template_part( 'template-parts/content', 'card' ); ?>
+						<?php endwhile; ?>
+					</div>
+					<?php wp_reset_postdata(); ?>
+					<div class="section-actions"><a class="button button--outline-dark" href="<?php echo esc_url( queen_alfalah_archive_url( 'qaf_vacancy', 'lowongan-kerja' ) ); ?>"><?php esc_html_e( 'Lihat semua lowongan kerja', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'arrow-right' ); ?></a></div>
+				</div>
+			</section>
+		<?php endif; ?>
+	<?php endif; ?>
+
 	<section class="section" aria-labelledby="extra-heading">
 		<div class="container">
 			<?php queen_alfalah_section_heading( __( 'Tumbuh Bersama', 'queen-alfalah' ), __( 'Ekstrakurikuler', 'queen-alfalah' ), __( 'Ruang untuk mengasah kepemimpinan, kreativitas, sportivitas, keterampilan, dan khidmah.', 'queen-alfalah' ), 'left', 'extra-heading' ); ?>
@@ -395,7 +467,7 @@ if ( $landing_bg ) {
 						<a class="extra-chip" href="<?php the_permalink(); ?>"><?php echo queen_alfalah_icon( 'users' ); ?><span><?php the_title(); ?></span></a>
 					<?php endwhile; wp_reset_postdata(); ?>
 				<?php else : ?>
-					<?php foreach ( array( 'Pramuka', 'Broadcasting', 'Futsal', 'Al Banjari', 'Tenis Meja', 'Bola Voli', 'Desain Web' ) as $activity ) : ?>
+					<?php foreach ( array( 'Pramuka', 'Jurnalistik', 'Futsal', 'Al Banjari', 'Tenis Meja', 'Bola Voli', 'Desain Web' ) as $activity ) : ?>
 						<a class="extra-chip" href="<?php echo esc_url( queen_alfalah_archive_url( 'qaf_extra', 'ekstrakurikuler' ) ); ?>"><?php echo queen_alfalah_icon( 'users' ); ?><span><?php echo esc_html( $activity ); ?></span></a>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -409,7 +481,7 @@ if ( $landing_bg ) {
 			<?php queen_alfalah_section_heading( __( 'Momen di Queen', 'queen-alfalah' ), __( 'Galeri Kegiatan', 'queen-alfalah' ), __( 'Dokumentasi pembelajaran, karya, kegiatan pesantren, dan kebersamaan warga sekolah.', 'queen-alfalah' ), 'left', 'gallery-heading' ); ?>
 			<?php
 			$gallery_query = post_type_exists( 'qaf_gallery' ) ? new WP_Query(
-				array( 'post_type' => 'qaf_gallery', 'posts_per_page' => 6, 'post_status' => 'publish', 'no_found_rows' => true )
+				array( 'post_type' => 'qaf_gallery', 'posts_per_page' => 12, 'post_status' => 'publish', 'no_found_rows' => true )
 			) : null;
 			?>
 			<div class="gallery-grid">
@@ -419,6 +491,7 @@ if ( $landing_bg ) {
 							<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'queen-card-square', array( 'loading' => 'lazy', 'alt' => get_the_title() ) ); else : ?><img src="<?php echo esc_url( queen_alfalah_placeholder( 'gallery' ) ); ?>" width="1200" height="800" loading="lazy" alt=""><span class="visual-disclosure"><?php esc_html_e( 'Ilustrasi', 'queen-alfalah' ); ?></span><?php endif; ?>
 							<span class="gallery-caption">
 								<span><?php the_title(); ?></span>
+								<small class="gallery-caption__date"><?php echo queen_alfalah_gallery_date_html( get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by helper. ?></small>
 								<small class="gallery-caption__source"><?php echo esc_html( queen_alfalah_gallery_source_label( get_the_ID() ) ); ?></small>
 							</span>
 						</a>
@@ -429,6 +502,10 @@ if ( $landing_bg ) {
 			</div>
 		</div>
 	</section>
+
+	<div class="container section--compact">
+		<p><a class="button" href="<?php echo esc_url( queen_alfalah_archive_url( 'qaf_gallery', 'galeri' ) ); ?>"><?php esc_html_e( 'Lihat Semua Galeri Kegiatan', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'arrow-right' ); ?></a></p>
+	</div>
 
 	<section class="section section--compact" aria-labelledby="ppdb-cta-heading">
 		<div class="container">
@@ -455,6 +532,7 @@ if ( $landing_bg ) {
 			<?php queen_alfalah_school_map( 'home' ); ?>
 		</div>
 	</section>
+
 </main>
 
 <?php

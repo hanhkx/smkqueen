@@ -92,6 +92,7 @@ final class QAF_Core_Admin {
 			),
 			'qaf_service'     => array(
 				'qaf_external_url' => array( 'label' => 'Alamat Layanan', 'meta' => '_qaf_external_url', 'type' => 'url' ),
+				'qaf_service_status' => array( 'label' => 'Status', 'meta' => '_qaf_service_status', 'type' => 'select', 'default' => 'inactive', 'sortable' => true ),
 				'qaf_icon_name'    => array( 'label' => 'Ikon', 'meta' => '_qaf_icon_name', 'type' => 'text' ),
 				'qaf_open_new'     => array( 'label' => 'Tab Baru', 'meta' => '_qaf_open_new', 'type' => 'boolean' ),
 			),
@@ -110,8 +111,13 @@ final class QAF_Core_Admin {
 				'qaf_partner_url'    => array( 'label' => 'Website', 'meta' => '_qaf_partner_url', 'type' => 'url' ),
 			),
 			'qaf_vacancy'     => array(
+				'qaf_thumbnail' => array( 'label' => 'Logo', 'type' => 'thumbnail' ),
 				'qaf_company'  => array( 'label' => 'Perusahaan', 'meta' => '_qaf_company', 'type' => 'text', 'sortable' => true ),
+				'qaf_vacancy_field' => array( 'label' => 'Bidang', 'type' => 'taxonomy', 'taxonomy' => 'qaf_vacancy_field' ),
+				'qaf_vacancy_location' => array( 'label' => 'Lokasi', 'meta' => '_qaf_vacancy_location', 'type' => 'text' ),
+				'qaf_vacancy_verified_date' => array( 'label' => 'Diverifikasi', 'meta' => '_qaf_vacancy_verified_date', 'type' => 'date', 'sortable' => true ),
 				'qaf_deadline' => array( 'label' => 'Batas Lamaran', 'meta' => '_qaf_deadline', 'type' => 'date', 'sortable' => true ),
+				'qaf_vacancy_source_url' => array( 'label' => 'Sumber', 'meta' => '_qaf_vacancy_source_url', 'type' => 'url' ),
 				'qaf_apply_url' => array( 'label' => 'Lamaran', 'meta' => '_qaf_apply_url', 'type' => 'url' ),
 			),
 			'qaf_alumni'      => array(
@@ -171,6 +177,16 @@ final class QAF_Core_Admin {
 			} else {
 				echo '<span aria-hidden="true">—</span><span class="screen-reader-text">Tidak ada gambar</span>';
 			}
+			return;
+		}
+		if ( 'taxonomy' === $definition['type'] ) {
+			$taxonomy = isset( $definition['taxonomy'] ) ? sanitize_key( $definition['taxonomy'] ) : '';
+			$terms    = $taxonomy ? get_the_terms( $post_id, $taxonomy ) : false;
+			if ( is_wp_error( $terms ) || empty( $terms ) ) {
+				echo '<span aria-hidden="true">—</span><span class="screen-reader-text">Belum diisi</span>';
+				return;
+			}
+			echo esc_html( implode( ', ', wp_list_pluck( $terms, 'name' ) ) );
 			return;
 		}
 

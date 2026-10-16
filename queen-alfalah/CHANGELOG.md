@@ -2,6 +2,69 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.11.0 — 2026-10-16
+
+- Menambahkan background video MP4/WebM hero yang mudah diganti melalui Customizer sebagai alternatif GIF berukuran besar.
+- Mencegah gambar/GIF latar dimuat ketika video aktif, memakai preload metadata, dan menonaktifkan animasi untuk pengguna yang memilih pengurangan gerak.
+- Menambahkan meta description fallback ketika plugin SEO tidak aktif.
+- Meningkatkan kontras teks pengumuman, label Prestasi, penanda Jalur Karier, serta judul dan tautan footer berdasarkan audit Lighthouse Oktober.
+
+## 1.10.1 — 2026-10-07
+
+- Memindahkan bagian Lowongan Kerja Terbaru tepat setelah Jalur Pengembangan Karier.
+- Mempertahankan semua data lowongan, filter kedaluwarsa, dan kontrol Customizer yang sudah tersedia.
+
+## 1.10.0 — 2026-10-07
+
+- Menampilkan hanya aplikasi berstatus Aktif yang memiliki URL HTTP/HTTPS lengkap pada Beranda dan Pusat Aplikasi.
+- Menggunakan Status Aplikasi dan Atribut Urutan yang sudah dapat dikelola administrator, sehingga kartu dapat disembunyikan atau diurutkan tanpa menghapus data.
+- Menambahkan blok Lowongan Kerja Terbaru di bagian bawah Beranda; lowongan lama tetap berada di arsip Bursa Kerja dan lowongan kedaluwarsa tidak dipromosikan di Beranda.
+- Menambahkan pengaturan tampil/sembunyi, judul, deskripsi, dan jumlah 3–8 kartu lowongan melalui Tampilan → Sesuaikan → Beranda & Statistik.
+
+## 1.9.2 — 2026-10-03
+
+- Menstandarkan halaman detail Berita, Galeri, Prestasi, dan Karya Siswa dengan ringkasan pembuka, CTA kontekstual, dan tiga rekomendasi konten sejenis.
+- Mempertahankan isi, fakta, tanggal, kredit, sumber, dan media lama; pola editorial baru otomatis berlaku pada postingan lama maupun yang akan datang.
+- Menambahkan tata letak responsif dan aksesibel untuk panel pembuka, CTA, serta rekomendasi bacaan pada desktop, tablet, dan ponsel.
+- Mencakup perbaikan poster video Galeri dari versi 1.9.1.
+
+## 1.9.1 — 2026-10-03
+
+- Menampilkan gambar unggulan sebagai poster pada pemutar video Galeri lokal sehingga sampul tetap jelas sebelum video diputar.
+- Menerapkan perbaikan secara otomatis pada seluruh galeri lama dan baru tanpa mengubah video, caption, tanggal album, atau sumber media.
+
+## 1.9.0 — 2026-09-23
+
+- Menambahkan navigasi bawah bergaya aplikasi untuk ponsel dan tablet hingga lebar 1023 piksel dengan akses cepat ke Beranda, Berita, Aplikasi, PPDB, dan menu lengkap.
+- Menambahkan penanda halaman aktif, target sentuh yang nyaman, dukungan safe area perangkat, serta posisi tombol WhatsApp dan kembali ke atas yang tidak tertutup navigasi.
+- Memperluas drawer menu lengkap hingga tablet dan menyelaraskan status buka/tutup pada tombol navigasi bawah serta tombol penutup.
+- Memperjelas hover, fokus keyboard, dan penanda halaman aktif pada navigasi desktop tanpa mengubah susunan menu.
+
+## 1.7.4 — 2026-09-06
+
+- Memastikan target tombol berbagi minimal 44 piksel dan label minimal 13 piksel, termasuk ketika ukuran huruf dasar tema lebih kecil. Disempurnakan setelah pengujian tampilan ponsel online.
+
+## 1.7.3 — 2026-09-06
+
+- Mengubah tautan berbagi teks menjadi panel berikon WhatsApp, Facebook, Telegram, dan X pada semua detail postingan publik serta tipe konten sekolah.
+- Menambahkan salin tautan kanonik dengan fallback salin manual, serta berbagi native pada perangkat yang mendukung HTTPS/Web Share.
+- Tombol ramah keyboard/ponsel, pengumuman status aksesibel, ikon lokal, tanpa SDK atau pelacak pihak ketiga.
+- Tidak menampilkan tombol berbagi pada draf, privat, terjadwal, pratinjau, dan konten berpassword. Konten, media, urutan galeri, dan tombol akun resmi tidak berubah.
+
+## 1.7.2 — 2026-09-06
+
+- Menampilkan Tanggal Album pada kartu galeri, detail album, dan galeri beranda.
+- Menandai tanggal yang belum diketahui tanpa menggantinya dengan tanggal publikasi WordPress.
+- Memberi penjelasan urutan tanggal album terbaru–terlama bersama Core 1.14.0.
+
+## 1.7.0 — 2026-09-05
+
+### Ditambahkan
+
+- Panel tombol akun resmi Instagram, Facebook, YouTube, dan TikTok pada setiap detail berita serta tipe konten publik sekolah.
+- Satu sumber pengaturan sosial untuk panel artikel, footer, halaman Kontak, dan schema; kanal tanpa URL tidak ditampilkan.
+- Tata letak tombol yang responsif, ramah keyboard, memiliki target sentuh memadai, dan menghormati preferensi pengurangan gerak.
+
 ## 1.6.3 — 2026-08-30
 
 ### Ditambahkan

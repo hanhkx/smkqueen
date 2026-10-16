@@ -88,6 +88,55 @@ function queen_alfalah_school_info( $key, $default = '' ) {
 }
 
 /**
+ * Determine whether an application is ready to be shown to visitors.
+ *
+ * Editors control visibility through Status Aplikasi. A card is public only
+ * when its status is active and its destination is a complete HTTP(S) URL.
+ * This prevents empty, maintenance, and placeholder cards from appearing in
+ * the homepage shortcuts or the application directory.
+ *
+ * @param int $post_id Application post ID.
+ * @return bool
+ */
+function queen_alfalah_service_is_active( $post_id ) {
+	$status = sanitize_key( (string) queen_alfalah_meta( $post_id, 'service_status', 'inactive' ) );
+	$url    = trim( (string) queen_alfalah_meta( $post_id, 'external_url', '' ) );
+	$scheme = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+
+	return 'active' === $status
+		&& in_array( $scheme, array( 'http', 'https' ), true )
+		&& false !== wp_http_validate_url( $url );
+}
+
+/**
+ * Shared query arguments for visitor-facing application lists.
+ *
+ * @param int $limit Maximum records; use -1 for all.
+ * @return array<string,mixed>
+ */
+function queen_alfalah_active_service_query_args( $limit = -1 ) {
+	return array(
+		'post_type'      => 'qaf_service',
+		'posts_per_page' => (int) $limit,
+		'post_status'    => 'publish',
+		'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
+		'no_found_rows'  => true,
+		'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Small curated application directory.
+			'relation' => 'AND',
+			array(
+				'key'   => '_qaf_service_status',
+				'value' => 'active',
+			),
+			array(
+				'key'     => '_qaf_external_url',
+				'value'   => '',
+				'compare' => '!=',
+			),
+		),
+	);
+}
+
+/**
  * Normalize one decimal map coordinate.
  *
  * Scientific notation and non-scalar values are rejected so an iframe URL is
@@ -228,6 +277,8 @@ function queen_alfalah_icon( $name, $class = '' ) {
 	$paths = array(
 		'arrow-right'  => '<path d="M5 12h14M13 6l6 6-6 6"/>',
 		'arrow-up'     => '<path d="m18 15-6-6-6 6"/>',
+		'home'         => '<path d="m3 11 9-8 9 8"/><path d="M5 10v11h14V10M9 21v-7h6v7"/>',
+		'newspaper'    => '<path d="M4 5h13v14H4z"/><path d="M17 8h3v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2M7 9h7M7 13h7M7 17h4"/>',
 		'chevron-down' => '<path d="m6 9 6 6 6-6"/>',
 		'menu'         => '<path d="M4 7h16M4 12h16M4 17h16"/>',
 		'close'        => '<path d="m6 6 12 12M18 6 6 18"/>',
@@ -248,6 +299,10 @@ function queen_alfalah_icon( $name, $class = '' ) {
 		'folder'       => '<path d="M3 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
 		'external'     => '<path d="M14 3h7v7M10 14 21 3M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>',
 		'check'        => '<path d="m5 12 4 4L19 6"/>',
+		'share'        => '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"/>',
+		'copy'         => '<rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3"/>',
+		'telegram'     => '<path d="m3 10 18-7-4 18-6-6-4 3 1-6zM8 12 21 3M11 15l-3-3"/>',
+		'x'            => '<path d="M4 3h4l12 18h-4zM20 3l-6.6 8M4 21l6.6-8"/>',
 		'play'         => '<circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/>',
 		'quote'        => '<path d="M10 11H5a4 4 0 0 1 4-4M20 11h-5a4 4 0 0 1 4-4M5 11v6h5v-6M15 11v6h5v-6"/>',
 		'whatsapp'     => '<path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.3-4.7a8.5 8.5 0 1 1 16.2-4.1z"/><path d="M8.2 7.7c.2-.4.4-.4.7-.4h.4c.2 0 .4.1.5.4l.7 1.7c.1.3 0 .5-.1.7l-.5.6c-.2.2-.2.4 0 .7.7 1.2 1.7 2.2 3 2.8.3.2.6.1.8-.1l.7-.9c.2-.2.4-.3.7-.2l1.7.8c.3.1.4.3.4.5 0 .3-.2 1.5-1.1 2.1-.6.5-1.4.7-2.3.5-1.1-.2-2.6-.7-4.4-2.3-1.5-1.3-2.6-3-2.9-4.1-.3-1.1 0-2.1.4-2.6z"/>',
@@ -307,6 +362,10 @@ function queen_alfalah_meta( $post_id, $key, $default = '' ) {
  * Render post date and category metadata.
  */
 function queen_alfalah_post_meta() {
+	if ( 'qaf_gallery' === get_post_type() ) {
+		echo '<div class="entry-meta">' . queen_alfalah_gallery_date_html( get_the_ID() ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by helper.
+		return;
+	}
 	?>
 	<div class="entry-meta">
 		<span><?php echo queen_alfalah_icon( 'calendar' ); ?><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time></span>
@@ -315,6 +374,19 @@ function queen_alfalah_post_meta() {
 		<?php endif; ?>
 	</div>
 	<?php
+}
+
+/** Display only a real album date, never silently substitute the publication date. */
+function queen_alfalah_gallery_date_html( $post_id ) {
+	$raw = get_post_meta( $post_id, '_qaf_album_date', true );
+	$date = is_string( $raw ) && preg_match( '/^[1-9][0-9]{3}-[0-9]{2}-[0-9]{2}$/D', $raw )
+		? DateTimeImmutable::createFromFormat( '!Y-m-d', $raw, wp_timezone() ) : false;
+	if ( ! $date || $date->format( 'Y-m-d' ) !== $raw ) {
+		return '<span class="gallery-album-date gallery-album-date--unknown">' . esc_html__( 'Tanggal kegiatan belum dicatat', 'queen-alfalah' ) . '</span>';
+	}
+	return '<time class="gallery-album-date" datetime="' . esc_attr( $raw ) . '">'
+		. esc_html__( 'Tanggal album: ', 'queen-alfalah' )
+		. esc_html( wp_date( 'j F Y', $date->getTimestamp(), wp_timezone() ) ) . '</time>';
 }
 
 /**
@@ -579,6 +651,7 @@ function queen_alfalah_extra_illustration( $post_id = 0 ) {
 
 	$allowed = array(
 		'pramuka',
+		'jurnalistik',
 		'broadcasting',
 		'futsal',
 		'al-banjari',
@@ -951,13 +1024,19 @@ function queen_alfalah_gallery_media( $post_id = 0 ) {
 			return '';
 		}
 
+		$video_args = array(
+			'src'     => $video_url,
+			'preload' => 'metadata',
+		);
+		$poster_id  = get_post_thumbnail_id( $post_id );
+		$poster_url = $poster_id ? wp_get_attachment_image_url( $poster_id, 'full' ) : '';
+
+		if ( $poster_url ) {
+			$video_args['poster'] = $poster_url;
+		}
+
 		return '<section class="gallery-media gallery-media--local" aria-label="' . esc_attr__( 'Video galeri sekolah', 'queen-alfalah' ) . '">'
-			. wp_video_shortcode(
-				array(
-					'src'     => $video_url,
-					'preload' => 'metadata',
-				)
-			)
+			. wp_video_shortcode( $video_args )
 			. '</section>';
 	}
 
@@ -1059,22 +1138,332 @@ function queen_alfalah_social_links() {
 }
 
 /**
- * Render links to share the current public URL without loading trackers.
+ * Whether a post uses the standard editorial article experience.
+ *
+ * @param WP_Post|int|null $post Post object or ID. Defaults to the current post.
+ * @return bool
+ */
+function queen_alfalah_supports_article_experience( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return false;
+	}
+
+	return in_array( $post->post_type, array( 'post', 'qaf_gallery', 'qaf_achievement', 'qaf_work' ), true );
+}
+
+/**
+ * Editorial labels, archive destinations, and calls to action by content type.
+ *
+ * @param string $post_type WordPress post type.
+ * @return array<string,string>
+ */
+function queen_alfalah_article_experience_config( $post_type ) {
+	$config = array(
+		'post'            => array(
+			'eyebrow'      => __( 'Ringkasan Berita', 'queen-alfalah' ),
+			'intro'         => __( 'Simak informasi %s dari SMK Queen Al-Falah. Artikel ini disajikan secara ringkas dan dilengkapi dokumentasi atau sumber yang tersedia.', 'queen-alfalah' ),
+			'cta_title'     => __( 'Ikuti Kabar Terbaru SMK Queen', 'queen-alfalah' ),
+			'cta_text'      => __( 'Jangan lewatkan kegiatan, prestasi, karya, dan informasi penting berikutnya dari keluarga besar SMK Queen Al-Falah.', 'queen-alfalah' ),
+			'primary_label' => __( 'Lihat Berita Terbaru', 'queen-alfalah' ),
+			'primary_url'   => queen_alfalah_page_url( 'berita' ),
+			'second_label'  => __( 'Jelajahi Galeri', 'queen-alfalah' ),
+			'second_url'    => queen_alfalah_archive_url( 'qaf_gallery', 'galeri' ),
+			'related_title' => __( 'Berita Pilihan Berikutnya', 'queen-alfalah' ),
+		),
+		'qaf_gallery'     => array(
+			'eyebrow'      => __( 'Cerita di Balik Momen', 'queen-alfalah' ),
+			'intro'         => __( 'Dokumentasi %s merekam salah satu momen kegiatan SMK Queen Al-Falah. Saksikan medianya dan temukan konteks kegiatan pada narasi berikut.', 'queen-alfalah' ),
+			'cta_title'     => __( 'Jelajahi Momen Berikutnya', 'queen-alfalah' ),
+			'cta_text'      => __( 'Temukan lebih banyak dokumentasi pembelajaran, kebersamaan, kreativitas, dan prestasi warga sekolah dalam Galeri Kegiatan.', 'queen-alfalah' ),
+			'primary_label' => __( 'Lihat Semua Galeri', 'queen-alfalah' ),
+			'primary_url'   => queen_alfalah_archive_url( 'qaf_gallery', 'galeri' ),
+			'second_label'  => __( 'Baca Berita Sekolah', 'queen-alfalah' ),
+			'second_url'    => queen_alfalah_page_url( 'berita' ),
+			'related_title' => __( 'Momen Lain yang Patut Dilihat', 'queen-alfalah' ),
+		),
+		'qaf_achievement' => array(
+			'eyebrow'      => __( 'Makna Prestasi', 'queen-alfalah' ),
+			'intro'         => __( 'Capaian %s menjadi bagian dari perjalanan belajar, keberanian mencoba, dan pengembangan kompetensi siswa SMK Queen Al-Falah.', 'queen-alfalah' ),
+			'cta_title'     => __( 'Dukung Prestasi Berikutnya', 'queen-alfalah' ),
+			'cta_text'      => __( 'Ikuti perjalanan, partisipasi, dan capaian siswa lainnya sebagai inspirasi untuk terus belajar, berkarya, dan bertumbuh.', 'queen-alfalah' ),
+			'primary_label' => __( 'Lihat Semua Prestasi', 'queen-alfalah' ),
+			'primary_url'   => queen_alfalah_archive_url( 'qaf_achievement', 'prestasi' ),
+			'second_label'  => __( 'Temukan Karya Siswa', 'queen-alfalah' ),
+			'second_url'    => queen_alfalah_archive_url( 'qaf_work', 'karya-siswa' ),
+			'related_title' => __( 'Prestasi Lainnya', 'queen-alfalah' ),
+		),
+		'qaf_work'        => array(
+			'eyebrow'      => __( 'Tentang Karya', 'queen-alfalah' ),
+			'intro'         => __( '%s menampilkan gagasan, proses, dan keterampilan siswa SMK Queen Al-Falah dalam menghasilkan karya yang dapat dinikmati dan dipelajari bersama.', 'queen-alfalah' ),
+			'cta_title'     => __( 'Temukan Karya Siswa Lainnya', 'queen-alfalah' ),
+			'cta_text'      => __( 'Jelajahi esai, artikel, video, dan portofolio siswa lainnya, lalu bagikan karya yang menginspirasi kepada orang terdekat.', 'queen-alfalah' ),
+			'primary_label' => __( 'Lihat Semua Karya', 'queen-alfalah' ),
+			'primary_url'   => queen_alfalah_archive_url( 'qaf_work', 'karya-siswa' ),
+			'second_label'  => __( 'Lihat Prestasi Siswa', 'queen-alfalah' ),
+			'second_url'    => queen_alfalah_archive_url( 'qaf_achievement', 'prestasi' ),
+			'related_title' => __( 'Karya Pilihan Lainnya', 'queen-alfalah' ),
+		),
+	);
+
+	return isset( $config[ $post_type ] ) ? $config[ $post_type ] : array();
+}
+
+/**
+ * Render a consistent editorial lead without rewriting the stored article.
+ *
+ * A manually written excerpt remains the preferred lead. Older entries without
+ * one receive conservative, type-specific copy based only on the post title.
+ *
+ * @param WP_Post|int|null $post Post object or ID. Defaults to the current post.
+ */
+function queen_alfalah_article_intro( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post || ! queen_alfalah_supports_article_experience( $post ) ) {
+		return;
+	}
+
+	$config         = queen_alfalah_article_experience_config( $post->post_type );
+	$manual_excerpt = trim( (string) $post->post_excerpt );
+	$intro          = $manual_excerpt
+		? wp_trim_words( wp_strip_all_tags( strip_shortcodes( $manual_excerpt ) ), 48, '&hellip;' )
+		: sprintf( $config['intro'], wp_strip_all_tags( get_the_title( $post ) ) );
+	$heading_id     = 'article-intro-title-' . absint( $post->ID );
+	?>
+	<section class="article-intro" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+		<p class="eyebrow"><?php echo esc_html( $config['eyebrow'] ); ?></p>
+		<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="screen-reader-text"><?php esc_html_e( 'Ringkasan artikel', 'queen-alfalah' ); ?></h2>
+		<p><?php echo wp_kses_post( $intro ); ?></p>
+	</section>
+	<?php
+}
+
+/**
+ * Render the next-step CTA for an editorial post.
+ *
+ * @param WP_Post|int|null $post Post object or ID. Defaults to the current post.
+ */
+function queen_alfalah_article_cta( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post || ! queen_alfalah_supports_article_experience( $post ) ) {
+		return;
+	}
+
+	$config     = queen_alfalah_article_experience_config( $post->post_type );
+	$heading_id = 'article-cta-title-' . absint( $post->ID );
+	?>
+	<section class="article-cta" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+		<div class="article-cta__copy">
+			<p class="eyebrow"><?php esc_html_e( 'Lanjutkan Menjelajah', 'queen-alfalah' ); ?></p>
+			<h2 id="<?php echo esc_attr( $heading_id ); ?>"><?php echo esc_html( $config['cta_title'] ); ?></h2>
+			<p><?php echo esc_html( $config['cta_text'] ); ?></p>
+		</div>
+		<div class="article-cta__actions">
+			<a class="button" href="<?php echo esc_url( $config['primary_url'] ); ?>"><?php echo esc_html( $config['primary_label'] ); ?><?php echo queen_alfalah_icon( 'arrow-right' ); ?></a>
+			<a class="button button--outline-dark" href="<?php echo esc_url( $config['second_url'] ); ?>"><?php echo esc_html( $config['second_label'] ); ?></a>
+		</div>
+	</section>
+	<?php
+}
+
+/**
+ * Render up to three recent entries from the same editorial collection.
+ *
+ * @param WP_Post|int|null $post  Post object or ID. Defaults to the current post.
+ * @param int              $limit Maximum cards to show.
+ */
+function queen_alfalah_related_articles( $post = null, $limit = 3 ) {
+	$post = get_post( $post );
+	if ( ! $post || ! queen_alfalah_supports_article_experience( $post ) ) {
+		return;
+	}
+
+	$limit   = max( 1, min( 3, absint( $limit ) ) );
+	$config  = queen_alfalah_article_experience_config( $post->post_type );
+	$related = get_posts(
+		array(
+			'post_type'           => $post->post_type,
+			'post_status'         => 'publish',
+			'posts_per_page'      => $limit,
+			'post__not_in'        => array( $post->ID ),
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+			'orderby'             => 'date',
+			'order'               => 'DESC',
+		)
+	);
+
+	if ( ! $related ) {
+		return;
+	}
+
+	$heading_id = 'related-articles-title-' . absint( $post->ID );
+	?>
+	<section class="related-articles" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+		<div class="related-articles__heading">
+			<p class="eyebrow"><?php esc_html_e( 'Jangan Lewatkan', 'queen-alfalah' ); ?></p>
+			<h2 id="<?php echo esc_attr( $heading_id ); ?>"><?php echo esc_html( $config['related_title'] ); ?></h2>
+		</div>
+		<div class="related-articles__grid">
+			<?php foreach ( $related as $related_post ) : ?>
+				<?php
+				$thumbnail = get_the_post_thumbnail_url( $related_post, 'queen-card-square' );
+				$fallback  = $thumbnail ? array() : queen_alfalah_fallback_visual( $related_post->ID );
+				$excerpt   = wp_trim_words( wp_strip_all_tags( get_the_excerpt( $related_post ) ), 18, '&hellip;' );
+				?>
+				<article class="related-article-card">
+					<a class="related-article-card__media" href="<?php echo esc_url( get_permalink( $related_post ) ); ?>" tabindex="-1" aria-hidden="true">
+						<?php if ( $thumbnail ) : ?>
+							<img src="<?php echo esc_url( $thumbnail ); ?>" alt="" loading="lazy" decoding="async">
+						<?php elseif ( $fallback ) : ?>
+							<img src="<?php echo esc_url( $fallback['url'] ); ?>" alt="" width="<?php echo esc_attr( $fallback['width'] ); ?>" height="<?php echo esc_attr( $fallback['height'] ); ?>" loading="lazy" decoding="async">
+						<?php endif; ?>
+					</a>
+					<div class="related-article-card__content">
+						<time datetime="<?php echo esc_attr( get_the_date( DATE_W3C, $related_post ) ); ?>"><?php echo esc_html( get_the_date( '', $related_post ) ); ?></time>
+						<h3><a href="<?php echo esc_url( get_permalink( $related_post ) ); ?>"><?php echo esc_html( get_the_title( $related_post ) ); ?></a></h3>
+						<?php if ( $excerpt ) : ?><p><?php echo esc_html( $excerpt ); ?></p><?php endif; ?>
+						<a class="text-link" href="<?php echo esc_url( get_permalink( $related_post ) ); ?>"><?php esc_html_e( 'Baca selengkapnya', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( 'arrow-right' ); ?></a>
+					</div>
+				</article>
+			<?php endforeach; ?>
+		</div>
+	</section>
+	<?php
+}
+
+/**
+ * Whether official social-account buttons belong on the current detail page.
+ *
+ * Standard posts and publicly queryable custom post types are supported. Static
+ * pages and attachments are intentionally excluded because their calls to action
+ * are managed by their own templates.
+ *
+ * @param WP_Post|int|null $post Post object or ID. Defaults to the current post.
+ * @return bool
+ */
+function queen_alfalah_supports_post_social_links( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return false;
+	}
+
+	$post_type        = get_post_type_object( $post->post_type );
+	$is_standard_post = 'post' === $post->post_type;
+	$is_public_cpt    = $post_type && ! $post_type->_builtin && $post_type->public && $post_type->publicly_queryable;
+	$supported        = $is_standard_post || $is_public_cpt;
+
+	/**
+	 * Filter whether official school social links appear on a detail page.
+	 *
+	 * @param bool    $supported Whether the post type is supported by default.
+	 * @param WP_Post $post      Current post object.
+	 */
+	return (bool) apply_filters( 'queen_alfalah_supports_post_social_links', $supported, $post );
+}
+
+/**
+ * Render configured official school social-account buttons on a post detail.
+ *
+ * Empty settings are omitted, so the component never invents or hardcodes an
+ * account address. The same portable settings also power the footer and schema.
+ */
+function queen_alfalah_post_social_links() {
+	$links = queen_alfalah_social_links();
+	if ( ! $links ) {
+		return;
+	}
+
+	$labels = array(
+		'instagram' => __( 'Instagram', 'queen-alfalah' ),
+		'facebook'  => __( 'Facebook', 'queen-alfalah' ),
+		'youtube'   => __( 'YouTube', 'queen-alfalah' ),
+		'tiktok'    => __( 'TikTok', 'queen-alfalah' ),
+	);
+	$school_name = queen_alfalah_school_info( 'school_name' );
+	$heading_id  = 'entry-social-title-' . absint( get_the_ID() );
+	?>
+	<section class="entry-social" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+		<div class="entry-social__intro">
+			<h2 id="<?php echo esc_attr( $heading_id ); ?>"><?php esc_html_e( 'Ikuti Media Sosial Resmi', 'queen-alfalah' ); ?></h2>
+			<p><?php echo esc_html( sprintf( __( 'Dapatkan kabar, karya, dan kegiatan terbaru dari %s.', 'queen-alfalah' ), $school_name ) ); ?></p>
+		</div>
+		<ul class="entry-social__list" role="list">
+			<?php foreach ( $links as $network => $url ) : ?>
+				<?php $label = isset( $labels[ $network ] ) ? $labels[ $network ] : ucfirst( $network ); ?>
+				<li>
+					<a class="entry-social__link entry-social__link--<?php echo esc_attr( sanitize_html_class( $network ) ); ?>" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="external noopener noreferrer" aria-label="<?php echo esc_attr( sprintf( __( 'Buka akun %1$s resmi %2$s (tab baru)', 'queen-alfalah' ), $label, $school_name ) ); ?>">
+						<?php echo queen_alfalah_icon( $network ); ?>
+						<span><?php echo esc_html( $label ); ?></span>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</section>
+	<?php
+}
+
+/**
+ * Sharing is limited to published, unprotected posts and public school content.
+ * Static pages, media attachments and previews keep their own access controls.
+ *
+ * @return bool
+ */
+function queen_alfalah_can_share_post() {
+	$post = get_post();
+	return $post
+		&& ! is_preview()
+		&& ! in_array( $post->post_type, array( 'page', 'attachment' ), true )
+		&& 'publish' === $post->post_status
+		&& is_post_publicly_viewable( $post )
+		&& '' === (string) $post->post_password;
+}
+
+/**
+ * Render icon links for the canonical public URL, without third-party scripts.
  */
 function queen_alfalah_share_links() {
-	$url   = rawurlencode( get_permalink() );
-	$title = rawurlencode( wp_strip_all_tags( get_the_title() ) );
+	if ( ! queen_alfalah_can_share_post() ) {
+		return;
+	}
+	$permalink = get_permalink();
+	if ( ! $permalink ) {
+		return;
+	}
+	$plain_title = wp_specialchars_decode( wp_strip_all_tags( get_the_title() ), ENT_QUOTES );
+	$url         = rawurlencode( $permalink );
+	$title       = rawurlencode( $plain_title );
+	$heading_id  = 'share-title-' . absint( get_the_ID() );
+	$input_id    = 'share-url-' . absint( get_the_ID() );
 	$links = array(
-		'WhatsApp' => 'https://wa.me/?text=' . $title . '%20' . $url,
-		'Facebook' => 'https://www.facebook.com/sharer/sharer.php?u=' . $url,
-		'Telegram' => 'https://t.me/share/url?url=' . $url . '&text=' . $title,
+		'whatsapp' => array( 'WhatsApp', 'https://wa.me/?text=' . $title . '%20' . $url ),
+		'facebook' => array( 'Facebook', 'https://www.facebook.com/sharer/sharer.php?u=' . $url ),
+		'telegram' => array( 'Telegram', 'https://t.me/share/url?url=' . $url . '&text=' . $title ),
+		'x'        => array( 'X', 'https://x.com/intent/tweet?url=' . $url . '&text=' . $title ),
 	);
 	?>
-	<div class="share-links" aria-label="<?php esc_attr_e( 'Bagikan artikel', 'queen-alfalah' ); ?>">
-		<span><?php esc_html_e( 'Bagikan:', 'queen-alfalah' ); ?></span>
-		<?php foreach ( $links as $label => $link ) : ?>
-			<a href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $label ); ?><span class="screen-reader-text"> <?php esc_html_e( '(tab baru)', 'queen-alfalah' ); ?></span></a>
-		<?php endforeach; ?>
-	</div>
+	<section class="share-links" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>" data-share-url="<?php echo esc_url( $permalink ); ?>" data-share-title="<?php echo esc_attr( $plain_title ); ?>">
+		<div class="share-links__intro">
+			<span class="share-links__badge"><?php echo queen_alfalah_icon( 'share' ); ?></span>
+			<div>
+				<h2 id="<?php echo esc_attr( $heading_id ); ?>"><?php esc_html_e( 'Bagikan Cerita Queen', 'queen-alfalah' ); ?></h2>
+				<p><?php esc_html_e( 'Sebarkan kabar baik, karya, dan inspirasi dari sekolah kita.', 'queen-alfalah' ); ?></p>
+			</div>
+		</div>
+		<div class="share-links__actions">
+			<?php foreach ( $links as $network => $link ) : ?>
+				<a class="share-links__button share-links__button--<?php echo esc_attr( $network ); ?>" href="<?php echo esc_url( $link[1] ); ?>" target="_blank" rel="external noopener noreferrer" aria-label="<?php echo esc_attr( sprintf( __( 'Bagikan ke %s (tab baru)', 'queen-alfalah' ), $link[0] ) ); ?>">
+					<?php echo queen_alfalah_icon( $network ); ?><span><?php echo esc_html( $link[0] ); ?></span>
+				</a>
+			<?php endforeach; ?>
+			<button class="share-links__button share-links__button--copy" type="button" data-share-copy hidden><?php echo queen_alfalah_icon( 'copy' ); ?><span><?php esc_html_e( 'Salin tautan', 'queen-alfalah' ); ?></span></button>
+			<button class="share-links__button share-links__button--native" type="button" data-share-native hidden><?php echo queen_alfalah_icon( 'share' ); ?><span><?php esc_html_e( 'Bagikan lainnya', 'queen-alfalah' ); ?></span></button>
+		</div>
+		<p class="share-links__status" role="status" aria-live="polite" aria-atomic="true" data-share-status data-copy-success="<?php esc_attr_e( 'Tautan berhasil disalin. Siap ditempel ke aplikasi pilihan Anda.', 'queen-alfalah' ); ?>" data-copy-fallback="<?php esc_attr_e( 'Salin otomatis tidak tersedia. Pilih dan salin tautan di bawah ini.', 'queen-alfalah' ); ?>" data-share-error="<?php esc_attr_e( 'Berbagi melalui perangkat belum tersedia. Gunakan tombol sosial atau Salin tautan.', 'queen-alfalah' ); ?>"></p>
+		<div class="share-links__fallback" data-share-fallback hidden>
+			<label for="<?php echo esc_attr( $input_id ); ?>"><?php esc_html_e( 'Tautan postingan untuk disalin', 'queen-alfalah' ); ?></label>
+			<input id="<?php echo esc_attr( $input_id ); ?>" type="text" value="<?php echo esc_url( $permalink ); ?>" readonly>
+		</div>
+	</section>
 	<?php
 }

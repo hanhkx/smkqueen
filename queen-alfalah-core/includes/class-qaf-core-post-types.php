@@ -167,6 +167,10 @@ final class QAF_Core_Post_Types {
 	 */
 	public static function get_post_types() {
 		return array(
+			'qaf_work' => array(
+				'plural' => 'Karya Siswa', 'singular' => 'Karya Siswa',
+				'slug' => 'karya-siswa', 'icon' => 'dashicons-art',
+			),
 			'qaf_program'     => array(
 				'plural'   => 'Program Keahlian',
 				'singular' => 'Program Keahlian',
@@ -250,43 +254,84 @@ final class QAF_Core_Post_Types {
 	public static function register_post_types() {
 		foreach ( self::get_post_types() as $post_type => $definition ) {
 			$labels = self::post_type_labels( $definition['plural'], $definition['singular'] );
+			$args   = array(
+				'labels'              => $labels,
+				'public'              => true,
+				'publicly_queryable'  => true,
+				'exclude_from_search' => false,
+				'show_ui'             => true,
+				'show_in_menu'        => 'qaf-school',
+				'show_in_nav_menus'   => true,
+				'show_in_admin_bar'   => true,
+				'show_in_rest'        => true,
+				'rest_base'           => $definition['slug'],
+				'menu_icon'           => $definition['icon'],
+				'has_archive'         => true,
+				'hierarchical'        => false,
+				'rewrite'             => array(
+					'slug'       => $definition['slug'],
+					'with_front' => false,
+				),
+				'query_var'           => true,
+				'capability_type'     => 'post',
+				'map_meta_cap'        => true,
+				'delete_with_user'    => false,
+				'supports'            => array(
+					'title',
+					'editor',
+					'excerpt',
+					'thumbnail',
+					'page-attributes',
+					'revisions',
+					'custom-fields',
+				),
+			);
+
+			// Pengumuman memakai capability tersendiri supaya Waka dapat
+			// mengelolanya tanpa memperoleh akses ke Berita atau CPT sekolah lain.
+			if ( 'qaf_notice' === $post_type ) {
+				$args['capability_type'] = array( 'qaf_notice', 'qaf_notices' );
+				$args['capabilities']    = self::get_notice_capabilities();
+			}
+
+			if ( 'qaf_work' === $post_type ) {
+				$args['show_in_menu'] = true;
+				$args['capability_type'] = array( 'qaf_work', 'qaf_works' );
+				$args['supports'][] = 'author';
+			}
 
 			register_post_type(
 				$post_type,
-				array(
-					'labels'              => $labels,
-					'public'              => true,
-					'publicly_queryable'  => true,
-					'exclude_from_search' => false,
-					'show_ui'             => true,
-					'show_in_menu'        => 'qaf-school',
-					'show_in_nav_menus'   => true,
-					'show_in_admin_bar'   => true,
-					'show_in_rest'        => true,
-					'rest_base'           => $definition['slug'],
-					'menu_icon'           => $definition['icon'],
-					'has_archive'         => true,
-					'hierarchical'        => false,
-					'rewrite'             => array(
-						'slug'       => $definition['slug'],
-						'with_front' => false,
-					),
-					'query_var'           => true,
-					'capability_type'     => 'post',
-					'map_meta_cap'        => true,
-					'delete_with_user'    => false,
-					'supports'            => array(
-						'title',
-						'editor',
-						'excerpt',
-						'thumbnail',
-						'page-attributes',
-						'revisions',
-						'custom-fields',
-					),
-				)
+				$args
 			);
 		}
+	}
+
+	/**
+	 * Return the complete capability map for school notices.
+	 *
+	 * Keeping this map explicit prevents WordPress from falling back to the
+	 * generic post capabilities when checking REST and wp-admin requests.
+	 *
+	 * @return array<string,string>
+	 */
+	public static function get_notice_capabilities() {
+		return array(
+			'edit_post'              => 'edit_qaf_notice',
+			'read_post'              => 'read_qaf_notice',
+			'delete_post'            => 'delete_qaf_notice',
+			'edit_posts'             => 'edit_qaf_notices',
+			'edit_others_posts'      => 'edit_others_qaf_notices',
+			'publish_posts'          => 'publish_qaf_notices',
+			'read_private_posts'     => 'read_private_qaf_notices',
+			'delete_posts'           => 'delete_qaf_notices',
+			'delete_private_posts'   => 'delete_private_qaf_notices',
+			'delete_published_posts' => 'delete_published_qaf_notices',
+			'delete_others_posts'    => 'delete_others_qaf_notices',
+			'edit_private_posts'     => 'edit_private_qaf_notices',
+			'edit_published_posts'   => 'edit_published_qaf_notices',
+			'create_posts'           => 'edit_qaf_notices',
+		);
 	}
 
 	/**
@@ -296,6 +341,7 @@ final class QAF_Core_Post_Types {
 	 */
 	public static function get_taxonomies() {
 		return array(
+			'qaf_work_type' => array( 'Jenis Karya', 'Jenis Karya', 'jenis-karya', array( 'qaf_work' ) ),
 			'qaf_program_field'     => array( 'Bidang Keahlian', 'Bidang Keahlian', 'bidang-keahlian', array( 'qaf_program' ) ),
 			'qaf_staff_type'        => array( 'Jenis Guru/Tendik', 'Jenis Guru/Tendik', 'jenis-guru-tendik', array( 'qaf_teacher' ) ),
 			'qaf_subject'           => array( 'Mata Pelajaran/Unit', 'Mata Pelajaran/Unit', 'mata-pelajaran-unit', array( 'qaf_teacher' ) ),
@@ -320,27 +366,68 @@ final class QAF_Core_Post_Types {
 	 */
 	public static function register_taxonomies() {
 		foreach ( self::get_taxonomies() as $taxonomy => $definition ) {
+			$args = array(
+				'labels'            => self::taxonomy_labels( $definition[0], $definition[1] ),
+				'public'            => true,
+				'publicly_queryable' => true,
+				'hierarchical'      => true,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => true,
+				'show_tagcloud'     => false,
+				'show_in_rest'      => true,
+				'rewrite'           => array(
+					'slug'         => $definition[2],
+					'with_front'   => false,
+					'hierarchical' => true,
+				),
+			);
+
+			if ( 'qaf_work_type' === $taxonomy ) {
+				$args['capabilities'] = array(
+					'manage_terms' => 'manage_qaf_work_terms', 'edit_terms' => 'edit_qaf_work_terms',
+					'delete_terms' => 'delete_qaf_work_terms', 'assign_terms' => 'assign_qaf_work_terms',
+				);
+			} elseif ( 'qaf_notice_type' === $taxonomy ) {
+				$args['capabilities'] = self::get_notice_term_capabilities();
+			} elseif ( 'qaf_audience' === $taxonomy ) {
+				$args['capabilities'] = self::get_audience_term_capabilities();
+			}
+
 			register_taxonomy(
 				$taxonomy,
 				$definition[3],
-				array(
-					'labels'            => self::taxonomy_labels( $definition[0], $definition[1] ),
-					'public'            => true,
-					'publicly_queryable' => true,
-					'hierarchical'      => true,
-					'show_ui'           => true,
-					'show_admin_column' => true,
-					'show_in_nav_menus' => true,
-					'show_tagcloud'     => false,
-					'show_in_rest'      => true,
-					'rewrite'           => array(
-						'slug'         => $definition[2],
-						'with_front'   => false,
-						'hierarchical' => true,
-					),
-				)
+				$args
 			);
 		}
+	}
+
+	/**
+	 * Capabilities for the notice-type taxonomy.
+	 *
+	 * @return array<string,string>
+	 */
+	public static function get_notice_term_capabilities() {
+		return array(
+			'manage_terms' => 'manage_qaf_notice_terms',
+			'edit_terms'   => 'edit_qaf_notice_terms',
+			'delete_terms' => 'delete_qaf_notice_terms',
+			'assign_terms' => 'assign_qaf_notice_terms',
+		);
+	}
+
+	/**
+	 * Capabilities for the audience taxonomy shared by school content.
+	 *
+	 * @return array<string,string>
+	 */
+	public static function get_audience_term_capabilities() {
+		return array(
+			'manage_terms' => 'manage_qaf_audience_terms',
+			'edit_terms'   => 'edit_qaf_audience_terms',
+			'delete_terms' => 'delete_qaf_audience_terms',
+			'assign_terms' => 'assign_qaf_audience_terms',
+		);
 	}
 
 	/**

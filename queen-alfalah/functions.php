@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUEEN_ALFALAH_VERSION', '1.6.3' );
+define( 'QUEEN_ALFALAH_VERSION', '1.11.0' );
 define( 'QUEEN_ALFALAH_DIR', get_template_directory() );
 define( 'QUEEN_ALFALAH_URI', get_template_directory_uri() );
 
@@ -110,6 +110,9 @@ add_action( 'widgets_init', 'queen_alfalah_widgets_init' );
  */
 function queen_alfalah_enqueue_assets() {
 	wp_enqueue_style( 'queen-alfalah-style', get_stylesheet_uri(), array(), QUEEN_ALFALAH_VERSION );
+	if ( is_singular() && queen_alfalah_can_share_post() ) {
+		wp_enqueue_script( 'queen-alfalah-share', QUEEN_ALFALAH_URI . '/assets/js/share.js', array(), QUEEN_ALFALAH_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+	}
 	if ( is_post_type_archive( 'qaf_service' ) ) {
 		wp_enqueue_style( 'queen-alfalah-applications', QUEEN_ALFALAH_URI . '/assets/css/applications.css', array( 'queen-alfalah-style' ), QUEEN_ALFALAH_VERSION );
 	}
@@ -164,6 +167,39 @@ function queen_alfalah_enqueue_assets() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'queen_alfalah_enqueue_assets' );
+
+/**
+ * Provide a concise meta description when no dedicated SEO plugin owns it.
+ */
+function queen_alfalah_meta_description() {
+	if ( defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || defined( 'AIOSEO_VERSION' ) ) {
+		return;
+	}
+
+	$description = '';
+	if ( is_front_page() ) {
+		$description = get_bloginfo( 'description', 'display' );
+	} elseif ( is_singular() ) {
+		$post = get_queried_object();
+		if ( $post instanceof WP_Post ) {
+			$description = has_excerpt( $post ) ? get_the_excerpt( $post ) : wp_strip_all_tags( strip_shortcodes( $post->post_content ) );
+		}
+	} elseif ( is_post_type_archive() || is_category() || is_tag() || is_tax() ) {
+		$description = wp_strip_all_tags( get_the_archive_description() );
+	}
+
+	$description = trim( preg_replace( '/\s+/', ' ', (string) $description ) );
+	if ( '' === $description ) {
+		$description = sprintf(
+			/* translators: %s: school name. */
+			__( 'Informasi resmi %s tentang program keahlian, berita, prestasi, karya siswa, galeri, dan layanan sekolah.', 'queen-alfalah' ),
+			queen_alfalah_school_info( 'school_name' )
+		);
+	}
+
+	echo '<meta name="description" content="' . esc_attr( wp_html_excerpt( $description, 160, '…' ) ) . '">' . "\n";
+}
+add_action( 'wp_head', 'queen_alfalah_meta_description', 2 );
 
 /**
  * Live Customizer preview support.

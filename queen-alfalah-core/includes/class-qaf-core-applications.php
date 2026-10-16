@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class QAF_Core_Applications {
 	const VERSION_OPTION = 'qaf_applications_schema_version';
-	const SCHEMA_VERSION = '1.2.0';
+	const SCHEMA_VERSION = '1.4.0';
 
 	/** Attach the safe, idempotent upgrade routine. */
 	public static function init() {
@@ -31,7 +31,8 @@ final class QAF_Core_Applications {
 			'aplikasi-e-perpus'        => array( 'Buku & E-Perpustakaan', 'book', '', 'Katalog buku, koleksi digital, serta layanan peminjaman perpustakaan sekolah.' ),
 			'aplikasi-spmb'            => array( 'SPMB', 'users', $registration_url, 'Pusat informasi dan sistem penerimaan murid baru SMK Queen Al-Falah.' ),
 			'aplikasi-gamifikasi-edu'  => array( 'Gamifikasi Edu', 'play', '', 'Pembelajaran interaktif berbasis tantangan, poin, dan aktivitas edukatif.' ),
-			'aplikasi-pusat-media'     => array( 'Pusat Media', 'folder', QAF_Core_Media_Center::portal_url(), 'Portal privat setelah login untuk membuka folder Google Drive khusus divisi Waka, Guru, atau Tendik.', false ),
+			'aplikasi-penilaian-guru'  => array( 'Penilaian Kinerja Guru', 'award', QAF_Core_Teacher_Evaluation::public_url(), 'Evaluasi siswa yang bertanggung jawab dengan pertanyaan reflektif, identitas terbatas, dan analisis per aspek.', false ),
+			'aplikasi-pusat-media'     => array( 'Pusat Media', 'folder', QAF_Core_Media_Center::portal_url(), 'Portal privat setelah login untuk membuka folder Google Drive khusus setiap akun, dengan folder divisi sebagai cadangan.', false ),
 		);
 
 		$order  = 0;
@@ -41,14 +42,22 @@ final class QAF_Core_Applications {
 			$existing = get_page_by_path( $slug, OBJECT, 'qaf_service' );
 			if ( $existing instanceof WP_Post ) {
 				if ( 'aplikasi-pusat-media' === $slug ) {
-					$legacy_excerpt = 'Portal privat untuk unggah dan unduh dokumen Waka, Guru, serta Tendik pada folder Drive masing-masing.';
-					$legacy_content = '<!-- wp:paragraph --><p>' . esc_html( $legacy_excerpt ) . '</p><!-- /wp:paragraph -->';
+					$legacy_excerpts = array(
+						'Portal privat untuk unggah dan unduh dokumen Waka, Guru, serta Tendik pada folder Drive masing-masing.',
+						'Portal privat setelah login untuk membuka folder Google Drive khusus divisi Waka, Guru, atau Tendik.',
+					);
 					$update         = array( 'ID' => $existing->ID );
 
-					if ( trim( $existing->post_excerpt ) === trim( $legacy_excerpt ) ) {
+					if ( in_array( trim( $existing->post_excerpt ), array_map( 'trim', $legacy_excerpts ), true ) ) {
 						$update['post_excerpt'] = $application[3];
 					}
-					if ( trim( $existing->post_content ) === trim( $legacy_content ) ) {
+					$legacy_contents = array_map(
+						static function ( $excerpt ) {
+							return '<!-- wp:paragraph --><p>' . esc_html( $excerpt ) . '</p><!-- /wp:paragraph -->';
+						},
+						$legacy_excerpts
+					);
+					if ( in_array( trim( $existing->post_content ), array_map( 'trim', $legacy_contents ), true ) ) {
 						$update['post_content'] = '<!-- wp:paragraph --><p>' . esc_html( $application[3] ) . '</p><!-- /wp:paragraph -->';
 					}
 

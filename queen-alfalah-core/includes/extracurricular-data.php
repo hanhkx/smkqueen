@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$qaf_extra_item = static function ( $slug, $title, $type, $intro, $benefits, $career, $coach = '', $location = '', $legacy_excerpt = '', $order = 0 ) {
+$qaf_extra_item = static function ( $slug, $title, $type, $intro, $benefits, $career, $coach = '', $location = '', $legacy_excerpt = '', $order = 0, $seed_key = '', $legacy_title = '', $legacy_slug = '' ) {
 	$benefit_html = '';
 	foreach ( $benefits as $benefit ) {
 		$benefit_html .= '<li>' . esc_html( $benefit ) . '</li>';
@@ -20,11 +20,13 @@ $qaf_extra_item = static function ( $slug, $title, $type, $intro, $benefits, $ca
 	}
 
 	return array(
-		'seed_key'      => 'extra:' . $slug,
-		'title'         => $title,
-		'slug'          => $slug,
-		'status'        => 'publish',
-		'menu_order'    => $order,
+		'seed_key'       => $seed_key ? $seed_key : 'extra:' . $slug,
+		'title'          => $title,
+		'slug'           => $slug,
+		'legacy_title'   => $legacy_title,
+		'legacy_slug'    => $legacy_slug,
+		'status'         => 'publish',
+		'menu_order'     => $order,
 		'legacy_excerpt' => $legacy_excerpt,
 		'excerpt'       => $intro,
 		'content'       => '<p>' . esc_html( $intro ) . '</p><h2>Yang Dipelajari</h2><ul>' . $benefit_html . '</ul><h2>Bekal untuk Masa Depan</h2><ul>' . $career_html . '</ul><p>Kegiatan ini membantu membangun portofolio pengalaman dan keterampilan yang dapat terus dikembangkan. Keikutsertaan tidak merupakan jaminan pekerjaan atau sertifikasi tertentu.</p>',
@@ -41,7 +43,7 @@ $qaf_extra_item = static function ( $slug, $title, $type, $intro, $benefits, $ca
 };
 
 return array(
-	'version' => '1.0.0',
+	'version' => '1.1.0',
 	'items'   => array(
 		$qaf_extra_item(
 			'pramuka',
@@ -66,26 +68,30 @@ return array(
 			1
 		),
 		$qaf_extra_item(
-			'broadcasting',
-			'Broadcasting',
+			'jurnalistik',
+			'Jurnalistik',
 			'Kreativitas',
-			'Ruang praktik produksi konten audiovisual, dokumentasi, penyiaran, dan komunikasi media dari tahap perencanaan hingga publikasi.',
+			'Ekstrakurikuler Jurnalistik SMK Queen Al-Falah mengembangkan kemampuan peliputan, wawancara, penulisan berita, fotografi, video, penyuntingan, SEO, dan etika publikasi.',
 			array(
-				'Perencanaan naskah, rundown, dan alur produksi',
-				'Dasar kamera, audio, pencahayaan, serta penyutradaraan',
-				'Presentasi, wawancara, dan komunikasi di depan kamera',
-				'Editing, manajemen berkas, hak cipta, dan etika publikasi',
+				'Menemukan ide, menentukan sudut pandang, dan menyusun rencana liputan',
+				'Teknik wawancara, observasi, pencatatan data, dan verifikasi fakta',
+				'Penulisan berita, artikel, feature, esai, serta caption media sosial',
+				'Fotografi dan video jurnalistik, penyuntingan, tata letak, dan dasar SEO',
+				'Etika media, hak cipta, privasi, serta penggunaan sumber yang bertanggung jawab',
 			),
 			array(
-				'Relevan bagi pekerjaan produksi video, dokumentasi, media sosial, dan penyiaran',
-				'Melatih kerja dengan tenggat, pembagian peran, dan standar kualitas',
-				'Membantu membangun showreel atau portofolio karya audiovisual',
-				'Menguatkan komunikasi profesional dan literasi media di berbagai profesi',
+				'Relevan untuk bidang jurnalistik, penulisan konten, penyuntingan, humas, dokumentasi, dan pengelolaan media sosial',
+				'Melatih komunikasi profesional, berpikir kritis, kerja tim redaksi, dan ketepatan waktu',
+				'Membantu siswa membangun portofolio artikel, foto, video, dan publikasi digital',
+				'Menguatkan kemampuan literasi media yang berguna dalam pendidikan lanjut maupun berbagai bidang pekerjaan',
 			),
-			'Haniful Khalid, S.T.; Garina Rahmi Rahmani, S.Pd.',
+			'Garina Rahmi Rahmani, S.Pd.; Nurul Hidayah, S.Sos.',
 			'Gedung Kebanan',
 			'Ruang belajar produksi konten, penyiaran, dokumentasi, dan komunikasi media.',
-			2
+			2,
+			'extra:broadcasting',
+			'Broadcasting',
+			'broadcasting'
 		),
 		$qaf_extra_item(
 			'futsal',

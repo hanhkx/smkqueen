@@ -680,8 +680,9 @@ final class QAF_Core_Instagram_Gallery {
 			update_post_meta( $post_id, '_qaf_gallery_embed_behavior', 'click' );
 			$changed = true;
 		}
-		if ( $date && ( ! metadata_exists( 'post', $post_id, '_qaf_album_date' ) || '' === get_post_meta( $post_id, '_qaf_album_date', true ) ) ) {
-			update_post_meta( $post_id, '_qaf_album_date', $date->format( 'Y-m-d' ) );
+		// A source publication date is not evidence of the date of the activity.
+		if ( $date && ( ! metadata_exists( 'post', $post_id, '_qaf_instagram_published_date' ) || '' === get_post_meta( $post_id, '_qaf_instagram_published_date', true ) ) ) {
+			update_post_meta( $post_id, '_qaf_instagram_published_date', $date->format( 'Y-m-d' ) );
 			$changed = true;
 		}
 		if ( is_array( self::$canonical_url_index ) ) {

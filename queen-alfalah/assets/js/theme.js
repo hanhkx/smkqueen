@@ -11,7 +11,7 @@
   document.documentElement.classList.add('js-enabled');
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const desktopNavigation = window.matchMedia('(min-width: 48rem)');
+  const desktopNavigation = window.matchMedia('(min-width: 1024px)');
   const strings = Object.assign(
     {
       expand: 'Buka submenu',
@@ -57,7 +57,10 @@
 
   function initNavigation() {
     const toggle = document.querySelector('.menu-toggle');
+    const dockToggle = document.querySelector('[data-mobile-nav-toggle]');
+    const navigationToggles = [toggle, dockToggle].filter(Boolean);
     const navigation = document.querySelector('.site-nav');
+    let lastTrigger = toggle || dockToggle || null;
 
     if (!navigation) {
       return;
@@ -158,12 +161,10 @@
     });
 
     const setMenuState = (isOpen, restoreFocus = false) => {
-      if (!toggle) {
-        return;
-      }
-
-      toggle.setAttribute('aria-expanded', String(isOpen));
-      toggle.setAttribute('aria-label', isOpen ? strings.menuClose : strings.menuOpen);
+      navigationToggles.forEach((navigationToggle) => {
+        navigationToggle.setAttribute('aria-expanded', String(isOpen));
+        navigationToggle.setAttribute('aria-label', isOpen ? strings.menuClose : strings.menuOpen);
+      });
       navigation.classList.toggle('is-open', isOpen);
       document.body.classList.toggle('nav-open', isOpen && !desktopNavigation.matches);
 
@@ -177,27 +178,31 @@
         closeAllSubmenus();
       }
 
-      if (restoreFocus) {
-        toggle.focus();
+      if (restoreFocus && lastTrigger) {
+        lastTrigger.focus();
       }
     };
 
-    if (toggle) {
-      toggle.setAttribute('aria-controls', navigation.id);
-      toggle.setAttribute('aria-expanded', 'false');
-      setMenuState(false);
+    if (navigationToggles.length) {
+      navigationToggles.forEach((navigationToggle) => {
+        navigationToggle.setAttribute('aria-controls', navigation.id);
+        navigationToggle.setAttribute('aria-expanded', 'false');
 
-      toggle.addEventListener('click', () => {
-        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-        setMenuState(!isOpen);
+        navigationToggle.addEventListener('click', () => {
+          const isOpen = navigationToggle.getAttribute('aria-expanded') === 'true';
+          lastTrigger = navigationToggle;
+          setMenuState(!isOpen);
 
-        if (!isOpen) {
-          const firstLink = navigation.querySelector('a, button');
-          if (firstLink) {
-            window.setTimeout(() => firstLink.focus(), 30);
+          if (!isOpen) {
+            const firstLink = navigation.querySelector('a, button');
+            if (firstLink) {
+              window.setTimeout(() => firstLink.focus(), 30);
+            }
           }
-        }
+        });
       });
+
+      setMenuState(false);
     }
 
     navigation.addEventListener('click', (event) => {
@@ -217,11 +222,11 @@
 
     document.addEventListener('click', (event) => {
       if (!desktopNavigation.matches) {
-        const clickedToggle = toggle && toggle.contains(event.target);
+        const clickedToggle = navigationToggles.some((navigationToggle) => navigationToggle.contains(event.target));
 
         if (
-          toggle &&
-          toggle.getAttribute('aria-expanded') === 'true' &&
+          navigationToggles.length &&
+          navigation.classList.contains('is-open') &&
           !navigation.contains(event.target) &&
           !clickedToggle
         ) {
@@ -264,7 +269,7 @@
         return;
       }
 
-      if (toggle && toggle.getAttribute('aria-expanded') === 'true') {
+      if (navigation.classList.contains('is-open')) {
         setMenuState(false, true);
       }
     });
@@ -275,10 +280,10 @@
         navigation.classList.remove('is-open');
         navigation.removeAttribute('aria-hidden');
 
-        if (toggle) {
-          toggle.setAttribute('aria-expanded', 'false');
-          toggle.setAttribute('aria-label', strings.menuOpen);
-        }
+        navigationToggles.forEach((navigationToggle) => {
+          navigationToggle.setAttribute('aria-expanded', 'false');
+          navigationToggle.setAttribute('aria-label', strings.menuOpen);
+        });
       } else {
         setMenuState(false);
       }

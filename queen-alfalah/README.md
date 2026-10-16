@@ -2,6 +2,36 @@
 
 Queen Al-Falah adalah tema WordPress classic/hybrid untuk situs resmi SMK QUEEN AL-FALAH. Tema ini siap digunakan bersama Gutenberg, responsif, aksesibel, dan tidak bergantung pada page builder, framework CSS/JavaScript, atau font eksternal. Paket lengkap menyertakan plugin pendamping **Queen Al-Falah Core** untuk model konten sekolah dan penyiapan demo sekali klik; pemisahan ini menjaga konten tetap tersedia ketika tema diganti.
 
+## Optimasi hero, aksesibilitas, dan SEO (1.11.0)
+
+Customizer menyediakan pilihan **Video background landing page (MP4/WebM)** sebagai pengganti GIF berukuran besar. Saat video dipilih, tema tidak memuat latar gambar/GIF, hanya melakukan preload metadata, dan menyembunyikan animasi untuk pengguna dengan preferensi pengurangan gerak. Tema juga menyediakan meta description fallback ketika plugin SEO tidak aktif serta memperbaiki kontras elemen hasil audit Lighthouse Oktober.
+
+## Aplikasi aktif dan lowongan beranda (1.10.1)
+
+Beranda dan halaman `/aplikasi/` hanya menampilkan entri **Pusat Aplikasi** dengan **Status Aplikasi = Aktif** serta URL HTTP/HTTPS lengkap. Administrator dapat menyembunyikan kartu sementara dengan memilih **Pemeliharaan** atau **Nonaktif**, lalu mengatur susunannya dari **Atribut → Urutan** tanpa menghapus data.
+
+Bagian **Lowongan Kerja Terbaru** tampil tepat setelah **Jalur Pengembangan Karier**. Tampilan, judul, deskripsi, dan jumlah 3–8 kartu dapat diatur melalui **Tampilan → Sesuaikan → Beranda & Statistik**. Lowongan lama tidak dihapus dan tetap tersedia di arsip Bursa Kerja; entri yang melewati batas lamaran tidak dipromosikan di Beranda.
+
+## Pengalaman artikel standar (1.9.2)
+
+Semua detail **Berita**, **Galeri**, **Prestasi**, dan **Karya Siswa** otomatis memperoleh ringkasan pembuka, CTA yang sesuai jenis konten, serta hingga tiga rekomendasi bacaan sejenis. Narasi, fakta, tanggal, media, kredit, dan tautan sumber yang telah tersimpan tidak ditimpa. Jika editor menulis Excerpt/Kutipan manual, teks tersebut menjadi ringkasan; bila kosong, tema menampilkan pembuka konservatif berdasarkan judul dan jenis konten. Pola yang sama langsung berlaku pada postingan baru.
+
+## Poster video Galeri (1.9.1)
+
+Video lokal pada detail Galeri otomatis memakai gambar unggulan sebagai poster pemutar. Sampul tetap terlihat sebelum pengunjung menekan tombol putar, sedangkan video, caption, tanggal album, dan tautan sumber tidak diubah.
+
+## Navigasi responsif (1.9.0)
+
+Pada ponsel dan tablet hingga lebar 1023 piksel, lima akses utama dipindahkan ke navigasi bawah bergaya aplikasi: **Beranda**, **Berita**, **Aplikasi**, **PPDB**, dan **Menu**. Tombol Menu membuka navigasi lengkap yang sama dengan versi desktop. Navigasi bawah mendukung area aman perangkat, penanda halaman aktif, target sentuh yang lega, serta otomatis memberi ruang pada isi halaman dan tombol mengambang agar tidak saling menutupi. Mulai lebar 1024 piksel, tata letak desktop tetap digunakan dengan penanda menu aktif dan fokus keyboard yang lebih jelas.
+
+## Tombol berbagi postingan (1.7.4)
+
+Panel **Bagikan Cerita Queen** otomatis muncul setelah isi berita dan semua tipe postingan publik sekolah, termasuk prestasi, galeri, pengumuman, program, guru/tendik, dan sarana prasarana. Postingan lama tidak perlu disunting ulang. Panel menggunakan ikon lokal WhatsApp, Facebook, Telegram, X, tombol Salin tautan, serta Bagikan lainnya pada perangkat yang mendukungnya. Tautan yang dibagikan selalu permalink postingan, bukan alamat pratinjau.
+
+Berbagi hanya berjalan setelah tindakan pengunjung; tidak memasang SDK/pelacak atau memposting otomatis ke akun sekolah. Draf, privat, terjadwal, pratinjau, dan postingan berpassword tidak menampilkan panel ini. Jika salin otomatis ditolak browser, kolom tautan muncul untuk disalin manual. Akun resmi Instagram/Facebook/YouTube/TikTok tetap berada pada panel **Ikuti Media Sosial Resmi** yang terpisah.
+
+Rujukan implementasi: [Web Intents X](https://docs.x.com/x-for-websites/web-intents/overview) dan [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share). Pilihan aplikasi pada menu perangkat bergantung pada dukungan browser dan aplikasi yang terpasang.
+
 ## Data sekolah yang disertakan
 
 Tema menyertakan data awal berikut:
@@ -33,9 +63,9 @@ Lakukan uji staging sebelum pembaruan WordPress besar, PHP, plugin, tema, atau s
 
 1. Masuk ke Dasbor WordPress.
 2. Buka **Tampilan > Tema > Tambah Tema > Unggah Tema**.
-3. Pilih berkas **queen-alfalah-1.6.3.zip**.
+3. Pilih berkas **queen-alfalah-1.11.0.zip**.
 4. Klik **Pasang Sekarang**, lalu **Aktifkan**.
-5. Buka **Plugin > Tambah Plugin > Unggah Plugin**, unggah **queen-alfalah-core-1.11.0.zip**, lalu aktifkan.
+5. Buka **Plugin > Tambah Plugin > Unggah Plugin**, unggah **queen-alfalah-core-1.26.1.zip**, lalu aktifkan.
 6. Lanjutkan ke penyiapan awal di bawah.
 
 ## Instalasi melalui folder
@@ -118,6 +148,8 @@ Buka **Tampilan > Sesuaikan** dan tinjau:
 - **Media Sosial**: URL akun resmi sekolah.
 
 Saat plugin pendamping aktif, ubah data portabel seperti nama legal, NPSN, alamat, telepon, email, visi, dan URL pendaftaran melalui **Sekolah > Pengaturan**. Customizer tetap menangani tampilan, hero, gambar, warna, dan statistik beranda.
+
+URL Instagram, Facebook, YouTube, dan TikTok yang sudah diisi otomatis menjadi tombol akun resmi pada footer, halaman Kontak, serta seluruh detail berita dan tipe konten publik sekolah—termasuk posting lama dan yang diterbitkan kemudian. Kanal yang belum memiliki URL resmi tidak akan ditampilkan. Tombol ini menuju akun sekolah; tombol **Bagikan** yang berada di dekatnya tetap digunakan untuk membagikan halaman yang sedang dibaca.
 
 ### Peta lokasi interaktif
 

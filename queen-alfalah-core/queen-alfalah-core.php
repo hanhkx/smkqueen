@@ -3,7 +3,7 @@
  * Plugin Name:       Queen Al-Falah Core
  * Plugin URI:        https://smkqueenalfalah.sch.id/
  * Description:       Model konten, pengaturan sekolah, dan alat penyiapan situs untuk SMK Queen Al-Falah.
- * Version:           1.11.0
+ * Version:           1.26.1
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            SMK Queen Al-Falah
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QAF_CORE_VERSION', '1.11.0' );
+define( 'QAF_CORE_VERSION', '1.26.1' );
 define( 'QAF_CORE_FILE', __FILE__ );
 define( 'QAF_CORE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QAF_CORE_URL', plugin_dir_url( __FILE__ ) );
@@ -29,8 +29,10 @@ require_once QAF_CORE_PATH . 'includes/class-qaf-core-meta.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-settings.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-admin.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-demo.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-teacher-evaluation.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-applications.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-media-center.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-waka-access.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-organization.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-staff-directory.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-achievements.php';
@@ -38,6 +40,16 @@ require_once QAF_CORE_PATH . 'includes/class-qaf-core-content-catalog.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-news-media.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-site-integrations.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-instagram-gallery.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-reel-archive.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-gallery-batch.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-gallery-dates.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-gallery-updates.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-student-works.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-journalism.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-vacancies.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-editorial-standardizer.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-webp-optimizer.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-october-audit.php';
 
 /**
  * Retrieve a school setting with a safe fallback.
@@ -71,8 +83,10 @@ final class QAF_Core {
 		QAF_Core_Meta::init();
 		QAF_Core_Admin::init();
 		QAF_Core_Demo::init();
+		QAF_Core_Teacher_Evaluation::init();
 		QAF_Core_Applications::init();
 		QAF_Core_Media_Center::init();
+		QAF_Core_Waka_Access::init();
 		QAF_Core_Organization::init();
 		QAF_Core_Staff_Directory::init();
 		QAF_Core_Achievements::init();
@@ -80,6 +94,16 @@ final class QAF_Core {
 		QAF_Core_News_Media::init();
 		QAF_Core_Site_Integrations::init();
 		QAF_Core_Instagram_Gallery::init();
+		QAF_Core_Reel_Archive::init();
+		QAF_Core_Gallery_Batch::init();
+		QAF_Core_Gallery_Dates::init();
+		QAF_Core_Gallery_Updates::init();
+		QAF_Core_Student_Works::init();
+		QAF_Core_Journalism::init();
+		QAF_Core_Vacancies::init();
+		QAF_Core_Editorial_Standardizer::init();
+		QAF_Core_WebP_Optimizer::init();
+		QAF_Core_October_Audit::init();
 	}
 
 	/**
@@ -91,13 +115,17 @@ final class QAF_Core {
 		QAF_Core_Settings::install_defaults();
 		QAF_Core_Post_Types::register_post_types();
 		QAF_Core_Post_Types::register_taxonomies();
+		QAF_Core_Teacher_Evaluation::activate();
 		QAF_Core_Media_Center::activate();
+		QAF_Core_Waka_Access::activate();
 		QAF_Core_Organization::activate();
 		QAF_Core_Staff_Directory::activate();
 		QAF_Core_Achievements::activate();
 		QAF_Core_Content_Catalog::activate();
 		QAF_Core_News_Media::activate();
 		QAF_Core_Instagram_Gallery::activate();
+		QAF_Core_Gallery_Updates::activate();
+		QAF_Core_Vacancies::activate();
 		flush_rewrite_rules();
 	}
 

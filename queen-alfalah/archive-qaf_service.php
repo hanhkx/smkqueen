@@ -8,15 +8,7 @@
 get_header();
 queen_alfalah_breadcrumbs();
 
-$applications = new WP_Query(
-	array(
-		'post_type'      => 'qaf_service',
-		'post_status'    => 'publish',
-		'posts_per_page' => -1,
-		'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
-		'no_found_rows'  => true,
-	)
-);
+$applications = new WP_Query( queen_alfalah_active_service_query_args( -1 ) );
 ?>
 
 <main id="main-content" class="site-main app-directory">
@@ -40,26 +32,22 @@ $applications = new WP_Query(
 					<?php while ( $applications->have_posts() ) : $applications->the_post(); ?>
 						<?php
 						$app_id      = get_the_ID();
+						if ( ! queen_alfalah_service_is_active( $app_id ) ) {
+							continue;
+						}
 						$app_url     = (string) queen_alfalah_meta( $app_id, 'external_url' );
 						$app_icon    = sanitize_key( queen_alfalah_meta( $app_id, 'icon_name', 'monitor' ) );
-						$app_status  = sanitize_key( queen_alfalah_meta( $app_id, 'service_status', 'active' ) );
 						$app_new_tab = (bool) queen_alfalah_meta( $app_id, 'open_new', true );
-						$app_active  = $app_url && 'active' === $app_status;
 						$app_excerpt = has_excerpt() ? get_the_excerpt() : wp_trim_words( wp_strip_all_tags( get_the_content() ), 22 );
-						$status_text = 'maintenance' === $app_status ? __( 'Pemeliharaan', 'queen-alfalah' ) : ( $app_active ? __( 'Aktif', 'queen-alfalah' ) : __( 'Belum tersedia', 'queen-alfalah' ) );
 						?>
-						<article class="application-card<?php echo $app_active ? '' : ' application-card--inactive'; ?>">
+						<article class="application-card">
 							<div class="application-card__top">
 								<span class="application-card__icon"><?php echo queen_alfalah_icon( $app_icon ); ?></span>
-								<span class="application-card__status application-card__status--<?php echo esc_attr( $app_active ? 'active' : $app_status ); ?>"><?php echo esc_html( $status_text ); ?></span>
+								<span class="application-card__status application-card__status--active"><?php esc_html_e( 'Aktif', 'queen-alfalah' ); ?></span>
 							</div>
 							<h2><?php the_title(); ?></h2>
 							<p><?php echo esc_html( $app_excerpt ); ?></p>
-							<?php if ( $app_active ) : ?>
-								<a class="button application-card__button" href="<?php echo esc_url( $app_url ); ?>"<?php echo $app_new_tab ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>><?php esc_html_e( 'Masuk Aplikasi', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( $app_new_tab ? 'external' : 'arrow-right' ); ?><?php if ( $app_new_tab ) : ?><span class="screen-reader-text"> <?php esc_html_e( '(tab baru)', 'queen-alfalah' ); ?></span><?php endif; ?></a>
-							<?php else : ?>
-								<span class="button application-card__button application-card__button--disabled" aria-disabled="true"><?php echo esc_html( $status_text ); ?></span>
-							<?php endif; ?>
+							<a class="button application-card__button" href="<?php echo esc_url( $app_url ); ?>"<?php echo $app_new_tab ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>><?php esc_html_e( 'Masuk Aplikasi', 'queen-alfalah' ); ?><?php echo queen_alfalah_icon( $app_new_tab ? 'external' : 'arrow-right' ); ?><?php if ( $app_new_tab ) : ?><span class="screen-reader-text"> <?php esc_html_e( '(tab baru)', 'queen-alfalah' ); ?></span><?php endif; ?></a>
 						</article>
 					<?php endwhile; ?>
 				</div>

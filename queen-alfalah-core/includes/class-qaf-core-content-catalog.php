@@ -187,6 +187,22 @@ final class QAF_Core_Content_Catalog {
 		}
 
 		$updates = array( 'ID' => $post_id );
+		if ( isset( $item['legacy_title'], $item['title'] ) ) {
+			$legacy_title = sanitize_text_field( $item['legacy_title'] );
+			$new_title    = sanitize_text_field( $item['title'] );
+			if ( trim( $post->post_title ) === trim( $legacy_title ) && trim( $post->post_title ) !== trim( $new_title ) ) {
+				$updates['post_title'] = $new_title;
+			}
+		}
+
+		if ( isset( $item['legacy_slug'], $item['slug'] ) ) {
+			$legacy_slug = sanitize_title( $item['legacy_slug'] );
+			$new_slug    = sanitize_title( $item['slug'] );
+			if ( $post->post_name === $legacy_slug && $post->post_name !== $new_slug ) {
+				$updates['post_name'] = $new_slug;
+			}
+		}
+
 		if ( isset( $item['legacy_excerpt'], $item['excerpt'] ) ) {
 			$legacy_excerpt = sanitize_textarea_field( $item['legacy_excerpt'] );
 			$new_excerpt    = sanitize_textarea_field( $item['excerpt'] );

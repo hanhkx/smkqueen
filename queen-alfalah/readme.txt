@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.6.3
+Stable tag: 1.11.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, blog, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready, block-styles, wide-blocks
@@ -25,7 +25,10 @@ Fitur utama:
 * Menampilkan detail terstruktur Sarana Prasarana, PKL & Mitra Industri, serta Ekstrakurikuler.
 * Memakai ilustrasi lokal sebagai fallback Ekstrakurikuler, sementara gambar unggulan administrator selalu diprioritaskan.
 * Galeri terpadu untuk media lokal dan URL kanonik Instagram, TikTok, Facebook, atau YouTube, dengan klik-untuk-muat sebagai perilaku bawaan.
+* Gambar unggulan Galeri lokal otomatis digunakan sebagai poster pemutar video agar sampul terlihat sebelum video diputar.
 * Menampilkan caption dan kredit gambar unggulan berita beserta tautan ke unggahan Instagram sumber.
+* Menampilkan tombol akun sosial resmi yang sudah dikonfigurasi pada setiap detail berita dan tipe konten publik, lama maupun baru.
+* Panel berbagi berikon WhatsApp, Facebook, Telegram, X, salin tautan, serta berbagi lewat aplikasi perangkat yang mendukung; otomatis untuk postingan publik lama maupun baru, tanpa pelacak eksternal.
 
 Data awal sekolah yang disertakan:
 
@@ -89,6 +92,36 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 1. Beranda sekolah dengan hero, akses cepat, program keahlian, informasi, dan statistik.
 
 == Changelog ==
+
+= 1.11.0 - 2026-10-16 =
+
+* Menambahkan background video MP4/WebM hero yang dapat diganti dari Customizer untuk menggantikan GIF berat.
+* Mencegah GIF ikut dimuat ketika video aktif, menggunakan preload metadata, dan menghormati preferensi pengurangan gerak.
+* Menambahkan meta description fallback serta meningkatkan kontras elemen yang terdeteksi audit Lighthouse Oktober.
+
+= 1.10.1 - 2026-10-07 =
+
+* Memindahkan Lowongan Kerja Terbaru tepat setelah Jalur Pengembangan Karier agar alur informasi karier lebih runtut.
+* Mempertahankan seluruh lowongan, filter kedaluwarsa, dan pengaturan Customizer yang sudah ada.
+
+= 1.10.0 - 2026-10-07 =
+
+* Menampilkan hanya kartu Pusat Aplikasi berstatus Aktif dengan URL HTTP/HTTPS lengkap pada Beranda dan halaman Aplikasi.
+* Menambahkan bagian Lowongan Kerja Terbaru di bawah Galeri dan sebelum footer tanpa menghapus lowongan lama.
+* Menambahkan kontrol Customizer untuk menampilkan bagian lowongan, mengubah judul/deskripsi, dan memilih jumlah 3–8 kartu.
+* Menyembunyikan lowongan yang batas lamarannya telah lewat dari promosi Beranda, tetapi tetap mempertahankannya di arsip Bursa Kerja.
+
+= 1.9.2 - 2026-10-03 =
+
+* Menambahkan ringkasan pembuka, CTA kontekstual, dan rekomendasi konten sejenis pada Berita, Galeri, Prestasi, dan Karya Siswa.
+* Pola editorial otomatis berlaku untuk postingan lama dan baru tanpa menimpa narasi, fakta, media, atau sumber yang tersimpan.
+* Mencakup poster gambar unggulan untuk pemutar video Galeri lokal.
+
+= 1.7.0 - 2026-09-05 =
+
+* Menambahkan tombol Instagram, Facebook, YouTube, dan TikTok resmi pada detail berita serta tipe konten publik sekolah.
+* Memakai pengaturan sosial yang sama dengan footer dan halaman Kontak serta tidak menampilkan kanal yang URL-nya kosong.
+* Menambahkan tata letak responsif, label aksesibel, perlindungan tab eksternal, dan dukungan pengurangan gerak.
 
 = 1.6.3 - 2026-08-30 =
 
@@ -156,6 +189,18 @@ Gunakan foto yang memiliki izin, hindari menampilkan NIK, NISN, alamat pribadi, 
 * Menambahkan tata letak responsif, aksesibel, dan bebas dependensi pihak ketiga.
 
 == Upgrade Notice ==
+
+= 1.10.1 =
+
+Menempatkan Lowongan Kerja Terbaru langsung di bawah Jalur Pengembangan Karier tanpa mengubah data lowongan.
+
+= 1.10.0 =
+
+Menambahkan penyaringan aplikasi aktif dan bagian Lowongan Kerja Terbaru yang mudah disesuaikan pada Beranda.
+
+= 1.7.0 =
+
+Menambahkan tombol akun media sosial resmi secara otomatis pada semua detail posting lama dan baru.
 
 = 1.6.3 =
 

@@ -27,6 +27,7 @@ queen_alfalah_breadcrumbs();
 			<p class="eyebrow"><?php esc_html_e( 'Dokumentasi Sekolah Terpadu', 'queen-alfalah' ); ?></p>
 			<h1><?php esc_html_e( 'Galeri SMK Queen Al-Falah', 'queen-alfalah' ); ?></h1>
 			<p><?php esc_html_e( 'Jelajahi foto dan video milik sekolah serta dokumentasi publik dari Instagram, TikTok, Facebook, dan YouTube.', 'queen-alfalah' ); ?></p>
+			<p><?php esc_html_e( 'Diurutkan berdasarkan tanggal album, dari terbaru ke terlama. Dokumentasi yang tanggal kegiatannya belum diketahui berada di bagian belakang.', 'queen-alfalah' ); ?></p>
 			<nav class="gallery-source-filters" aria-label="<?php esc_attr_e( 'Saring galeri berdasarkan sumber', 'queen-alfalah' ); ?>">
 				<?php foreach ( $queen_gallery_filters as $queen_source_key => $queen_source_label ) : ?>
 					<?php
