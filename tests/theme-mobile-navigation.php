@@ -30,7 +30,7 @@ $assert( false !== strpos( $styles, '@media (min-width: 1024px)' ), 'Desktop-onl
 $assert( false !== strpos( $scripts, "matchMedia('(min-width: 1024px)')" ), 'JavaScript breakpoint does not match the CSS desktop breakpoint.' );
 $assert( false !== strpos( $scripts, "querySelector('[data-mobile-nav-toggle]')" ), 'Dock controller is not wired to the menu drawer.' );
 $assert( false !== strpos( $template, "'home'" ) && false !== strpos( $template, "'newspaper'" ), 'Dock SVG icons are missing.' );
-$assert( false !== strpos( $functions, "QUEEN_ALFALAH_VERSION', '1.11.0" ), 'Theme asset version was not bumped.' );
+$assert( false !== strpos( $functions, "QUEEN_ALFALAH_VERSION', '1.12.0" ), 'Theme asset version was not bumped.' );
 
 if ( $failures ) {
 	foreach ( $failures as $failure ) {

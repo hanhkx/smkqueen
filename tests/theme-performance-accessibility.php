@@ -24,6 +24,7 @@ $assert( (bool) preg_match( '/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\
 $assert( false !== strpos( $styles, '.announcement-strip' ) && false !== strpos( $styles, 'color: var(--qa-emerald-950);' ), 'The announcement strip needs high-contrast text.' );
 $assert( false !== strpos( $styles, '.journey-card .eyebrow' ) && false !== strpos( $styles, 'color: var(--qa-emerald-800);' ), 'Journey eyebrows need accessible contrast.' );
 $assert( false !== strpos( $styles, '.site-footer .widget-title' ) && false !== strpos( $styles, 'color: var(--qa-gold-200);' ), 'Footer headings need accessible contrast.' );
+$assert( false !== strpos( $functions, "define( 'QUEEN_ALFALAH_VERSION', '1.12.0' );" ), 'The enqueued asset version must match theme release 1.12.0.' );
 $assert( false !== strpos( $functions, 'function queen_alfalah_meta_description()' ), 'A fallback meta description function is missing.' );
 $assert( false !== strpos( $functions, "add_action( 'wp_head', 'queen_alfalah_meta_description', 2 )" ), 'The fallback meta description is not connected to wp_head.' );
 
