@@ -2,7 +2,7 @@
 
 Companion plugin resmi untuk tema **Queen Al-Falah**. Plugin memisahkan model konten dan data sekolah dari lapisan tampilan, sehingga program keahlian, pengumuman, agenda, dan data kelembagaan tetap tersedia ketika tema diganti.
 
-Versi: **1.26.1**
+Versi: **1.27.0**
 WordPress minimum: **6.2**  
 PHP minimum: **7.4**  
 Lisensi: **GPL-2.0-or-later**
@@ -306,6 +306,13 @@ find queen-alfalah-core -name '*.php' -exec php -l {} \;
 Alat pengembangan opsional `tools/build-partner-images.mjs` memakai Node.js ≥20.9 dan Sharp yang versinya dikunci di `tools/package-lock.json`. Ikuti manifest sumber dan instruksi di [`tools/PARTNER-IMAGE-SOURCES.md`](../tools/PARTNER-IMAGE-SOURCES.md); dependency alat tidak dimasukkan ke ZIP plugin.
 
 ## Changelog
+
+### 1.27.0 — 2026-11-14
+
+- Menambahkan direktori kontak per unit, FAQ, dan formulir bantuan minim data tanpa penyimpanan isi pesan di basis data WordPress.
+- Menambahkan paket sumber resmi 28 Oktober–10 November 2026: 10 Berita, 5 Prestasi/Partisipasi, 1 Karya Siswa, dan 10 Galeri.
+- Menyertakan thumbnail WebP persegi dari foto Instagram resmi, alt text, kredit, tanggal, URL sumber, dan deduplikasi non-destruktif.
+- Menjaga partisipasi tetap berlabel partisipasi ketika sumber tidak menyatakan peringkat atau juara.
 
 ### 1.26.1 — 2026-10-16
 

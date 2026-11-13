@@ -3,7 +3,7 @@
  * Plugin Name:       Queen Al-Falah Core
  * Plugin URI:        https://smkqueenalfalah.sch.id/
  * Description:       Model konten, pengaturan sekolah, dan alat penyiapan situs untuk SMK Queen Al-Falah.
- * Version:           1.26.1
+ * Version:           1.27.0
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            SMK Queen Al-Falah
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QAF_CORE_VERSION', '1.26.1' );
+define( 'QAF_CORE_VERSION', '1.27.0' );
 define( 'QAF_CORE_FILE', __FILE__ );
 define( 'QAF_CORE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QAF_CORE_URL', plugin_dir_url( __FILE__ ) );
@@ -27,6 +27,7 @@ define( 'QAF_CORE_URL', plugin_dir_url( __FILE__ ) );
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-post-types.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-meta.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-settings.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-contact-help.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-admin.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-demo.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-teacher-evaluation.php';
@@ -45,6 +46,7 @@ require_once QAF_CORE_PATH . 'includes/class-qaf-core-gallery-batch.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-gallery-dates.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-gallery-updates.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-student-works.php';
+require_once QAF_CORE_PATH . 'includes/class-qaf-core-student-work-updates.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-journalism.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-vacancies.php';
 require_once QAF_CORE_PATH . 'includes/class-qaf-core-editorial-standardizer.php';
@@ -79,6 +81,7 @@ final class QAF_Core {
 		);
 
 		QAF_Core_Settings::init();
+		QAF_Core_Contact_Help::init();
 		QAF_Core_Post_Types::init();
 		QAF_Core_Meta::init();
 		QAF_Core_Admin::init();
@@ -99,6 +102,7 @@ final class QAF_Core {
 		QAF_Core_Gallery_Dates::init();
 		QAF_Core_Gallery_Updates::init();
 		QAF_Core_Student_Works::init();
+		QAF_Core_Student_Work_Updates::init();
 		QAF_Core_Journalism::init();
 		QAF_Core_Vacancies::init();
 		QAF_Core_Editorial_Standardizer::init();
@@ -113,6 +117,7 @@ final class QAF_Core {
 	 */
 	public static function activate() {
 		QAF_Core_Settings::install_defaults();
+		QAF_Core_Contact_Help::activate();
 		QAF_Core_Post_Types::register_post_types();
 		QAF_Core_Post_Types::register_taxonomies();
 		QAF_Core_Teacher_Evaluation::activate();
@@ -125,6 +130,7 @@ final class QAF_Core {
 		QAF_Core_News_Media::activate();
 		QAF_Core_Instagram_Gallery::activate();
 		QAF_Core_Gallery_Updates::activate();
+		QAF_Core_Student_Work_Updates::activate();
 		QAF_Core_Vacancies::activate();
 		flush_rewrite_rules();
 	}

@@ -57,9 +57,9 @@ $expected_september = array(
 );
 
 $assert( is_array( $data ), 'News-media data must return an array.' );
-$assert( isset( $data['version'] ) && '1.5.1' === $data['version'], 'News-media data version must be 1.5.1.' );
+$assert( isset( $data['version'] ) && '1.6.0' === $data['version'], 'News-media data version must be 1.6.0.' );
 $assert( isset( $data['items'] ) && is_array( $data['items'] ), 'News-media items must be present.' );
-$assert( 15 === count( $data['items'] ), 'The existing records and three verified October news records must all remain present.' );
+$assert( 25 === count( $data['items'] ), 'The existing records and ten verified October-November news records must all remain present.' );
 $assert( false !== $image_dir, 'News image directory must exist.' );
 
 $source_ids      = array();
@@ -137,4 +137,17 @@ $assert( '2026-10-16 10:07:03' === $happy['post']['date'], 'The Yuk Happy articl
 $assert( false !== strpos( $happy['post']['content'], 'tanggal unggahan sumber' ), 'The article must identify its date as the source upload date.' );
 $assert( false === stripos( $happy['post']['content'], 'juara' ), 'The lifestyle Reel must not be presented as an achievement.' );
 
-fwrite( STDOUT, "PASS: 15 news-media records preserve earlier work and add the verified October articles with official Instagram images.\n" );
+$november_sources = array(
+	'instagram:DfBlV-6kSWN', 'instagram:DfBnLuFkXgH', 'instagram:DfBxFQcEZ9R',
+	'instagram:DfHuBoKCSjy', 'instagram:DfbQ8MPCUt7', 'instagram:DfZCXUCCUR4',
+	'instagram:DfcL9QKicuU', 'instagram:DfcRyYKCWW0', 'instagram:DfgEdJwSm4A',
+	'instagram:Dfj3gSvicje',
+);
+foreach ( $november_sources as $source_id ) {
+	$assert( isset( $items_by_source[ $source_id ]['post'] ), "November news {$source_id} must include a publishable post payload." );
+	$assert( 'publish' === $items_by_source[ $source_id ]['post']['status'], "November news {$source_id} must be approved for publication." );
+}
+$assert( false !== stripos( $items_by_source['instagram:DfBnLuFkXgH']['post']['content'], 'partisipasi' ), 'FTKI must be labelled as participation.' );
+$assert( false !== stripos( $items_by_source['instagram:DfcRyYKCWW0']['post']['content'], 'tidak mencantumkan hasil juara' ), 'Totebag article must not claim an unverified award.' );
+
+fwrite( STDOUT, "PASS: 25 news-media records preserve earlier work and add ten verified October-November articles with official Instagram images.\n" );

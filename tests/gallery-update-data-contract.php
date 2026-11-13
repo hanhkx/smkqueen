@@ -16,8 +16,8 @@ $assert = static function ( $condition, $message ) {
 };
 
 $assert( is_array( $data ), 'Gallery update data must return an array.' );
-$assert( '1.1.1' === $data['version'], 'Gallery update data version must be 1.1.1.' );
-$assert( isset( $data['items'] ) && 2 === count( $data['items'] ), 'The verified YouTube and October Instagram gallery items are expected.' );
+$assert( '1.2.0' === $data['version'], 'Gallery update data version must be 1.2.0.' );
+$assert( isset( $data['items'] ) && 12 === count( $data['items'] ), 'The verified YouTube and October-November Instagram gallery items are expected.' );
 $assert( false !== $image_dir, 'Gallery image directory must exist.' );
 
 $items_by_source = array();
@@ -45,6 +45,23 @@ $assert( '2026-10-16' === $october['date'], 'The October album date must use the
 $assert( 'instagram' === $october['source'] && 'video' === $october['media_type'], 'The October item must render as an Instagram video.' );
 $assert( 'publish' === $october['status'], 'The verified October gallery item is approved for publication.' );
 
+$november_sources = array(
+	'instagram:DfBlV-6kSWN:pemilu-osis-2026',
+	'instagram:DfBnLuFkXgH:olimpiade-ftki-2026',
+	'instagram:DfBxFQcEZ9R:digitalisasi-pembelajaran',
+	'instagram:DfHuBoKCSjy:kombel-mgmps',
+	'instagram:DfbQ8MPCUt7:cek-kesehatan',
+	'instagram:DfZCXUCCUR4:tka-2026',
+	'instagram:DfcL9QKicuU:prestasi-gic-2026',
+	'instagram:DfcRyYKCWW0:totebag-painting',
+	'instagram:DfgEdJwSm4A:badminton-cup',
+	'instagram:Dfj3gSvicje:finalis-akademik',
+);
+foreach ( $november_sources as $source_id ) {
+	$assert( isset( $items_by_source[ $source_id ] ), "Gallery source {$source_id} is missing." );
+	$assert( 'publish' === $items_by_source[ $source_id ]['status'], "Gallery source {$source_id} must publish." );
+}
+
 $assert( false !== $importer, 'Gallery importer source must be readable.' );
 $assert( false !== strpos( $importer, 'admin_init' ), 'Gallery updates must run only from an administrator request.' );
 $assert( false !== strpos( $importer, 'add_option( self::LOCK_OPTION' ), 'Gallery importer must claim an atomic lock.' );
@@ -53,4 +70,4 @@ $assert( false !== strpos( $importer, "'post_status'    => " . '$statuses' ), 'G
 $assert( false !== strpos( $importer, 'set_post_thumbnail' ), 'Gallery importer must set the verified bundled thumbnail.' );
 $assert( false !== strpos( $importer, 'publish_due_record' ), 'Same-day verified gallery records must not remain scheduled because of server-clock differences.' );
 
-fwrite( STDOUT, "PASS: verified YouTube and October Instagram gallery updates are portable, dated, illustrated, and non-destructive.\n" );
+fwrite( STDOUT, "PASS: verified YouTube and October-November Instagram gallery updates are portable, dated, illustrated, and non-destructive.\n" );

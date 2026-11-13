@@ -30,3 +30,9 @@ wp-content/upgrade/
 *.sqlite
 *.bak
 
+# Temporary channel-audit downloads (source URLs remain in versioned data files)
+research/instagram-2026-11/
+tmp-instagram-profile.html
+yt-known.json
+yt-latest.jsonl
+

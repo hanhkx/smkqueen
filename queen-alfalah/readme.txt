@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.11.0
+Stable tag: 1.12.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, blog, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready, block-styles, wide-blocks
@@ -29,6 +29,7 @@ Fitur utama:
 * Menampilkan caption dan kredit gambar unggulan berita beserta tautan ke unggahan Instagram sumber.
 * Menampilkan tombol akun sosial resmi yang sudah dikonfigurasi pada setiap detail berita dan tipe konten publik, lama maupun baru.
 * Panel berbagi berikon WhatsApp, Facebook, Telegram, X, salin tautan, serta berbagi lewat aplikasi perangkat yang mendukung; otomatis untuk postingan publik lama maupun baru, tanpa pelacak eksternal.
+* Direktori kontak per unit, FAQ, dan formulir bantuan minim data yang tidak menyimpan isi pesan di basis data website ketika Core 1.27.0 aktif.
 
 Data awal sekolah yang disertakan:
 

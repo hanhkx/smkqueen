@@ -4,7 +4,7 @@ Theme URI: https://smkqueenalfalah.sch.id/
 Author: SMK Queen Al-Falah
 Author URI: https://smkqueenalfalah.sch.id/
 Description: Tema sekolah modern untuk SMK Queen Al-Falah dengan tampilan emerald, emas, dan krem; responsif, ramah aksesibilitas, serta siap untuk berita, program keahlian, agenda, galeri, dan informasi sekolah.
-Version: 1.11.0
+Version: 1.12.0
 Requires at least: 6.2
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -3774,6 +3774,165 @@ body:not(.has-sticky-header) .site-header {
   min-height: 0;
 }
 
+.qaf-contact-directory,
+.qaf-contact-faq-section,
+.qaf-contact-help {
+  margin-top: clamp(2.25rem, 5vw, 4rem);
+}
+
+.qaf-contact-directory > p,
+.qaf-contact-help > p {
+  max-width: 52rem;
+}
+
+.qaf-contact-units {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.qaf-contact-unit {
+  display: flex;
+  min-height: 13rem;
+  flex-direction: column;
+  padding: 1.35rem;
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius-lg);
+  background: #fff;
+  box-shadow: var(--qa-shadow-sm);
+}
+
+.qaf-contact-unit h3 {
+  margin-bottom: 0.55rem;
+  color: var(--qa-emerald-800);
+  font-size: 1.1rem;
+}
+
+.qaf-contact-unit p {
+  margin-bottom: 1rem;
+}
+
+.qaf-contact-unit__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.qaf-contact-unit__actions a {
+  min-height: 2.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--qa-emerald-700);
+  border-radius: var(--qa-radius-md);
+  color: var(--qa-emerald-800);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.qaf-contact-unit__actions a:hover,
+.qaf-contact-unit__actions a:focus-visible {
+  background: var(--qa-emerald-800);
+  color: #fff;
+}
+
+.qaf-contact-faq {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.qaf-contact-faq details {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius-md);
+  background: #fff;
+}
+
+.qaf-contact-faq summary {
+  cursor: pointer;
+  color: var(--qa-emerald-900);
+  font-weight: 800;
+}
+
+.qaf-contact-faq details p {
+  margin: 0.8rem 0 0;
+}
+
+.qaf-help-form {
+  max-width: 58rem;
+  margin-top: 1.25rem;
+  padding: clamp(1.1rem, 3vw, 2rem);
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius-lg);
+  background: #fff;
+  box-shadow: var(--qa-shadow-sm);
+}
+
+.qaf-help-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1rem;
+}
+
+.qaf-help-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--qa-emerald-950);
+  font-weight: 750;
+}
+
+.qaf-help-form input,
+.qaf-help-form select,
+.qaf-help-form textarea {
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #778b84;
+  border-radius: var(--qa-radius-sm);
+  background: #fff;
+  color: var(--qa-ink);
+  font: inherit;
+}
+
+.qaf-help-form textarea {
+  min-height: 10rem;
+  resize: vertical;
+}
+
+.qaf-help-form__privacy,
+.qaf-form-optional {
+  color: var(--qa-muted);
+  font-size: 0.9rem;
+}
+
+.qaf-help-form__trap {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  white-space: nowrap !important;
+}
+
+.qaf-help-status {
+  max-width: 58rem;
+  margin: 1rem 0;
+  padding: 0.9rem 1rem;
+  border-left: 0.3rem solid var(--qa-emerald-700);
+  border-radius: var(--qa-radius-sm);
+  background: #eaf7f1;
+}
+
+.qaf-help-status--error {
+  border-left-color: #a33b2e;
+  background: #fff0ed;
+}
+
+.qaf-help-status p {
+  margin: 0;
+}
+
 @media (max-width: 640px) {
   .school-map__frame,
   .school-map__frame iframe {
@@ -3788,6 +3947,10 @@ body:not(.has-sticky-header) .site-header {
   .school-map--contact .school-map__frame,
   .school-map--contact .school-map__frame iframe {
     height: 20rem;
+  }
+
+  .qaf-help-form__grid {
+    grid-template-columns: 1fr;
   }
 }
 

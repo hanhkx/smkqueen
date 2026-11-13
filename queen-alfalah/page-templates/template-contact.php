@@ -3,9 +3,8 @@
  * Template Name: Kontak Sekolah
  * Template Post Type: page
  *
- * Contact information and verified outbound channels. This template does not
- * process form submissions; a dedicated, maintained plugin should be used if
- * the school later needs a contact form.
+ * Contact information, verified outbound channels, and the optional
+ * privacy-conscious help form supplied by Queen Al-Falah Core.
  *
  * @package Queen_AlFalah
  */
@@ -80,8 +79,27 @@ $queen_socials    = queen_alfalah_social_links();
 					<?php queen_alfalah_school_map( 'contact' ); ?>
 				</section>
 
+				<?php if ( class_exists( 'QAF_Core_Contact_Help' ) ) : ?>
+					<section class="qaf-contact-directory" aria-labelledby="contact-unit-title">
+						<h2 id="contact-unit-title"><?php esc_html_e( 'Pilih Unit Layanan', 'queen-alfalah' ); ?></h2>
+						<p><?php esc_html_e( 'Pesan akan diarahkan ke kanal unit yang disetel administrator. Jika unit belum memiliki kanal khusus, website memakai kontak pusat sekolah.', 'queen-alfalah' ); ?></p>
+						<?php QAF_Core_Contact_Help::render_units(); ?>
+					</section>
+
+					<section class="qaf-contact-faq-section" aria-labelledby="contact-faq-title">
+						<h2 id="contact-faq-title"><?php esc_html_e( 'Pertanyaan yang Sering Diajukan', 'queen-alfalah' ); ?></h2>
+						<?php QAF_Core_Contact_Help::render_faq(); ?>
+					</section>
+
+					<section id="bantuan-kontak" class="qaf-contact-help" aria-labelledby="contact-help-title">
+						<h2 id="contact-help-title"><?php esc_html_e( 'Minta Bantuan', 'queen-alfalah' ); ?></h2>
+						<p><?php esc_html_e( 'Gunakan formulir singkat ini bila Anda belum menemukan kanal yang tepat. Pesan diteruskan melalui email dan tidak disimpan dalam basis data website.', 'queen-alfalah' ); ?></p>
+						<?php QAF_Core_Contact_Help::render_form(); ?>
+					</section>
+				<?php endif; ?>
+
 				<div class="notice">
-					<p><strong><?php esc_html_e( 'Keamanan komunikasi:', 'queen-alfalah' ); ?></strong> <?php esc_html_e( 'Tema tidak mengirim atau menyimpan pesan formulir. Jangan mengirim NIK, NISN, kata sandi, data kesehatan, atau dokumen pribadi melalui kanal publik. Gunakan layanan resmi yang diarahkan petugas sekolah.', 'queen-alfalah' ); ?></p>
+					<p><strong><?php esc_html_e( 'Keamanan komunikasi:', 'queen-alfalah' ); ?></strong> <?php esc_html_e( 'Jangan mengirim NIK, NISN, kata sandi, data kesehatan, atau dokumen pribadi melalui kanal publik. Formulir bantuan tidak menyimpan pesan di basis data website; gunakan layanan resmi yang diarahkan petugas sekolah.', 'queen-alfalah' ); ?></p>
 				</div>
 			</div>
 		</section>

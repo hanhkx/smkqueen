@@ -2,6 +2,12 @@
 
 Semua perubahan penting pada tema Queen Al-Falah dicatat di dokumen ini.
 
+## 1.12.0 — 2026-11-14
+
+- Menambahkan tata letak responsif untuk direktori kontak per unit, FAQ, status pengiriman, dan formulir bantuan minim data dari Core 1.27.0.
+- Menyelaraskan fallback telepon, WhatsApp, dan email dengan kanal resmi yang tampil pada website produksi.
+- Mempertahankan peta embed, tampilan desktop, serta kanal kontak yang telah disunting administrator.
+
 ## 1.11.0 — 2026-10-16
 
 - Menambahkan background video MP4/WebM hero yang mudah diganti melalui Customizer sebagai alternatif GIF berukuran besar.

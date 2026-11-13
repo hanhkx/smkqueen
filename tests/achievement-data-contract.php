@@ -52,6 +52,11 @@ $new_source_ids = array(
 	'instagram:Dcm_rkFJZCy:semarak-lomba-17-agustus-2026',
 	'instagram:DdlfOvYJTI8:mikael-fadh-english-olympiad',
 	'instagram:DeIN3TVTdlC:figur-bagus-arabic-speech-finalist',
+	'instagram:DfBnLuFkXgH:olimpiade-ftki-2026',
+	'instagram:DfcL9QKicuU:gic-batch-ii-2026',
+	'instagram:DfcRyYKCWW0:canvas-totebag-painting',
+	'instagram:DfgEdJwSm4A:badminton-cup-16-besar',
+	'instagram:Dfj3gSvicje:finalis-kompetensi-akademik-2026',
 );
 
 $participation_source_ids = array(
@@ -60,13 +65,15 @@ $participation_source_ids = array(
 	'instagram:DbPlnsACQDD:festival-anak-sholeh-2026',
 	'instagram:Db8WxS0idWH:lbb-kabupaten-kediri-2026',
 	'instagram:Dcm_rkFJZCy:semarak-lomba-17-agustus-2026',
+	'instagram:DfBnLuFkXgH:olimpiade-ftki-2026',
+	'instagram:DfcRyYKCWW0:canvas-totebag-painting',
 );
 
 $assert( is_array( $data ), 'Achievement data must return an array.' );
-$assert( '1.4.0' === $data['version'], 'Achievement data version must be 1.4.0.' );
-$assert( '1.2.0' === $data['image_version'], 'Achievement image version must be 1.2.0.' );
+$assert( '1.5.0' === $data['version'], 'Achievement data version must be 1.5.0.' );
+$assert( '1.3.0' === $data['image_version'], 'Achievement image version must be 1.3.0.' );
 $assert( isset( $data['items'] ) && is_array( $data['items'] ), 'Achievement items must be present.' );
-$assert( 31 === count( $data['items'] ), 'Exactly 31 non-destructive achievement records are expected.' );
+$assert( 36 === count( $data['items'] ), 'Exactly 36 non-destructive achievement records are expected.' );
 $assert( false !== $image_dir, 'Achievement image directory must exist.' );
 
 $source_ids = array();
@@ -144,8 +151,8 @@ $olpain = $items_by_source['web:usmart:olpain-2025-gelombang-2:gavin-rufes'];
 $assert( 'https://www.usmart.id/beranda/detail/olimpiade-pai' === $olpain['source_url'], 'OLPAIN must link to the public event page, not a result sheet containing examination identifiers.' );
 $assert( false === strpos( $olpain['award'], '66' ) && false === strpos( $olpain['content'], 'nilai 66' ), 'OLPAIN must not publish a personal score.' );
 
-$assert( 26 === $image_posts, 'Exactly 26 pages should receive a verified bundled image.' );
-$assert( 23 === count( array_unique( $images ) ), 'Exactly 23 unique verified achievement image files should be referenced.' );
+$assert( 31 === $image_posts, 'Exactly 31 pages should receive a verified bundled image.' );
+$assert( 28 === count( array_unique( $images ) ), 'Exactly 28 unique verified achievement image files should be referenced.' );
 $assert( false === strpos( serialize( $data ), '0092501670' ), 'Private examination identifiers must not be stored in public achievement data.' );
 $assert( false === strpos( serialize( $data ), 'Muhammad Masyfuq Fadli' ), 'The Paree participant name must follow the official poster spelling.' );
 $assert( false !== strpos( serialize( $data ), 'Muhammad Masyfuq Faizi' ), 'The verified Paree participant spelling must be present.' );
@@ -160,4 +167,4 @@ $assert( false !== strpos( $importer, "'trash' === get_post_status" ), 'Importer
 $assert( false !== strpos( $importer, 'has_post_thumbnail( $post_id )' ), 'Importer must preserve administrator-selected thumbnails.' );
 $assert( false !== strpos( $importer, "isset( \$item['image_alt'] )" ), 'Importer must support neutral alt text for a shared poster.' );
 
-fwrite( STDOUT, "PASS: 31 achievement records preserve all legacy sources and add the verified English Olympiad and Arabic Speech finalist records.\n" );
+fwrite( STDOUT, "PASS: 36 achievement and participation records preserve legacy sources and add the verified November 2026 updates.\n" );

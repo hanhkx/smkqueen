@@ -2,7 +2,7 @@
 Contributors: smkqueenalfalah
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.26.1
+Stable tag: 1.27.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: education, school, custom-post-type, gutenberg, rest-api
@@ -33,13 +33,15 @@ Queen Al-Falah Core menjaga data sekolah tetap terpisah dari tema. Plugin menyed
 * Importer non-destruktif untuk 13 Guru/Tendik yang belum tercatat serta 11 alias ejaan yang menyambungkan foto/profil lama ke Struktur Organisasi.
 * Optimasi Media Library ke WebP secara bertahap, termasuk semua thumbnail serta gambar baru, dengan pilihan aman atau penghapusan JPG/PNG lama setelah migrasi berhasil.
 * Data prestasi terstruktur beserta penyelenggara, juara, bidang, tingkat, dan tautan sumber.
-* Dua puluh sembilan Prestasi/Partisipasi tahun 2023–2026 dengan 24 halaman bergambar sumber; entri tanpa foto tepat memakai fallback berlabel ilustrasi.
+* Tiga puluh enam Prestasi/Partisipasi tahun 2023–2026 dengan gambar sumber terverifikasi; entri tanpa foto tepat memakai fallback berlabel ilustrasi.
 * Katalog berversi untuk enam Sarana Prasarana dan 14 profil awal PKL & Mitra Industri.
 * Lima belas kartu logo/foto mitra DUDI yang disalin lokal, lengkap dengan sumber, alt text, kredit, dukungan entri legacy, dan placeholder jujur untuk identitas yang belum terverifikasi.
 * Sebelas Ekstrakurikuler dengan manfaat, relevansi dunia kerja, dan ilustrasi fallback.
 * Galeri lokal dan konten sosial Instagram, TikTok, Facebook, atau YouTube dengan URL kanonik, pemilih Media Library, serta kontrol klik/otomatis/tautan.
 * Sinkronisasi Reel/video akun Instagram Profesional melalui API resmi dengan jadwal harian opsional, deduplikasi, status draf/terbit, poster lokal, dan pembaruan long-lived token.
-* Lima belas paket media berita Agustus–Oktober 2026 dari Instagram resmi; gambar hanya mengisi slot kosong dan satu draf Oktober yang tepat dapat dipublikasikan tanpa duplikasi.
+* Dua puluh lima paket media berita Agustus–November 2026 dari Instagram resmi; gambar hanya mengisi slot kosong dan importer tidak menduplikasi sumber yang sudah ada.
+* Direktori kontak per unit, FAQ, serta formulir bantuan minim data tanpa penyimpanan pesan di basis data WordPress.
+* Paket November berisi 10 Berita, 5 Prestasi/Partisipasi, 1 Karya Siswa, dan 10 Galeri baru dari sumber resmi; entri lama dan suntingan editor tetap dipertahankan.
 * Audit Kelengkapan Oktober untuk Program Keahlian, Guru/Tendik, Sarana Prasarana, Ekstrakurikuler, serta status halaman Struktur Organisasi.
 * Field Penanggung Jawab Data dan Tanggal Tinjau Terakhir agar validasi konten inti dapat ditelusuri.
 * Caption, alt text, kredit foto, dan URL Instagram sumber yang tetap dapat disunting oleh administrator.
@@ -135,6 +137,14 @@ Tidak. Plugin hanya menyimpan dan menampilkan informasi atau tautan. Sistem pend
 Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif, serta foto tanpa dasar izin yang sesuai.
 
 == Changelog ==
+
+= 1.27.0 - 2026-11-14 =
+
+* Menambahkan kanal kontak per unit yang dapat disunting, FAQ, dan formulir bantuan minim data dengan nonce, honeypot, pembatasan kirim tersamar, serta tanpa penyimpanan pesan di database.
+* Menambahkan 10 Berita, 5 Prestasi/Partisipasi, 1 Karya Siswa, dan 10 Galeri dari unggahan Instagram resmi 28 Oktober–10 November 2026.
+* Menggunakan thumbnail WebP persegi dari foto sumber resmi, tanggal unggahan terverifikasi, kredit, alt text, dan URL sumber.
+* Mempertahankan seluruh konten lama, item di Sampah, gambar unggulan pilihan editor, serta menandai partisipasi tanpa mengarang hasil juara.
+* Menyelaraskan fallback telepon, WhatsApp, email, jam layanan, alamat, dan koordinat kontak sekolah.
 
 = 1.26.1 - 2026-10-16 =
 
@@ -345,6 +355,10 @@ Hindari NIK, NISN, alamat rumah, nomor pribadi, data kesehatan, dokumen sensitif
 * Menambahkan kebijakan uninstall non-destruktif.
 
 == Upgrade Notice ==
+
+= 1.27.0 =
+
+Unggah plugin dan tema pendamping terbaru, lalu masuk ke dashboard sebagai administrator satu kali. Proses akan menambahkan hanya konten sumber yang belum ada dan tidak mengganti suntingan editor.
 
 = 1.26.1 =
 
